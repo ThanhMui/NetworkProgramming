@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package SERVER.Entity;
-
 import SERVER.Model.City;
 import SERVER.Model.CityInfomationFull;
 import SERVER.Model.WeatherCity;
@@ -82,8 +81,7 @@ public class InfomationCity {
      // lay thong tin thanh pho theo codeCOuntry
       public static List<City> getInfo(String countryCode) throws MalformedURLException, IOException{
           List<City> listInfoCitys = new ArrayList<>();
-          
-          String url = "https://spott.p.rapidapi.com/places/autocomplete?limit=100&skip=0&country="+countryCode+"&type=CITY";
+        String url = "https://spott.p.rapidapi.com/places/autocomplete?limit=100&skip=0&country="+countryCode+"&type=CITY";
         URL obj = new URL(url);
         City city = new City();
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
