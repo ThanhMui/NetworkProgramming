@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package SERVER.Entity;
+import SERVER.DAO.CountryInfomation;
 import SERVER.Model.City;
 import SERVER.Model.CityInfomationFull;
+import SERVER.Model.CountryAll;
 import SERVER.Model.WeatherCity;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,60 +19,59 @@ import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 /**
  *
  * @author ASUS
  */
 public class InfomationCity {
      public static void main(String[] args) throws IOException  {
-         String search = "Madziwa";
-         CityInfomationFull cityInfo = new CityInfomationFull();
-        List<City> listCitys = getListCityFollowCountry();
-        int i=0;
-        for( City city: listCitys){
-           // if( city.getName().contains(search)){
-            System.out.println("City "+ i+ ": "+ city.getName());
-            float longitude = city.getLongitude(); //kinh do
-            float latitude = city.getLatitude(); // vi do
-            String countryName = city.getCountry();
-            int population = city.getPopulation();
-            String provinceId = city.getIdProvince();
-            String nameProvince = city.getNameProvince();
-            String timeZone = city.getTimezoneId();
-            WeatherCity weatherCity = InfomationWheather.getWeatherCitys(city.getName()); // lay thong tin thoi tiet theo thanh pho
-           // thong tin thoi tiet hien tai cua thanh pho
-            float cloud =  weatherCity.getClouds();
-            String description = weatherCity.getDescriptionWeather();
-            float minTemperature= weatherCity.getMin_Temperature();
-            float maxTemperature = weatherCity.getMax_Temperature();
-            float speedWind = weatherCity.getSpeedWind();
-            float temperature =   weatherCity.getTemperature();
-            cityInfo.setLongitude(longitude);
-            cityInfo.setLatitude(latitude);
-            cityInfo.setCountryName(countryName);
-            cityInfo.setPopulation(population);
-            cityInfo.setProvinceId(provinceId);
-            cityInfo.setNameProvince(nameProvince);
-            cityInfo.setTimeZone(timeZone);
-            cityInfo.setCloud(cloud);
-            cityInfo.setDescription(description);
-            cityInfo.setMinTemperature(minTemperature);
-            cityInfo.setMaxTemperature(maxTemperature);
-            cityInfo.setSpeedWind(speedWind);
-            cityInfo.setTemperature(temperature);
-                System.out.println("Infomation info full: "+ cityInfo.toString());
-                 i++;
-             //   break;
-           
-       // }
-        }
+         System.out.println(convertKelvinToCelsius((float) 292.26));
+//         String search = "Madziwa";
+//         CityInfomationFull cityInfo = new CityInfomationFull();
+//        List<City> listCitys = getListCityFollowCountry();
+//        int i=0;
+//        for( City city: listCitys){
+//           // if( city.getName().contains(search)){
+//            System.out.println("City "+ i+ ": "+ city.getName());
+//            float longitude = city.getLongitude(); //kinh do
+//            float latitude = city.getLatitude(); // vi do
+//            String countryName = city.getCountry();
+//            int population = city.getPopulation();
+//            String provinceId = city.getIdProvince();
+//            String nameProvince = city.getNameProvince();
+//            String timeZone = city.getTimezoneId();
+//            WeatherCity weatherCity = InfomationWheather.getWeatherCitys(city.getName()); // lay thong tin thoi tiet theo thanh pho
+//           // thong tin thoi tiet hien tai cua thanh pho
+//            float cloud =  weatherCity.getClouds();
+//            String description = weatherCity.getDescriptionWeather();
+//            float minTemperature= weatherCity.getMin_Temperature();
+//            float maxTemperature = weatherCity.getMax_Temperature();
+//            float speedWind = weatherCity.getSpeedWind();
+//            float temperature =   weatherCity.getTemperature();
+//            cityInfo.setLongitude(longitude);
+//            cityInfo.setLatitude(latitude);
+//            cityInfo.setCountryName(countryName);
+//            cityInfo.setPopulation(population);
+//            cityInfo.setProvinceId(provinceId);
+//            cityInfo.setNameProvince(nameProvince);
+//            cityInfo.setTimeZone(timeZone);
+//            cityInfo.setCloud(cloud);
+//            cityInfo.setDescription(description);
+//            cityInfo.setMinTemperature(minTemperature);
+//            cityInfo.setMaxTemperature(maxTemperature);
+//            cityInfo.setSpeedWind(speedWind);
+//            cityInfo.setTemperature(temperature);
+//                System.out.println("Infomation info full: "+ cityInfo.toString());
+//                 i++;
+//             //   break;
+//       // }
+//        }
     }
      public  static List<City> getListCityFollowCountry() throws IOException{
          List<City> listCitysWorld = new ArrayList<>();
-          for( String countryCode: InfomationCountry.getCodeCountrys()){
-             List<City> getInfos = getInfo(countryCode);
-         System.out.println("lenght: "+ getInfos.size());
+          for( CountryAll countryCode: CountryInfomation.getCountrys()){
+             List<City> getInfos = getInfo(countryCode.getAlpha2Code());
+             System.out.println("lenght: "+ getInfos.size());
         for(City city: getInfos){
             System.out.println("city: "+ city.toString()+"\n\n");
             listCitysWorld.add(city);
@@ -129,7 +130,7 @@ public class InfomationCity {
                  idProvince = objectProvince.getString("id");
                  nameProvince = objectProvince.getString("name");
                 }else{
-                    idProvince= null;
+                    idProvince = null;
                     nameProvince= null;
                 }
                 JSONObject objectCoordinates = objectInfo.getJSONObject("coordinates");
@@ -145,4 +146,8 @@ public class InfomationCity {
        }
         return listInfoCitys;
      }
+      private static float convertKelvinToCelsius(float kelvin) {
+        return (float) (kelvin - 273.15);
+    }
+      
 }

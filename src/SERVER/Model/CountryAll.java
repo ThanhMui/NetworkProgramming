@@ -153,7 +153,4 @@ public class CountryAll {
     public String toString() {
         return "CountryAll{" + "name=" + name + ", population=" + population + ", longtitude=" + longtitude + ", latitude=" + latitude + ", currencies=" + currencies + ", alpha2Code=" + alpha2Code + '}';
     }
-
-   
-   
 }

@@ -90,7 +90,8 @@ public class CountryInfomation {
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
             while (rs.next()) {
-                listCountrys.add(new CountryAll(rs.getString("name"),
+                listCountrys.add(new CountryAll(
+                        rs.getString("name"),
                         rs.getInt("population"),
                         rs.getFloat("longtitude"),
                         rs.getFloat("latitude"),
@@ -103,21 +104,27 @@ public class CountryInfomation {
     }
     public static void main(String[] args) throws IOException {
         // insert country
-//       List<CountryAll> listCountryInfos = InfomationCountry.listCountryInfo();
-//       for( CountryAll country : listCountryInfos){
-//           insertCountry(country.getName(), country.getPopulation(), country.getCurrencies(), country.getLatitude(), country.getLongtitude(), country.getAlpha2Code());
-//       }
+    List<CountryAll> listCountryInfos = InfomationCountry.listCountryInfo();
+       
+       for( CountryAll country : listCountryInfos){
+           insertCountry(country.getName(), country.getPopulation(),
+           country.getCurrencies(), country.getLatitude(), country.getLongtitude(), country.getAlpha2Code());
+       }
 //       // select country 
 //       List<CountryAll> getAllProducts = getCountrys();
+//       int i=1 ;
 //       for( CountryAll country: getCountrys()){
-//           System.out.println("coutry: "+ country.toString()+"\n");
+//           System.out.println(i+ " coutry: "+ country.toString()+"\n");
+//           i++;
 //       }
-// insert thong tin country đầy đủ
+        // insert thong tin country đầy đủ
         List<CountryAll> listCountryAll = InfomationCountry.getListInformationCountrys();
         for( CountryAll country : listCountryAll){
-           
-             insertInformationCountrys(country.getName(), country.getPopulation(), country.getCurrencies(), country.getLatitude(), country.getLongtitude(), country.getAlpha2Code(), 
-                     country.getGeonameId(), country.getFlag(), country.getCapital(), country.getLanguages(), country.getNeighbours());
+             insertInformationCountrys(country.getName(), country.getPopulation(),
+             country.getCurrencies(), country.getLatitude(),
+             country.getLongtitude(), country.getAlpha2Code(), 
+             country.getGeonameId(), country.getFlag(), country.getCapital(),
+             country.getLanguages(), country.getNeighbours());
         }
     }
 }

@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 /**
  *
  * @author ASUS
@@ -51,13 +50,15 @@ public class InfomationCountry {
 //                System.out.println((i)+ " code: "+ codes.get(i));
 //            }
 // get geoname
-//        List<String> getCodeCountrys = getCodeCountrys();
-//        for( String code:getCodeCountrys ){
-//             List<GeoName> geonameId = getGeonameIdCountrys( code);
-//             for( GeoName id : geonameId){
-//                 System.out.println("id"+ id.toString());
-//             }
+//        List<CountryAll> geonames = new ArrayList<>();
+//        List<GeoName> geonameIds  = null;
+//        List<CountryAll> getCodeCountrys = CountryInfomation.getCountrys();
+//        for( CountryAll code:getCodeCountrys ){
+//              geonameIds = getGeonameIdCountrys( code.getAlpha2Code());
+//              geonames.add(new CountryAll());
 //        }
+//        System.out.println("geoname: "+ geonames.size());
+        
            
 //        for( CountryAll countryAll : listCountryInfo){
 //            System.out.println("size: "+ );
@@ -73,6 +74,7 @@ public class InfomationCountry {
 // list thong tin country thieu cái neighbour
 //        List<CountryAll> getAllProducts = CountryInfomation.getCountrys();
 //        List<CountryAll> listCountrys = getInfomationsCountrys(getAllProducts) ;
+//        System.out.println("kich thuoc: "+ listCountrys.size());
 //        for( int i  =0 ; i< listCountrys.size(); i++){
 //            System.out.println("country info: "+ i);
 //            System.out.println("name: "+ listCountrys.get(i).getName());
@@ -87,24 +89,26 @@ public class InfomationCountry {
 //            System.out.println("languages: "+ listCountrys.get(i).getLanguages());
 //        }
             // lay thông tin đầy đủ được ghép lại từ những thoong tin thiếu
-            int i =1;
+//            int i =1;
             List<CountryAll> listCountryFull = getListInformationCountrys();
-            for( CountryAll country: listCountryFull){
-                System.out.print(i+ "Country: -");
-                System.out.println("name: "+ country.getName());
-                System.out.println("population: "+ country.getPopulation());
-                System.out.println("longtitude: "+ country.getLongtitude());
-                System.out.println("latitude: "+ country.getLatitude());
-                System.out.println("currencies: "+ country.getCurrencies());
-                System.out.println("alpha2Code: "+ country.getAlpha2Code());
-                System.out.println("geonameId: "+ country.getGeonameId());
-                System.out.println("flag: "+ country.getFlag());
-                System.out.println("capital: "+ country.getCapital());
-                System.out.println("languages: "+ country.getLanguages());
-                System.out.println("neighbours: "+ country.getNeighbours());
-                
-            }
-           // api list long&lat
+            System.out.println("Tong quoc gia du: "+ listCountryFull.size());
+//            for( CountryAll country: listCountryFull){
+//                System.out.print(i+ "Country: -");
+//                System.out.println("name: "+ country.getName());
+//                System.out.println("population: "+ country.getPopulation());
+//                System.out.println("longtitude: "+ country.getLongtitude());
+//                System.out.println("latitude: "+ country.getLatitude());
+//                System.out.println("currencies: "+ country.getCurrencies());
+//                System.out.println("alpha2Code: "+ country.getAlpha2Code());
+//                System.out.println("geonameId: "+ country.getGeonameId());
+//                System.out.println("flag: "+ country.getFlag());
+//                System.out.println("capital: "+ country.getCapital());
+//                System.out.println("languages: "+ country.getLanguages());
+//                System.out.println("neighbours: "+ country.getNeighbours());
+//                
+//            }
+//            System.out.println("so luong: "+ getCodeCountrys().size());
+//           // api list long&lat
 //         List<CountryAll> list = listCountryInfo();
 //         for( CountryAll country: list){
 //             System.out.println("country: -name"+ country.getName());
@@ -114,13 +118,14 @@ public class InfomationCountry {
 //             System.out.println("languges: "+ country.getLanguages());
 //             
 //         }
-         
     }
     // lay thong tin day du country chỉ thiếu thời tiết
     public static List<CountryAll> getListInformationCountrys() throws IOException{
         List<CountryAll> infomationFullCountrys = new ArrayList<>();
         //  lay list thong tin của các cua gia
         List<CountryAll> getCountrys = CountryInfomation.getCountrys();
+        System.out.println("So luong nuoc: "+ getCountrys.size());
+        // 
         List<CountryAll> listCountrys = getInfomationsCountrys(getCountrys);
             for ( CountryAll country: listCountrys){
                  List<String> neighbours = getNeighbours(country.getGeonameId());
@@ -134,9 +139,7 @@ public class InfomationCountry {
     }
     // lay thong tin api cua 1 quoc gia
     public static Country getInformation() throws IOException{
-        
          String url ="http://api.geonames.org/countryInfoJSON?formatted=true&lang=it&country=TH&username=thanhmui&style=full";
-       
             URL obj;
             Country info = null;
         try {
@@ -176,10 +179,10 @@ public class InfomationCountry {
     //country
     //https://restcountries.com/v2/all
     public static List<CountryAll> listCountryInfo() throws IOException{
-          int l =1;
-          String url ="https://restcountries.com/v2/all";      
+            int l =1;
+            String url ="https://restcountries.com/v2/all";      
             URL obj = null;
-             BufferedReader in = null;
+            BufferedReader in = null;
             List<CountryAll> listInfoCountrys = new ArrayList<>();
         try {
            obj = new URL(url);
@@ -206,11 +209,12 @@ public class InfomationCountry {
                 JSONArray json = obCountrys.getJSONArray("currencies");
                  for( int k = 0 ;k < json.length(); k++){
                JSONObject obN = json.getJSONObject(k);
-               currencies= obN.getString("name");
+               currencies= obN.getString("code");
            }
            }catch(Exception e ){
+               e.getMessage();
            }
-            double latitude =0;
+            double latitude = 0;
             double longtitude = 0;
           // JSONArray json = obCountrys.getJSONArray("currencies");
           try{
@@ -220,6 +224,7 @@ public class InfomationCountry {
               longtitude = arrayJ.getDouble(1);
            }
           }catch(Exception e){
+              e.getMessage();
           }
                 System.out.println("lan: "+ l);
                 System.out.println("name: "+ name);
@@ -273,9 +278,7 @@ public class InfomationCountry {
         }
         listGeonameId.add(neighbours);
             }catch(Exception e){
-                
             }
-          
             in.close();
         } catch (MalformedURLException ex) {
             Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
@@ -372,7 +375,8 @@ public class InfomationCountry {
             List<GeoName> getGeonameIdCountrys = getGeonameIdCountrys(country.getAlpha2Code());
              for( GeoName ge : getGeonameIdCountrys){
                  countryAlls.add(new CountryAll(country.getName(), country.getPopulation(), country.getLongtitude(),
-                 country.getLatitude(), country.getCurrencies(), country.getAlpha2Code(),ge.getGeonameId(),ge.getFlag(), ge.getCapital(), ge.getLanguages()));
+                 country.getLatitude(), country.getCurrencies(), country.getAlpha2Code(),ge.getGeonameId(),ge.getFlag(), 
+                 ge.getCapital(), ge.getLanguages()));
              }
         }
         return countryAlls;
@@ -384,7 +388,7 @@ public class InfomationCountry {
             List<GeoName> listGeonameId = new ArrayList<>();
         try {
             obj = new URL(url);
-             HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
             int responseCode = connection.getResponseCode();
             System.out.println("response= "+ responseCode);
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -399,7 +403,7 @@ public class InfomationCountry {
             JSONArray ja_data = object.getJSONArray("geonames");
             int length = ja_data.length();
         for(int i=0; i<length; i++) {
-          JSONObject jsonObj = ja_data.getJSONObject(i);
+            JSONObject jsonObj = ja_data.getJSONObject(i);
           // getting inner array Ingredients
             int geonameId = jsonObj.getInt("geonameId");
             String capital = jsonObj.getString("capital");
@@ -415,7 +419,6 @@ public class InfomationCountry {
         }
         return listGeonameId;
     }
-     
     // convert Kelvin to Celsius
     private static float convertKelvinToCelsius(float kelvin) {
         return (float) (kelvin - 273.15);

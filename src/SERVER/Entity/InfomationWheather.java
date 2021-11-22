@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 /**
  *
  * @author ASUS
@@ -56,17 +55,20 @@ public class InfomationWheather {
             String description = weather.getString("description");
             // lay temperature
             JSONObject mainTemp = object.getJSONObject("main");
-            float temp = mainTemp.getFloat("temp");
-            float temp_min = mainTemp.getFloat("temp_min");
-            float temp_max = mainTemp.getFloat("temp_max");
-            System.out.println("temp: "+ temp);
-            System.out.println("temp_min: "+ temp_min);
-            System.out.println("temp_max: "+ temp_max);
+//            float temp = convertKelvinToCelsius(mainTemp.getFloat("temp"));
+//            float temp_min =convertKelvinToCelsius(mainTemp.getFloat("temp_min"));
+//            float temp_max = convertKelvinToCelsius(mainTemp.getFloat("temp_max"));
+            
+            float temp = (float) (Math.ceil(convertKelvinToCelsius(mainTemp.getFloat("temp"))*10)/10);
+            float temp_min = (float) (Math.ceil(convertKelvinToCelsius(mainTemp.getFloat("temp_min"))*10)/10);
+            float temp_max = (float) (Math.ceil(convertKelvinToCelsius(mainTemp.getFloat("temp_max"))*10)/10);
+            System.out.println("temp: "+ Math.ceil(temp*10)/10);
+            System.out.println("temp_min: "+ Math.ceil(temp_min*10)/10);
+            System.out.println("temp_max: "+ Math.ceil(temp_max*10)/10);
             // get wind
             JSONObject wind = object.getJSONObject("wind");
             float speed = wind.getFloat("speed");
             System.out.println("speed: "+ speed);
-            
             float clouds = object.getJSONObject("clouds").getFloat("all");
             System.out.println("clouds: "+ clouds);
             // get country
@@ -83,16 +85,15 @@ public class InfomationWheather {
     } 
     public List<InfomationWheather> infoWheather(){
         List<InfomationWheather> listWeathers = new ArrayList<>();
-        
-        
         return null;
     }
     public void search(String key){
-        
     }
     public static void main(String[] args) throws IOException {
-        WeatherCity getWeatherCity = getWeatherCitys("HaNoi");
+        WeatherCity getWeatherCity = getWeatherCitys("Kandahār");
         System.out.println("result: "+getWeatherCity.toString());
     }
-    
+    private static float convertKelvinToCelsius(float kelvin) {
+        return (float) (kelvin - 273.15);
+    }
 }

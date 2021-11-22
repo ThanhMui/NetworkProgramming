@@ -5,7 +5,9 @@
  */
 package SERVER.DAO;
 import SERVER.Entity.InfomationCity;
+import SERVER.Entity.InfomationWheather;
 import SERVER.Model.City;
+import SERVER.Model.WeatherCity;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,7 +54,7 @@ public class CityInfomation {
         }
    }
    // tim list tp theo ten gan dung
-   public static  List<City> searchByNames(String txtSearch) {
+   public static List<City> searchByNames(String txtSearch) {
         List<City> list = new ArrayList<>();
         String query = "select * from City\n"
                 + "where name like ?";
@@ -72,14 +74,28 @@ public class CityInfomation {
                         rs.getString("timezoneId"),
                         rs.getString("idProvince"),
                         rs.getString("nameProvince")));
-                
             }
         } catch (Exception e) {
             System.out.println("thoat!");
         }
         return list;
     }
-   // tim  tp theo ten 
+  
+   // đây là thông tin đầy đủ bao gồm thời tiết
+   // tim  tp theo ten , goi api thời tiết qua đưa vào 1 cái list để gọi qua giao diện client 
+    public static List<City> getInfoCityFull(String nameCity) throws IOException {
+        List<City> listInfos= new ArrayList<>();
+        List<City> citysSearch = searchByNames(nameCity);
+        for( City city : citysSearch){
+            WeatherCity weather = InfomationWheather.getWeatherCitys(city.getName());
+            listInfos.add(new City(city.getName(), weather.getLat(), weather.getLon(), city.getIdCountry(), city.getCountry(), 
+                    city.getPopulation(), city.getTimezoneId(), city.getIdProvince(), city.getNameProvince(), 
+                    weather.getDescriptionWeather(), weather.getTemperature(),
+                    weather.getMin_Temperature(), weather.getMax_Temperature()
+                    , weather.getSpeedWind(), weather.getClouds()));
+        }
+        return listInfos;
+    }
    public static City searchCityByName(String nameCity){
        String query = "select * from City\n"
                 + "where name = ?";
@@ -103,32 +119,63 @@ public class CityInfomation {
         } catch (Exception e) {
         }
         return null;
-       
-       
    }
-   
+//this.name = name;
+//        this.latitude = latitude;
+//        this.longitude = longitude;
+//        this.idCountry = idCountry;
+//        this.country = country;
+//        this.population = population;
+//        this.timezoneId = timezoneId;
+//        this.idProvince = idProvince;
+//        this.nameProvince = nameProvince;
+//        this.descriptionWeather = descriptionWeather;
+//        this.temperature = temperature;
+//        this.min_Temperature = min_Temperature;
+//        this.max_Temperature = max_Temperature;
+//        this.speedWind = speedWind;
+//        this.clouds = clouds;
     public static void main(String[] args) throws IOException {
 //        List<City> listCitys = InfomationCity.getListCityFollowCountry();
 //        int i=0;
 //        for( City city: listCitys){
 //            //insert thong tin city vao db sau khi lay duoc tu api
-//            insertCity(city.getName(), city.getLatitude(), city.getLongitude(), city.getIdCountry(), city.getCountry(),city.getPopulation(), city.getTimezoneId(), city.getIdProvince(), city.getNameProvince());
+//            insertCity(city.getName(), city.getLatitude(), city.getLongitude(), city.getIdCountry(), city.getCountry()
+//                    ,city.getPopulation(), city.getTimezoneId(), city.getIdProvince(), city.getNameProvince());
 //                System.out.println(i +" - City: "+ city.toString());
 //                 i++;
 //             //   break;
-//           
 //       // }
 //        }
-        try {
-            City city1 = searchCityByName("Ho Chi Minh City");
-            System.out.println("city 1: "+ city1.toString());
-             List<City> searchByNames = searchByNames("Ho Chi Minh");
-             for( City city : searchByNames){
-                 System.out.println("thành phố là : " + city.toString()); 
-             }
-        } catch (Exception e) {
-            System.out.println("Không có thành phố nào");
-        }
-//       
+//        System.out.println("i: "+ i);
+//        try {
+//            City city1 = searchCityByName("Hội An");
+//            System.out.println("city 1: "+ city1.toString());
+//             List<City> searchByNames = searchByNames("Ho Chi Minh");
+//             for( City city : searchByNames){
+//                 System.out.println("thành phố là : " + city.toString()); 
+//             }
+//        } catch (Exception e) {
+//            System.out.println("Không có thành phố nào");
+//        }
+//
+            List<City> citysFull =  getInfoCityFull("Jalalabad");
+            for( City city: citysFull){
+                System.out.println("name: "+ city.getName());
+                System.out.println("latitude: "+ city.getLatitude());
+                System.out.println("longitude: "+ city.getLongitude());
+                System.out.println("idCountry: "+ city.getIdCountry());
+                System.out.println("country: "+ city.getCountry());
+                System.out.println("population: "+ city.getPopulation());
+                System.out.println("timezoneId: "+ city.getTimezoneId());
+                System.out.println("idProvince: "+ city.getIdProvince());
+                System.out.println("nameProvince: "+ city.getNameProvince());
+                System.out.println("descriptionWeather: "+ city.getDescriptionWeather());
+                System.out.println("temperature: "+ city.getTemperature());
+                System.out.println("min_Temperature: "+ city.getMin_Temperature());
+                System.out.println("max_Temperature: "+ city.getMax_Temperature());
+                System.out.println("speedWind: "+ city.getSpeedWind());
+                System.out.println("clouds: "+ city.getClouds());
+            }
     }
 }

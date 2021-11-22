@@ -13,16 +13,14 @@ public class WeatherCity {
     private float lat;
     private String descriptionWeather;
     private float temperature ;
-    private float min_Temperature ;
-    private float max_Temperature ;
+    private float min_Temperature;
+    private float max_Temperature;
     private float speedWind;
     private float clouds;
     private String country;
     private String city;
-
     public WeatherCity() {
     }
-
     public WeatherCity(float lon, float lat, String descriptionWeather, float temperature, float min_Temperature, float max_Temperature, float speedWind, float clouds, String country, String city) {
         this.lon = lon;
         this.lat = lat;
