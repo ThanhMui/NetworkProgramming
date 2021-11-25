@@ -88,11 +88,20 @@ public class CityInfomation {
         List<City> citysSearch = searchByNames(nameCity);
         for( City city : citysSearch){
             WeatherCity weather = InfomationWheather.getWeatherCitys(city.getName());
-            listInfos.add(new City(city.getName(), weather.getLat(), weather.getLon(), city.getIdCountry(), city.getCountry(), 
+            if( weather!= null){
+            listInfos.add(new City(city.getName(), city.getLatitude(), city.getLongitude(), city.getIdCountry(), city.getCountry(), 
                     city.getPopulation(), city.getTimezoneId(), city.getIdProvince(), city.getNameProvince(), 
                     weather.getDescriptionWeather(), weather.getTemperature(),
                     weather.getMin_Temperature(), weather.getMax_Temperature()
                     , weather.getSpeedWind(), weather.getClouds()));
+            }else{// do api thoi tieet co nhieu tinh khong co nen phai xet null api do. Để dễ set -6 để khi qua GUI dễ dùng if hơn !
+                 listInfos.add(new City(city.getName(), city.getLatitude(), city.getLongitude(), city.getIdCountry(), city.getCountry(), 
+                    city.getPopulation(), city.getTimezoneId(), city.getIdProvince(), city.getNameProvince(), 
+                    "", -6,
+                    6, -6
+                    , -6, -6));
+            }
+            
         }
         return listInfos;
     }
@@ -159,23 +168,23 @@ public class CityInfomation {
 //            System.out.println("Không có thành phố nào");
 //        }
 //
-            List<City> citysFull =  getInfoCityFull("Jalalabad");
-            for( City city: citysFull){
-                System.out.println("name: "+ city.getName());
-                System.out.println("latitude: "+ city.getLatitude());
-                System.out.println("longitude: "+ city.getLongitude());
-                System.out.println("idCountry: "+ city.getIdCountry());
-                System.out.println("country: "+ city.getCountry());
-                System.out.println("population: "+ city.getPopulation());
-                System.out.println("timezoneId: "+ city.getTimezoneId());
-                System.out.println("idProvince: "+ city.getIdProvince());
-                System.out.println("nameProvince: "+ city.getNameProvince());
-                System.out.println("descriptionWeather: "+ city.getDescriptionWeather());
-                System.out.println("temperature: "+ city.getTemperature());
-                System.out.println("min_Temperature: "+ city.getMin_Temperature());
-                System.out.println("max_Temperature: "+ city.getMax_Temperature());
-                System.out.println("speedWind: "+ city.getSpeedWind());
-                System.out.println("clouds: "+ city.getClouds());
-            }
+//            List<City> citysFull =  getInfoCityFull("Jalalabad");
+//            for( City city: citysFull){
+//                System.out.println("name: "+ city.getName());
+//                System.out.println("latitude: "+ city.getLatitude());
+//                System.out.println("longitude: "+ city.getLongitude());
+//                System.out.println("idCountry: "+ city.getIdCountry());
+//                System.out.println("country: "+ city.getCountry());
+//                System.out.println("population: "+ city.getPopulation());
+//                System.out.println("timezoneId: "+ city.getTimezoneId());
+//                System.out.println("idProvince: "+ city.getIdProvince());
+//                System.out.println("nameProvince: "+ city.getNameProvince());
+//                System.out.println("descriptionWeather: "+ city.getDescriptionWeather());
+//                System.out.println("temperature: "+ city.getTemperature());
+//                System.out.println("min_Temperature: "+ city.getMin_Temperature());
+//                System.out.println("max_Temperature: "+ city.getMax_Temperature());
+//                System.out.println("speedWind: "+ city.getSpeedWind());
+//                System.out.println("clouds: "+ city.getClouds());
+//            }
     }
 }

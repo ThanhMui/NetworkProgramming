@@ -4,15 +4,17 @@
  * and open the template in the editor.
  */
 package SERVER.Model;
+import java.io.Serializable;
+
 /**
  *
  * @author ASUS
  */
-public class WeatherCity {
+public class WeatherCity implements Serializable{
     private float lon; // kinh do
     private float lat;
     private String descriptionWeather;
-    private float temperature ;
+    private float temperature;
     private float min_Temperature;
     private float max_Temperature;
     private float speedWind;

@@ -7,6 +7,7 @@
 package SERVER.Entity;
 import SERVER.Model.WeatherCity;
 import SERVER.Model.Country;
+import SERVER.Model.WeatherCountry;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
  * @author ASUS
  */
 public class InfomationWheather {
+    // thong tin thoi tiet theo city
     public static WeatherCity getWeatherCitys(String cityName) throws IOException{
          String url ="https://api.openweathermap.org/data/2.5/weather?q="+cityName+"&APPID=8578a4285a58470878a525bb5df4ec47";
             URL obj;
@@ -34,7 +36,8 @@ public class InfomationWheather {
              HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
             int responseCode = connection.getResponseCode();
             System.out.println("response= "+ responseCode);
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            if( responseCode == 200){
+                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine  ;
             StringBuffer response = new StringBuffer();
             while ((inputLine = in.readLine())!= null) {                
@@ -78,20 +81,71 @@ public class InfomationWheather {
             System.out.println("city: "+ city);
          weatherCity = new WeatherCity(longitude, latitude, description, temp, temp_min, temp_max, speed, clouds, countryName, city);
             in.close();
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
+        
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+            
+           
         return weatherCity;
     } 
     public List<InfomationWheather> infoWheather(){
         List<InfomationWheather> listWeathers = new ArrayList<>();
         return null;
     }
-    public void search(String key){
-    }
+    // thong tin thoi tiet theo country
+    //http://api.geonames.org/findNearByWeatherJSON?formatted=true&lat=18.4313831329346&lng=-64.623046875&username=thanhmui&style=full
+    public static  WeatherCountry getWeatherCountry(double latitude, double longitude){
+    String url ="http://api.geonames.org/findNearByWeatherJSON?formatted=true&lat="+latitude+"&lng="+longitude+"&username=thanhmui&style=full";
+            URL obj;
+             WeatherCountry weatherCountry = null;
+        try {
+            obj = new URL(url);
+             HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+            int responseCode = connection.getResponseCode();
+            System.out.println("response= "+ responseCode);
+            if( responseCode == 200){
+                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine  ;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine())!= null) {                
+                response.append(inputLine);
+            }
+            System.out.println("parse json"+ response.toString());
+            JSONObject  object = new JSONObject(response.toString());
+            System.out.println(object);
+            JSONObject weatherObservationObj = object.getJSONObject("weatherObservation");
+            String countryCode = weatherObservationObj.getString("countryCode");
+            float temperature = weatherObservationObj.getFloat("temperature");
+            String weatherCondition = weatherObservationObj.getString("weatherCondition");
+            int humidity = weatherObservationObj.getInt("humidity");
+            String clouds = weatherObservationObj.getString("clouds");
+            String datetime = weatherObservationObj.getString("datetime");
+            float windSpeed = weatherObservationObj.getFloat("windSpeed");
+            weatherCountry = new WeatherCountry(countryCode, temperature, weatherCondition, humidity, clouds, datetime, windSpeed);
+            in.close();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    return  weatherCountry;
+}
     public static void main(String[] args) throws IOException {
-        WeatherCity getWeatherCity = getWeatherCitys("Kandahār");
-        System.out.println("result: "+getWeatherCity.toString());
+//        WeatherCity getWeatherCity = getWeatherCitys("Kandahār");
+//        System.out.println("result: "+getWeatherCity.toString());
+        WeatherCountry getWeatherCountry = getWeatherCountry(16, -64.623046875);
+        if( getWeatherCountry!= null){
+            System.out.println("countryCode: "+ getWeatherCountry.getCountryCode());
+            System.out.println("temperature: "+ getWeatherCountry.getTemperature());
+            System.out.println("weatherCondition: "+ getWeatherCountry.getWeatherCondition());
+            System.out.println("humidity: "+ getWeatherCountry.getHumidity());
+            System.out.println("clouds: "+ getWeatherCountry.getClouds());
+            System.out.println("datetime: "+ getWeatherCountry.getDatetime());
+            System.out.println("windSpeed: "+ getWeatherCountry.getWindSpeed());
+        }
+//        System.out.println("weather country: "+ getWeatherCountry.toString());
+            
     }
     private static float convertKelvinToCelsius(float kelvin) {
         return (float) (kelvin - 273.15);

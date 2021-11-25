@@ -6,19 +6,20 @@
 package SERVER.Model;
 
 import SERVER.Entity.InfomationWheather;
+import java.io.Serializable;
 
 /**
  *
  * @author ASUS
  */
-public class CityInfomationFull {
+public class CityInfomationFull implements Serializable{
             float longitude ;
             float latitude ; // vi do
             String countryName ;
             int population ;
-            String provinceId ;
-            String nameProvince ;
-            String timeZone ;
+            String provinceId;
+            String nameProvince;
+            String timeZone;
           
             float cloud ;
             String description ;

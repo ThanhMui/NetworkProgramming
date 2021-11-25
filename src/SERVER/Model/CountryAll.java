@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package SERVER.Model;
+
+import java.io.Serializable;
+
 /**
  *
  * @author ASUS
  */
-public class CountryAll {
+public class CountryAll implements Serializable{
     private String name;
     private int population;
     private double longtitude;
@@ -20,7 +23,15 @@ public class CountryAll {
     private String capital;
     private String languages;
     private String neighbours;
-//    private String capital;
+//    thông tin thời tiết 
+    private String countryCode;
+    private float temperature;
+    private String weatherCondition;
+    private int humidity;
+    private String clouds;
+    private String datetime;
+    private float windSpeed;
+    
 
     public CountryAll() {
     }
@@ -59,6 +70,27 @@ public class CountryAll {
         this.capital = capital;
         this.languages = languages;
         this.neighbours = neighbours;
+    }
+
+    public CountryAll(String name, int population, double longtitude, double latitude, String currencies, String alpha2Code, int geonameId, String flag, String capital, String languages, String neighbours, String countryCode, float temperature, String weatherCondition, int humidity, String clouds, String datetime, float windSpeed) {
+        this.name = name;
+        this.population = population;
+        this.longtitude = longtitude;
+        this.latitude = latitude;
+        this.currencies = currencies;
+        this.alpha2Code = alpha2Code;
+        this.geonameId = geonameId;
+        this.flag = flag;
+        this.capital = capital;
+        this.languages = languages;
+        this.neighbours = neighbours;
+        this.countryCode = countryCode;
+        this.temperature = temperature;
+        this.weatherCondition = weatherCondition;
+        this.humidity = humidity;
+        this.clouds = clouds;
+        this.datetime = datetime;
+        this.windSpeed = windSpeed;
     }
 
     public String getName() {
@@ -149,8 +181,70 @@ public class CountryAll {
         this.neighbours = neighbours;
     }
 
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(float temperature) {
+        this.temperature = temperature;
+    }
+
+    public String getWeatherCondition() {
+        return weatherCondition;
+    }
+
+    public void setWeatherCondition(String weatherCondition) {
+        this.weatherCondition = weatherCondition;
+    }
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
+    }
+
+    public String getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(String clouds) {
+        this.clouds = clouds;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
+    public float getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(float windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+
     @Override
     public String toString() {
         return "CountryAll{" + "name=" + name + ", population=" + population + ", longtitude=" + longtitude + ", latitude=" + latitude + ", currencies=" + currencies + ", alpha2Code=" + alpha2Code + '}';
     }
+
+   
+    public String toString1() {
+        return "CountryAll{" + "name=" + name + ", population=" + population + ", longtitude=" + longtitude + ", latitude=" + latitude + ", currencies=" + currencies + ", alpha2Code=" + alpha2Code + ", geonameId=" + geonameId + ", flag=" + flag + ", capital=" + capital + ", languages=" + languages + ", neighbours=" + neighbours + ", countryCode=" + countryCode + ", temperature=" + temperature + ", weatherCondition=" + weatherCondition + ", humidity=" + humidity + ", clouds=" + clouds + ", datetime=" + datetime + ", windSpeed=" + windSpeed + '}';
+    }
+    
 }

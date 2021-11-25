@@ -5,11 +5,13 @@
  */
 package SERVER.Model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author ASUS
  */
-public class Country {
+public class Country implements Serializable{
     private int population;
     private String countryName;
 

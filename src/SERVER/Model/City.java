@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package SERVER.Model;
+
+import java.io.Serializable;
+
 /**
  *
  * @author ASUS
  */
-public class City {
+public class City implements Serializable{
    private String name;
    private float latitude;
    private float longitude; 
