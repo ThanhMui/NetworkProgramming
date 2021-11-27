@@ -5,6 +5,7 @@
  */
 package CLIENT;
 
+import static CLIENT.CountryGUI.clientSocket;
 import SERVER.Model.City;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -250,11 +251,13 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
         sendData = new byte[65536];
         receiveData = new byte[65536];
         String tmp = txtCityName.getText().trim()+ "$city";
-        if( tmp.equalsIgnoreCase("bye")){
+        
+    try {
+         clientSocket = new DatagramSocket();
+         if( tmp.equalsIgnoreCase("bye")){
             clientSocket.close();
             System.exit(0);
         }
-    try {
         sendData = serialize(tmp.toString());
         InetAddress address = InetAddress.getByName("localhost");
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);

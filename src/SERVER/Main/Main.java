@@ -51,21 +51,20 @@ public class Main {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 datagramSocket.receive(receivePacket);
                 String tmp =(String) deserialize(receivePacket.getData());
-                if( tmp.contains("$city")){
-                       System.out.println("city: "+tmp);
-                      
-                       citySearch = getNameCitys(tmp).get(0);
-                        List<City> getInfoCityFulls = CityInfomation.getInfoCityFull(citySearch);
-                        InetAddress address = receivePacket.getAddress();
+               if( tmp.contains("$city")){
+                System.out.println("city: "+tmp);
+                citySearch = getNameCitys(tmp).get(0);
+                List<City> getInfoCityFulls = CityInfomation.getInfoCityFull(citySearch);
+                InetAddress address = receivePacket.getAddress();
                 int port = receivePacket.getPort();
                 sendData = serialize(getInfoCityFulls);
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
                 datagramSocket.send(sendPacket);
                 }else if( tmp.contains("$country")){
-                    System.out.println("country: "+ tmp);
-                    countrySearch = getNameCountrys(tmp).get(0);
-                        List<CountryAll> getInfoCountryFulls = CountryInfomation.getInfoCountryFull(countrySearch);
-                        InetAddress address = receivePacket.getAddress();
+                System.out.println("country: "+ tmp);
+                countrySearch = getNameCountrys(tmp).get(0);
+                List<CountryAll> getInfoCountryFulls = CountryInfomation.getInfoCountryFull(countrySearch);
+                InetAddress address = receivePacket.getAddress();
                 int port = receivePacket.getPort();
                 sendData = serialize(getInfoCountryFulls);
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);

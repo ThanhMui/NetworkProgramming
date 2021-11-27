@@ -282,13 +282,16 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
          }) );
         sendData = new byte[65536];
         receiveData = new byte[65536];
+       
         String tmp = txtCityName.getText().trim()+ "$country";
+        
+    try {
+        clientSocket = new DatagramSocket();
         if( tmp.equalsIgnoreCase("bye")){
             clientSocket.close();
             System.exit(0);
             return ;
         }
-    try {
         sendData = serialize(tmp.toString());
         InetAddress address = InetAddress.getByName("localhost");
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
