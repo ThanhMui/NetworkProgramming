@@ -264,7 +264,7 @@ public class InfomationCountry {
             JSONObject  object = new JSONObject(response.toString());
             System.out.println(object);
             try{
-                  JSONArray ja_data = object.getJSONArray("geonames");
+            JSONArray ja_data = object.getJSONArray("geonames");
             int length = ja_data.length();
             String neighbours = "";
         for(int i=0; i<length; i++) {
