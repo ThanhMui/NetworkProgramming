@@ -7,8 +7,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/DesktopD/HK1_NAM4/LTM/ThuVien/json-20210307.jar"/>
-	<classpathentry kind="lib" path="Lib/commons-lang3-3.12.0.jar"/>
-	<classpathentry kind="lib" path="Lib/jcommon-1.0.23.jar"/>
-	<classpathentry kind="lib" path="Lib/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="Library/commons-lang3-3.12.0.jar"/>
+	<classpathentry kind="lib" path="Library/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="Library/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
