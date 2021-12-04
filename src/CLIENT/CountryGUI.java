@@ -359,7 +359,8 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
             }
         }
     }//GEN-LAST:event_tbCountryMouseClicked
- public static void loadImage(String urlImage, JLabel lblimage){
+   // load flag lên label 
+    public static void loadImage(String urlImage, JLabel lblimage){
      Image image = null;
         try {
             URL url = new URL(urlImage);
@@ -383,6 +384,7 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
         }
      
  }
+    // customize size flag image
     public static Image getScaledImage(Image Img, int wt, int ht) {
       BufferedImage resizedImg = new BufferedImage(wt, ht, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = resizedImg.createGraphics();
