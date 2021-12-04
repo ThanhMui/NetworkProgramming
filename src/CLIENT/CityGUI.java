@@ -292,6 +292,7 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
     private void tbCityMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCityMouseClicked
         // TODO add your handling code here:
         int row = tbCity.getSelectedRow();
+       // String id = tbCountry.getValueAt(row, 1).toString();
         String name = tbCity.getValueAt(row, 0).toString();
         for( City city: getInfoCityFulls){
             if( city.getName().equalsIgnoreCase(name)){
@@ -308,7 +309,7 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
                 }else if( city.getClouds() == -6){
                     lbClouds.setText("");
                 }else{
-                    lbDescription.setText(city.getDescriptionWeather());
+                lbDescription.setText(city.getDescriptionWeather());
                 lbTemp.setText(String.valueOf(city.getTemperature()+ " °C"));
                 lbMinTemp.setText(String.valueOf(city.getMin_Temperature()+ " °C"));
                 lbMaxTemp.setText(String.valueOf(city.getMax_Temperature()+ " °C"));

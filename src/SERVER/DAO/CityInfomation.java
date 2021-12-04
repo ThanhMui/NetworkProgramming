@@ -57,11 +57,11 @@ public class CityInfomation {
    public static List<City> searchByNames(String txtSearch) {
         List<City> list = new ArrayList<>();
         String query = "select * from City\n"
-                + "where name like ?";
+                + "where name = ?";
         try {
             conn = new DBContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
-            ps.setString(1, "%" + txtSearch + "%");
+            ps.setString(1,  txtSearch );
             rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new City(

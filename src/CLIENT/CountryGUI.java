@@ -7,13 +7,17 @@ package CLIENT;
 
 import SERVER.Model.City;
 import SERVER.Model.CountryAll;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
@@ -21,6 +25,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +33,9 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
@@ -346,12 +353,46 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
                  lbClouds.setText(String.valueOf(country.getClouds()));
                 lbTemp.setText(String.valueOf(country.getTemperature()+ " °C"));
                 lbWindSpeed.setText(String.valueOf(country.getWindSpeed()+ "m/s"));
-               // lbFlag.setIcon(new ImageIcon(""));
+                loadImage(country.getFlag(), lbFlag);
                 }
                 break;
             }
         }
     }//GEN-LAST:event_tbCountryMouseClicked
+ public static void loadImage(String urlImage, JLabel lblimage){
+     Image image = null;
+        try {
+            URL url = new URL(urlImage);
+            URLConnection conn = url.openConnection();
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+            conn.connect();
+            InputStream urlStream = conn.getInputStream();
+            image = ImageIO.read(urlStream);
+            image = getScaledImage(image, 70, 50);
+          
+            ImageIcon icon = new ImageIcon(image); 
+           
+            lblimage.setIcon(icon);
+          
+            lblimage.setSize(50, 50);
+           
+        } catch (IOException e) {
+            System.out.println("Something went wrong, sorry:" + e.toString());
+            e.printStackTrace();
+        }
+     
+ }
+    public static Image getScaledImage(Image Img, int wt, int ht) {
+      BufferedImage resizedImg = new BufferedImage(wt, ht, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g2 = resizedImg.createGraphics();
+
+      g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+      g2.drawImage(Img, 0, 0, wt, ht, null);
+      g2.dispose();
+
+      return resizedImg;
+  }
 // public void startRunning()
 //    {
 //        try

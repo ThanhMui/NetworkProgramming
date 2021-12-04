@@ -33,7 +33,7 @@ public class Main {
     os.writeObject(obj);
     return out.toByteArray();
 }
-    public static Object deserialize(byte[] data) throws IOException,   ClassNotFoundException {
+    public static Object deserialize(byte[] data) throws IOException,ClassNotFoundException {
     ByteArrayInputStream in = new ByteArrayInputStream(data);
     ObjectInputStream is = new ObjectInputStream(in);
     return is.readObject();
@@ -79,7 +79,7 @@ public class Main {
     }
     }
     private static List<String> getNameCitys(String url){
-        StringTokenizer st = new StringTokenizer(url, "$city");   
+        StringTokenizer st = new StringTokenizer(url, "$");   
         List<String> arr = new ArrayList<>();
          while (st.hasMoreTokens()) {
            //  System.out.println(""+ st.nextToken());
@@ -88,7 +88,7 @@ public class Main {
        return arr;
     }
     private static List<String> getNameCountrys(String url){
-        StringTokenizer st = new StringTokenizer(url, "$country");   
+         StringTokenizer st = new StringTokenizer(url, "$");   
         List<String> arr = new ArrayList<>();
          while (st.hasMoreTokens()) {
            //  System.out.println(""+ st.nextToken());

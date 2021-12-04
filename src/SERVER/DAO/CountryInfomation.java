@@ -109,11 +109,11 @@ public class CountryInfomation {
      public static List<CountryAll> searchByNames(String txtSearch) {
         List<CountryAll> listInfoCountrys = new ArrayList<>();
         String query = "select * from CountryInformation\n"
-                + "where name like ?";
+                + "where name = ?";
         try {
             conn = new DBContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
-            ps.setString(1, "%" + txtSearch + "%");
+            ps.setString(1,  txtSearch );
             rs = ps.executeQuery();
             while (rs.next()) {
                 listInfoCountrys.add(new CountryAll(rs.getString("name"), 
@@ -201,5 +201,7 @@ public class CountryInfomation {
 //             country.getGeonameId(), country.getFlag(), country.getCapital(),
 //             country.getLanguages(), country.getNeighbours());
 //        }
+List<CountryAll> l= searchByNames("Egypt");
+        System.out.println("l: "+ l.size());
     }
 }
