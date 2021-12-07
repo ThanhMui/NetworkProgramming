@@ -6,6 +6,8 @@
 package SERVER.Main;
 
 
+import SERVER.Model.CovidInfoModel;
+import SERVER.Entity.InfomationCovid;
 import SERVER.DAO.CityInfomation;
 import SERVER.DAO.CountryInfomation;
 import SERVER.Model.City;
@@ -44,6 +46,9 @@ public class Main {
        
          String citySearch = "";
          String countrySearch = "";
+         String covidSearch="";
+         
+         String country, dateStart, dateEnd;
     try (DatagramSocket datagramSocket = new DatagramSocket(3333);)
     {
         while (true) {
@@ -51,7 +56,8 @@ public class Main {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 datagramSocket.receive(receivePacket);
                 String tmp =(String) deserialize(receivePacket.getData());
-               if( tmp.contains("$city")){
+// kiểm tra từ khóa               
+                if( tmp.contains("$city")){
                 System.out.println("city: "+tmp);
                 citySearch = getNameCitys(tmp).get(0);
                 List<City> getInfoCityFulls = CityInfomation.getInfoCityFull(citySearch);
@@ -60,7 +66,9 @@ public class Main {
                 sendData = serialize(getInfoCityFulls);
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
                 datagramSocket.send(sendPacket);
-                }else if( tmp.contains("$country")){
+                }
+                
+                else if( tmp.contains("$country")){
                 System.out.println("country: "+ tmp);
                 countrySearch = getNameCountrys(tmp).get(0);
                 List<CountryAll> getInfoCountryFulls = CountryInfomation.getInfoCountryFull(countrySearch);
@@ -70,9 +78,29 @@ public class Main {
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
                 datagramSocket.send(sendPacket);
                 }
+                // gọi server xử lý covid chart
+                else if (tmp.contains("$covid")) {
+                System.out.println(tmp);
+                covidSearch = getNameCitys(tmp).get(0);
+                System.out.println(covidSearch);
+                String [] str = covidSearch.split(",");
+				country = str[0];
+				dateStart = str[1];
+				dateEnd = str [2];
+				ArrayList<CovidInfoModel> listCovid = InfomationCovid.getDataCovid(country, dateStart, dateEnd);				
+				InetAddress address = receivePacket.getAddress();
+                int port = receivePacket.getPort();
+                sendData = serialize(listCovid);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
+                datagramSocket.send(sendPacket);
+                }
+                
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            }
+            } catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     } catch (IOException e) {
         e.printStackTrace();
