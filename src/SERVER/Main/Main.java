@@ -83,6 +83,7 @@ public class Main {
 						int port = receivePacket.getPort();
 						//Gửi dữ liệu cho client
 						sendData = serialize(getInfoCountryFulls);
+						System.err.println(sendData.length);
 						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
 						datagramSocket.send(sendPacket);
 					}
@@ -96,11 +97,12 @@ public class Main {
 						country = str[0];
 						dateStart = str[1];
 						dateEnd = str[2];
-						ArrayList<CovidInfoModel> listCovid = InfomationCovid.getDataCovid(country, dateStart, dateEnd);
+						List<CovidInfoModel> listCovid = InfomationCovid.getDataCovid(country, dateStart, dateEnd);
 						InetAddress address = receivePacket.getAddress();
 						int port = receivePacket.getPort();
 						//Gửi dữ liệu cho client
 						sendData = serialize(listCovid);
+						System.out.println(sendData.length);
 						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
 						datagramSocket.send(sendPacket);
 					}
