@@ -6,7 +6,9 @@
 package SERVER.Main;
 
 import SERVER.Model.CovidInfoModel;
+import SERVER.Model.CovidTopModel;
 import SERVER.Entity.InfomationCovid;
+import SERVER.Entity.InformationCovidTop;
 import SERVER.DAO.CityInfomation;
 import SERVER.DAO.CountryInfomation;
 import SERVER.Model.City;
@@ -102,6 +104,18 @@ public class Main {
 						int port = receivePacket.getPort();
 						//Gửi dữ liệu cho client
 						sendData = serialize(listCovid);
+						System.out.println(sendData.length);
+						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
+						datagramSocket.send(sendPacket);
+					}
+					
+					else if (tmp.equals("$topcovid")) {
+						ArrayList<CovidTopModel> dataCovid = new ArrayList<CovidTopModel>();
+						dataCovid = InformationCovidTop.getData2();
+						InetAddress address = receivePacket.getAddress();
+						int port = receivePacket.getPort();
+						//Gửi dữ liệu cho client
+						sendData = serialize(dataCovid);
 						System.out.println(sendData.length);
 						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
 						datagramSocket.send(sendPacket);

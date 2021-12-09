@@ -13,6 +13,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 
 public class MainGUI extends javax.swing.JFrame {
@@ -64,6 +65,17 @@ public class MainGUI extends javax.swing.JFrame {
 				covid.setVisible(true);
         	}
         });
+        
+        JButton btnCovidTop = new JButton("Covid Top");
+        btnCovidTop.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		CovidTopGUI c;
+        		c = new CovidTopGUI();
+        		c.setVisible(true);
+     
+        	}
+        });
+        btnCovidTop.setFont(new Font("Arial", Font.BOLD, 14));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -79,7 +91,9 @@ public class MainGUI extends javax.swing.JFrame {
         						.addComponent(btnCovidChart, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         						.addComponent(jButton2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         					.addGap(79)
-        					.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(btnCovidTop, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE))
         					.addGap(206))))
         );
         layout.setVerticalGroup(
@@ -89,7 +103,9 @@ public class MainGUI extends javax.swing.JFrame {
         				.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
         				.addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
         			.addGap(18)
-        			.addComponent(btnCovidChart)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(btnCovidChart)
+        				.addComponent(btnCovidTop))
         			.addGap(85)
         			.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
         			.addContainerGap(274, Short.MAX_VALUE))
