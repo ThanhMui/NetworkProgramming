@@ -23,6 +23,8 @@ public class CityInfomation {
    public static Connection conn = null;
    public static PreparedStatement ps = null;
    public static ResultSet rs = null;
+   
+   //insert city
    public static void insertCity(String name, float latitude, float  longitude, String idCountry, String country,
          int population, String timezoneId,  String idProvince, String nameProvince){
        String query = "INSERT INTO [dbo].[City]\n" +
@@ -51,8 +53,10 @@ public class CityInfomation {
             ps.setString(9, nameProvince);
             ps.executeUpdate();
         } catch (Exception e) {
+        	System.out.println("Lỗi thêm thành phố từ DAO");
         }
    }
+   
    // tim list tp theo ten gan dung
    public static List<City> searchByNames(String txtSearch) {
         List<City> list = new ArrayList<>();
@@ -76,7 +80,7 @@ public class CityInfomation {
                         rs.getString("nameProvince")));
             }
         } catch (Exception e) {
-            System.out.println("thoat!");
+            System.out.println("Lỗi tìm danh sách tên thành phố gần đúng từ DAO");
         }
         return list;
     }
@@ -105,6 +109,8 @@ public class CityInfomation {
         }
         return listInfos;
     }
+    
+   //Tìm 1 thành phố theo tên
    public static City searchCityByName(String nameCity){
        String query = "select * from City\n"
                 + "where name = ?";
@@ -126,6 +132,7 @@ public class CityInfomation {
                         rs.getString("nameProvince"));
             }
         } catch (Exception e) {
+        	System.out.println("Lỗi tìm tên thành phố theo tên trong DAO");
         }
         return null;
    }

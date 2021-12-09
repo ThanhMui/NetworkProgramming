@@ -14,10 +14,7 @@ import javax.swing.GroupLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-/**
- *
- * @author ASUS
- */
+
 public class MainGUI extends javax.swing.JFrame {
 
     /**
@@ -102,6 +99,7 @@ public class MainGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //button xem country
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         CountryGUI country;
@@ -114,6 +112,8 @@ public class MainGUI extends javax.swing.JFrame {
       
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    
+    //button xem city
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         CityGUI city;
