@@ -63,6 +63,7 @@ public class CovidChartGUI extends JFrame {
 	DatagramPacket receivePacket;
 	byte[] receiveData;
 
+	//hàm chuyển object sang byte
 	public static byte[] serialize(Object obj) throws IOException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream(); // mảng byte
 		ObjectOutputStream os = new ObjectOutputStream(out);
@@ -70,6 +71,7 @@ public class CovidChartGUI extends JFrame {
 		return out.toByteArray();
 	}
 
+	//Hàm chuyển byte sang object
 	public static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 		ObjectInputStream is = new ObjectInputStream(in);
@@ -193,25 +195,31 @@ public class CovidChartGUI extends JFrame {
 		));
 		scrollPane_2.setViewportView(tb_Recoverd);
 		
+		//Hàm xử lý khi tìm theo biểu đồ đường
 		JButton btnLineChart = new JButton("LineChart");
 		btnLineChart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sendData = new byte[65536];
 				receiveData = new byte[65536];
+				
+				//tạo chuỗi để gửi sang server
 				String tmp = txtCountry.getText().trim()+","+txtDateStart.getText().trim()+","+textDateEnd.getText().trim()+"$covid";
 				
 				try {
 					clientSocket = new DatagramSocket();
+					
 					if (tmp.equalsIgnoreCase("bye")) {
 						clientSocket.close();
 						System.exit(0);
 					}
 					
+					//Gửi dữ liệu đến server
 					sendData = serialize(tmp.toString());
 					InetAddress address = InetAddress.getByName("localhost");
 					DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
 					clientSocket.send(sendPacket);
 					
+					//Nhận dữ liệu từ server
 					receivePacket = new DatagramPacket(receiveData, receiveData.length);
 					clientSocket.receive(receivePacket);
 					listCovid = (ArrayList) deserialize(receivePacket.getData());
@@ -285,6 +293,7 @@ public class CovidChartGUI extends JFrame {
 		btnLineChart.setBounds(975, 43, 116, 29);
 		contentPane.add(btnLineChart);
 		
+		//Hàm xử lí biểu đồ cột
 		JButton btnBarChart = new JButton("BarChart");
 		btnBarChart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -299,11 +308,13 @@ public class CovidChartGUI extends JFrame {
 						System.exit(0);
 					}
 					
+					//Gửi dữ liệu
 					sendData = serialize(tmp.toString());
 					InetAddress address = InetAddress.getByName("localhost");
 					DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
 					clientSocket.send(sendPacket);
 					
+					//Nhận dữ liệu từ server
 					receivePacket = new DatagramPacket(receiveData, receiveData.length);
 					clientSocket.receive(receivePacket);
 					listCovid = (ArrayList) deserialize(receivePacket.getData());
