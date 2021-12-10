@@ -287,49 +287,50 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
          tbCountry.setModel(new DefaultTableModel(null, new String[]{"Country name","ID country","Population", "Longitude", 
              "Latitude",  "Currencies", "Capital", "Languages", "Neighbours"
          }) );
-        sendData = new byte[65536];
-        receiveData = new byte[65536];
-       
-        String tmp = txtCityName.getText().trim()+ "$country";
-        
-    try {
-        clientSocket = new DatagramSocket();
-        if( tmp.equalsIgnoreCase("bye")){
-            clientSocket.close();
-            System.exit(0);
-            return ;
-        }
-        sendData = serialize(tmp.toString());
-        InetAddress address = InetAddress.getByName("localhost");
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-        clientSocket.send(sendPacket);
-        // DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-               
-                receivePacket = new DatagramPacket(receiveData, receiveData.length);
-                 clientSocket.receive(receivePacket);
-                 getInfoCountryFulls  = (ArrayList)deserialize(receivePacket.getData());
-              for( CountryAll country : getInfoCountryFulls){
-                  System.out.println("name: "+ country.getName());
-                  System.out.println("id: "+ country.getAlpha2Code());
-                  System.out.println("flag: " +country.getFlag());
-              }
-              DefaultTableModel model = (DefaultTableModel) tbCountry.getModel();
-              for( CountryAll country : getInfoCountryFulls){
-                 System.out.println("name: "+ country.getName());
-                  System.out.println("id: "+ country.getAlpha2Code());
-                  System.out.println("flag: "+ country.getFlag());
-                  model.addRow(new Object[]{ country.getName(), country.getAlpha2Code(),
-                      country.getPopulation(),
-                      country.getLongtitude(),country.getLatitude(), country.getCurrencies(),
-                      country.getCapital(), country.getLanguages(), country.getNeighbours()
-                  });
-              }
-              
-    } catch (IOException ex) {
-        Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
-    }   catch (ClassNotFoundException ex) {
-            Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        sendData = new byte[65536];
+//        receiveData = new byte[65536];
+//       
+//        String tmp = txtCityName.getText().trim()+ "$country";
+//        
+//    try {
+//        clientSocket = new DatagramSocket();
+//        if( tmp.equalsIgnoreCase("bye")){
+//            clientSocket.close();
+//            System.exit(0);
+//            return ;
+//        }
+//        sendData = serialize(tmp.toString());
+//        InetAddress address = InetAddress.getByName("localhost");
+//        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+//        clientSocket.send(sendPacket);
+//        // DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+//               
+//                receivePacket = new DatagramPacket(receiveData, receiveData.length);
+//                 clientSocket.receive(receivePacket);
+//                 getInfoCountryFulls  = (ArrayList)deserialize(receivePacket.getData());
+//              for( CountryAll country : getInfoCountryFulls){
+//                  System.out.println("name: "+ country.getName());
+//                  System.out.println("id: "+ country.getAlpha2Code());
+//                  System.out.println("flag: " +country.getFlag());
+//              }
+//              DefaultTableModel model = (DefaultTableModel) tbCountry.getModel();
+//              for( CountryAll country : getInfoCountryFulls){
+//                 System.out.println("name: "+ country.getName());
+//                  System.out.println("id: "+ country.getAlpha2Code());
+//                  System.out.println("flag: "+ country.getFlag());
+//                  model.addRow(new Object[]{ country.getName(), country.getAlpha2Code(),
+//                      country.getPopulation(),
+//                      country.getLongtitude(),country.getLatitude(), country.getCurrencies(),
+//                      country.getCapital(), country.getLanguages(), country.getNeighbours()
+//                  });
+//              }
+//              
+//    } catch (IOException ex) {
+//        Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
+//    }   catch (ClassNotFoundException ex) {
+//            Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+         
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void tbCountryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCountryMouseClicked
@@ -366,7 +367,6 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
             URL url = new URL(urlImage);
             URLConnection conn = url.openConnection();
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
-
             conn.connect();
             InputStream urlStream = conn.getInputStream();
             image = ImageIO.read(urlStream);
