@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package CLIENT;
+
 import static CLIENT.CountryGUI.clientSocket;
 import SERVER.Model.City;
 import java.io.ByteArrayInputStream;
@@ -16,16 +17,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.SecretKey;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,20 +29,14 @@ import javax.swing.table.DefaultTableModel;
  * @author ASUS
  */
 public class CityGUI extends javax.swing.JFrame {
-//    static DatagramSocket clientSocket ;
-//    static Scanner sc ;
-//     byte[] sendData ;
-//  InetAddress address;
-//   DatagramPacket sendPacket ;
-//    DatagramPacket receivePacket;
-//    byte[] receiveData;
-   public static  List<City> getInfoCityFulls = null;
-    public static String hostname = "localhost";
     static DatagramSocket clientSocket ;
-    static Scanner sc;
-    public static  byte[]sendData ;
-    InetAddress address;
-    public static  byte[]receiveData;
+    static Scanner sc ;
+     byte[] sendData ;
+  InetAddress address;
+   DatagramPacket sendPacket ;
+    DatagramPacket receivePacket;
+    byte[] receiveData;
+   public static  List<City> getInfoCityFulls = null;
   
     /**
      * Creates new form CityGUI
@@ -255,176 +245,48 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
          // clear form
-      tbCity.setModel(new DefaultTableModel(null, new String[]{"City name","Country name", "ID country", "Population", "Longitude", 
-           "Latitude",  "Province name", "TimeZone"
-        }) );
-//        sendData = new byte[65536];
-//        receiveData = new byte[65536];
-//        String tmp = txtCityName.getText().trim()+ "$city";
-//        
-//    try {
-//         clientSocket = new DatagramSocket();
-//         if( tmp.equalsIgnoreCase("bye")){
-//            clientSocket.close();
-//            System.exit(0);
-//        }
-//        sendData = serialize(tmp.toString());
-//        InetAddress address = InetAddress.getByName("localhost");
-//        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-//        clientSocket.send(sendPacket);
-//        // DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-//               
-//                receivePacket = new DatagramPacket(receiveData, receiveData.length);
-//                 clientSocket.receive(receivePacket);
-//                 getInfoCityFulls  = (ArrayList)deserialize(receivePacket.getData());
-//              for( City city : getInfoCityFulls){
-//                  System.out.println("name: "+ city.getName());
-//                  System.out.println("id"+ city.getIdCountry());
-//              }
-//             
-//              
-//              DefaultTableModel model = (DefaultTableModel) tbCity.getModel();
-//               for( City city : getInfoCityFulls){
-//                  System.out.println("name: "+ city.getName());
-//                  System.out.println("id"+ city.getIdCountry());
-//                  model.addRow(new Object[]{ city.getName(), city.getCountry(), city.getIdCountry(),
-//                      city.getPopulation(), city.getLongitude(), city.getLatitude(), city.getNameProvince(), city.getTimezoneId()
-//                  });
-//              }
-//              
-//    } catch (IOException ex) {
-//        Logger.getLogger(CityGUI.class.getName()).log(Level.SEVERE, null, ex);
-//    }   catch (ClassNotFoundException ex) {
-//            Logger.getLogger(CityGUI.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-            Scanner stdIn = new Scanner(System.in);
-            DatagramPacket receivePacket;
-            InetAddress address;
-            DatagramPacket sendPacket;
-            String sendTmp = "hello";
-            sendData = new byte[6553];
-            receiveData = new byte[6553];
-            SecretKey secretKey = null;
-            try {
-            clientSocket = new DatagramSocket();
-            address = InetAddress.getByName("localhost");
-             Map<String, List<byte[]>> listDataSends = new HashMap<>();
-             Map<String, List<byte[]>> listDataReceives = new HashMap<>();
-             Map<String, PublicKey> listPublicKeys = new HashMap<>();
-             Map<String,List<byte[]>> listSecretKeys = new HashMap<>();
-            
-            List<byte[]> listTmps = new ArrayList<>();
-            listTmps.add(sendTmp.getBytes());
-            listDataSends.put("send1",listTmps);
-            sendData = serialize(listDataSends);
-            sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-//            System.out.println("Client sent " + sendTmp + " to " + address.getHostAddress()
-//                    + " from port " + clientSocket.getLocalPort());
-            clientSocket.send(sendPacket);
-            // DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            clientSocket.receive(receivePacket);
-            listPublicKeys =(HashMap) deserialize(receivePacket.getData());
-            
-            if( listPublicKeys.containsKey("publicKey") && listPublicKeys.size()== 1){
-                 secretKey = Encrypt.AESUtils.generateKey();
-                 PublicKey publicKey = listPublicKeys.get("publicKey");
-//            System.out.println("serec key: " + encrypt.Encrypt.convertSecretKeyToString(secretKey));
-            String encodedKey = Encrypt.Convert.convertSecretKeyToString(secretKey);
-            System.out.println("public key: "+ listPublicKeys.get("publicKey"));
-//                            System.out.println("string: "+ encodedKey);
-//                           System.out.println("secret key: "+ secretKey.getFormat());
-            // emã hóa private key dùng public key vừa nhận dược từ server
-            
-            byte[] encrypted = Encrypt.RSAUtils.encrypt(publicKey, encodedKey.getBytes());
-            List<byte[]> listEncrypt = new ArrayList<>();
-            listEncrypt.add(encrypted);
-            listSecretKeys.put("secretKey",listEncrypt );
-            sendData = serialize(listSecretKeys);
-            sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-//            System.out.println("Client sent " + listSecretKeys.get("secretKey") + " to " + address.getHostAddress()
-//                    + " from port " + clientSocket.getLocalPort());
-            clientSocket.send(sendPacket);
-            }
-          //  System.out.println("public key: "+ listPublicKeys.get(""));
-            // taok private key aes
-            // bắt đầu gửi tin nhán đến client sau khi cả 2 bên đẫ nhận được serect key
-            //send message to server
-                             
-//                System.out.println("Nhập vào nội dung: ");
-//                String tmpMessage = stdIn.nextLine();
-                String tmpMessage = txtCityName.getText().trim()+ "$city";
-                byte[]tm= tmpMessage.getBytes();
-                 byte[] encryptedMesage = Encrypt.AESUtils.encrypt(secretKey, tm);
-                 List<byte[]> listMessEnc =new ArrayList<>();
-                 listMessEnc.add(encryptedMesage);
-                 listDataSends.put("encMessage", listMessEnc);
-                sendData = serialize(listDataSends);
-                 
-                sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-                
-//                System.out.println("Client sent " + sendData + " to " + address.getHostAddress()
-//                        + " from port " + clientSocket.getLocalPort());
-                clientSocket.send(sendPacket);
-            // receive message from server
-            receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            clientSocket.receive(receivePacket);
-            listDataReceives =(HashMap)deserialize(receivePacket.getData());
-            // getInfoCityFulls  = (ArrayList)deserialize(receivePacket.getData());
-            if( listDataReceives.containsKey("sendMessage") && listDataReceives.size()> 0){
-                for( byte[] message: listDataReceives.get("sendMessage")){
-                    System.out.println("message : "+ message);
-                    System.out.println("secretKey : "+String.valueOf(secretKey));
-                    byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
-                    System.out.println("decrypt message: "+ new String(decryptMessage));
-                    String timeZone = new String(decryptMessage);
-                    
-                }
-        }
-             DefaultTableModel model = (DefaultTableModel) tbCity.getModel();
-//               for( City city : getInfoCityFulls){
-//                  System.out.println("name: "+ city.getName());
-//                  System.out.println("id"+ city.getIdCountry());
-//                  model.addRow(new Object[]{ city.getName(), city.getCountry(), city.getIdCountry(),
-//                      city.getPopulation(), city.getLongitude(), city.getLatitude(), city.getNameProvince(), city.getTimezoneId()
-//                  });
-//              }
-//            System.out.println("Nhập vào nội dung: ");
-//            String tmpMessage = stdIn.nextLine();
-//            byte[]tm= tmpMessage.getBytes();
-//             byte[] encryptedMesage = encrypt1.AESUtils.encrypt(secretKey, tm);
-//            sendData = serialize(encryptedMesage);
-//           
-//            sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-//            System.out.println("Client sent " + sendData + " to " + address.getHostAddress()
-//                    + " from port " + clientSocket.getLocalPort());
-//            clientSocket.send(sendPacket);
-//            
-//            // receive message from server
-//            receivePacket = new DatagramPacket(receiveData, receiveData.length);
-//            clientSocket.receive(receivePacket);
-//            List<byte[]> messagesEncrypt =(ArrayList)deserialize(receivePacket.getData());
-//            for( byte[] message: messagesEncrypt){
-//                byte[] decryptMessage = AESUtils.decrypt(secretKey, message);
-//                System.out.println("decrypt message: "+ new String(decryptMessage));
-//            }
-//        } catch (IOException ex) {
-//            Logger.getLogger(Encrypt.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-            
-            
-	} catch (SocketException ex) {
-            Logger.getLogger(CLIENT.CityGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(CLIENT.CityGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(CLIENT.CityGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CityGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CityGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+         tbCity.setModel(new DefaultTableModel(null, new String[]{"City name","Country name", "ID country", "Population", "Longitude", 
+             "Latitude",  "Province name", "TimeZone"
+         }) );
+        sendData = new byte[65536];
+        receiveData = new byte[65536];
+        String tmp = txtCityName.getText().trim()+ "$city";
+        
+    try {
+         clientSocket = new DatagramSocket();
+         if( tmp.equalsIgnoreCase("bye")){
             clientSocket.close();
+            System.exit(0);
+        }
+        sendData = serialize(tmp.toString());
+        InetAddress address = InetAddress.getByName("localhost");
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+        clientSocket.send(sendPacket);
+        // DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+               
+                receivePacket = new DatagramPacket(receiveData, receiveData.length);
+                 clientSocket.receive(receivePacket);
+                 getInfoCityFulls  = (ArrayList)deserialize(receivePacket.getData());
+              for( City city : getInfoCityFulls){
+                  System.out.println("name: "+ city.getName());
+                  System.out.println("id"+ city.getIdCountry());
+              }
+             
+              
+              DefaultTableModel model = (DefaultTableModel) tbCity.getModel();
+               for( City city : getInfoCityFulls){
+                  System.out.println("name: "+ city.getName());
+                  System.out.println("id"+ city.getIdCountry());
+                  model.addRow(new Object[]{ city.getName(), city.getCountry(), city.getIdCountry(),
+                      city.getPopulation(), city.getLongitude(), city.getLatitude(), city.getNameProvince(), city.getTimezoneId()
+                  });
+              }
+              
+    } catch (IOException ex) {
+        Logger.getLogger(CityGUI.class.getName()).log(Level.SEVERE, null, ex);
+    }   catch (ClassNotFoundException ex) {
+            Logger.getLogger(CityGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void tbCityMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCityMouseClicked
