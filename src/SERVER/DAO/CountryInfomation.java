@@ -24,6 +24,7 @@ public class CountryInfomation {
      public static Connection conn = null;
      public static PreparedStatement ps = null;
      public static ResultSet rs = null;
+     
      //insert country
     public static void insertCountry(String name, int population, String  currencies, double latitude,double longtitude,
         String alpha2Code){
@@ -47,6 +48,7 @@ public class CountryInfomation {
             ps.setString(6, alpha2Code);
             ps.executeUpdate();
         } catch (Exception e) {
+        	System.out.println("Lỗi thêm nước từ DAO");
         }
    }
     // insert thoong tin day du ngaoi tru thoi tiets
@@ -82,9 +84,11 @@ public class CountryInfomation {
             ps.setString(11, neighbours);
             ps.executeUpdate();
         } catch (Exception e) {
+        	System.out.println("Lỗi thêm thông tin nước từ DAO");
         }
    }
      
+     //Trả về danh sách country
     public static List<CountryAll> getCountrys() {
         List<CountryAll> listCountrys = new ArrayList<>();
         String query = "select * from Country";
@@ -102,9 +106,11 @@ public class CountryInfomation {
                         rs.getString("alpha2Code")));
             }
         } catch (Exception e) {
+        	System.out.println("Lỗi trả về danh sách nước trong DAO");
         }
         return listCountrys;
     }
+    
     // tim thong tin country
      public static List<CountryAll> searchByNames(String txtSearch) {
         List<CountryAll> listInfoCountrys = new ArrayList<>();
@@ -201,7 +207,7 @@ public class CountryInfomation {
 //             country.getGeonameId(), country.getFlag(), country.getCapital(),
 //             country.getLanguages(), country.getNeighbours());
 //        }
-List<CountryAll> l= searchByNames("Egypt");
+    	List<CountryAll> l= searchByNames("Egypt");
         System.out.println("l: "+ l.size());
     }
 }

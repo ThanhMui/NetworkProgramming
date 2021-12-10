@@ -17,6 +17,8 @@ public class CityInfomationFull {
    public static Connection conn = null;
    public static PreparedStatement ps = null;
    public static ResultSet rs = null;
+   
+   //insert city
    public static void insertCity(float longitude, float latitude, String  countryName, int population, String provinceId,
          String nameProvince, String timeZone,  float cloud, String description, float minTemperature,float maxTemperature , float speedWind,float temperature ){
        String query = "INSERT INTO [dbo].[City]\n" +
@@ -52,6 +54,7 @@ public class CityInfomationFull {
             ps.setFloat(13, temperature);
             ps.executeUpdate();
         } catch (Exception e) {
+        	System.out.println("Lỗi thêm tất cả thông tin thành phố từ DAO");
         }
    }
     public static void main(String[] args) {
