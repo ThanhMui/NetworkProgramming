@@ -13,6 +13,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 
 public class MainGUI extends javax.swing.JFrame {
@@ -21,6 +22,7 @@ public class MainGUI extends javax.swing.JFrame {
      * Creates new form MainGUI
      */
     public MainGUI() {
+        setResizable(false);
         initComponents();
     }
 
@@ -64,6 +66,17 @@ public class MainGUI extends javax.swing.JFrame {
 				covid.setVisible(true);
         	}
         });
+        
+        JButton btnCovidTop = new JButton("Covid Top");
+        btnCovidTop.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		CovidTopGUI c;
+        		c = new CovidTopGUI();
+        		c.setVisible(true);
+     
+        	}
+        });
+        btnCovidTop.setFont(new Font("Arial", Font.BOLD, 14));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -79,7 +92,9 @@ public class MainGUI extends javax.swing.JFrame {
         						.addComponent(btnCovidChart, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         						.addComponent(jButton2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         					.addGap(79)
-        					.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(btnCovidTop, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE))
         					.addGap(206))))
         );
         layout.setVerticalGroup(
@@ -89,7 +104,9 @@ public class MainGUI extends javax.swing.JFrame {
         				.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
         				.addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
         			.addGap(18)
-        			.addComponent(btnCovidChart)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(btnCovidChart)
+        				.addComponent(btnCovidTop))
         			.addGap(85)
         			.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
         			.addContainerGap(274, Short.MAX_VALUE))
@@ -104,6 +121,7 @@ public class MainGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         CountryGUI country;
         try {
+             this.setVisible(false);
             country = new CountryGUI();
               country.setVisible(true);
         } catch (SocketException ex) {
@@ -118,6 +136,7 @@ public class MainGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         CityGUI city;
         try {
+             this.setVisible(false);
             city = new CityGUI();
              city.setVisible(true);
         } catch (SocketException ex) {
@@ -151,7 +170,6 @@ public class MainGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -160,7 +178,7 @@ public class MainGUI extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
