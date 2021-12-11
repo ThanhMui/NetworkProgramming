@@ -164,16 +164,15 @@ public class CityInfomation {
 //       // }
 //        }
 //        System.out.println("i: "+ i);
-//        try {
-//            City city1 = searchCityByName("Hội An");
-//            System.out.println("city 1: "+ city1.toString());
-//             List<City> searchByNames = searchByNames("Ho Chi Minh");
-//             for( City city : searchByNames){
-//                 System.out.println("thành phố là : " + city.toString()); 
-//             }
-//        } catch (Exception e) {
-//            System.out.println("Không có thành phố nào");
-//        }
+        try {
+           
+             List<City> searchByNames = searchByNames("Jalalabad");
+             for( City city : searchByNames){
+                 System.out.println("thành phố là : " + city.toString()); 
+             }
+        } catch (Exception e) {
+            System.out.println("Không có thành phố nào");
+        }
 //
 //            List<City> citysFull =  getInfoCityFull("Jalalabad");
 //            for( City city: citysFull){

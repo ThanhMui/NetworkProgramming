@@ -6,6 +6,7 @@
 package CLIENT;
 import static CLIENT.CountryGUI.clientSocket;
 import SERVER.Model.City;
+import java.awt.Font;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,13 +34,7 @@ import javax.swing.table.DefaultTableModel;
  * @author ASUS
  */
 public class CityGUI extends javax.swing.JFrame {
-//    static DatagramSocket clientSocket ;
-//    static Scanner sc ;
-//     byte[] sendData ;
-//  InetAddress address;
-//   DatagramPacket sendPacket ;
-//    DatagramPacket receivePacket;
-//    byte[] receiveData;
+
    public static  List<City> getInfoCityFulls = null;
     public static String hostname = "localhost";
     static DatagramSocket clientSocket ;
@@ -53,7 +48,9 @@ public class CityGUI extends javax.swing.JFrame {
      */
     public CityGUI() throws SocketException {
         initComponents();
-       
+        tbCity.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 18));
+        tbCity.isEditing();
+        tbCity.setDefaultEditor(Object.class, null);
         
     }
 public static byte[] serialize(Object obj) throws IOException {
@@ -94,9 +91,16 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
         lbWind = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         lbMaxTemp = new javax.swing.JLabel();
+        lbNotification1 = new javax.swing.JLabel();
+        lbNotification2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(153, 153, 255));
+        setResizable(false);
 
+        btnSearch.setBackground(new java.awt.Color(0, 102, 153));
+        btnSearch.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,8 +108,9 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
             }
         });
 
-        txtCityName.setForeground(new java.awt.Color(153, 153, 153));
+        txtCityName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        tbCity.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tbCity.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -136,120 +141,171 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
         });
         jScrollPane1.setViewportView(tbCity);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Weather Information");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setText("Information City");
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Speed Wind");
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Description Weather");
 
-        lbDescription.setText("jLabel3");
+        lbDescription.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lbMinTemp.setText("jLabel3");
+        lbMinTemp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Min Temperature");
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setText("Max Temperature");
 
-        lbClouds.setText("jLabel3");
+        lbClouds.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setText("Temperature");
 
-        lbTemp.setText("jLabel3");
+        lbTemp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lbWind.setText("jLabel3");
+        lbWind.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel13.setText("Clouds");
 
-        lbMaxTemp.setText("jLabel3");
+        lbMaxTemp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        lbNotification1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        lbNotification2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(204, 0, 0));
+        jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
-                .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
-                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(66, 66, 66)
-                        .addComponent(lbMaxTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(61, 61, 61)
+                                .addComponent(lbMaxTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(lbDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(94, 94, 94)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbWind, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbMinTemp, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(lbClouds, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(24, 24, 24))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
-                        .addComponent(lbDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(94, 94, 94)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(lbNotification2, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbWind, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(49, 49, 49)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbMinTemp, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(lbClouds, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(24, 24, 24))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbNotification1, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbMinTemp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 1, Short.MAX_VALUE))
-                    .addComponent(lbTemp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addComponent(lbNotification1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lbMaxTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lbClouds, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(lbWind, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(124, 124, 124))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbNotification2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbMinTemp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 2, Short.MAX_VALUE))
+                            .addComponent(lbTemp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lbMaxTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lbClouds, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(61, 61, 61)
+                                .addComponent(lbWind, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(124, 124, 124))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -258,45 +314,7 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
       tbCity.setModel(new DefaultTableModel(null, new String[]{"City name","Country name", "ID country", "Population", "Longitude", 
            "Latitude",  "Province name", "TimeZone"
         }) );
-//        sendData = new byte[65536];
-//        receiveData = new byte[65536];
-//        String tmp = txtCityName.getText().trim()+ "$city";
-//        
-//    try {
-//         clientSocket = new DatagramSocket();
-//         if( tmp.equalsIgnoreCase("bye")){
-//            clientSocket.close();
-//            System.exit(0);
-//        }
-//        sendData = serialize(tmp.toString());
-//        InetAddress address = InetAddress.getByName("localhost");
-//        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-//        clientSocket.send(sendPacket);
-//        // DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-//               
-//                receivePacket = new DatagramPacket(receiveData, receiveData.length);
-//                 clientSocket.receive(receivePacket);
-//                 getInfoCityFulls  = (ArrayList)deserialize(receivePacket.getData());
-//              for( City city : getInfoCityFulls){
-//                  System.out.println("name: "+ city.getName());
-//                  System.out.println("id"+ city.getIdCountry());
-//              }
-//             
-//              
-//              DefaultTableModel model = (DefaultTableModel) tbCity.getModel();
-//               for( City city : getInfoCityFulls){
-//                  System.out.println("name: "+ city.getName());
-//                  System.out.println("id"+ city.getIdCountry());
-//                  model.addRow(new Object[]{ city.getName(), city.getCountry(), city.getIdCountry(),
-//                      city.getPopulation(), city.getLongitude(), city.getLatitude(), city.getNameProvince(), city.getTimezoneId()
-//                  });
-//              }
-//              
-//    } catch (IOException ex) {
-//        Logger.getLogger(CityGUI.class.getName()).log(Level.SEVERE, null, ex);
-//    }   catch (ClassNotFoundException ex) {
-//            Logger.getLogger(CityGUI.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
             Scanner stdIn = new Scanner(System.in);
             DatagramPacket receivePacket;
             InetAddress address;
@@ -346,13 +364,7 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
 //                    + " from port " + clientSocket.getLocalPort());
             clientSocket.send(sendPacket);
             }
-          //  System.out.println("public key: "+ listPublicKeys.get(""));
-            // taok private key aes
-            // bắt đầu gửi tin nhán đến client sau khi cả 2 bên đẫ nhận được serect key
-            //send message to server
-                             
-//                System.out.println("Nhập vào nội dung: ");
-//                String tmpMessage = stdIn.nextLine();
+         
                 String tmpMessage = txtCityName.getText().trim()+ "$city";
                 byte[]tm= tmpMessage.getBytes();
                  byte[] encryptedMesage = Encrypt.AESUtils.encrypt(secretKey, tm);
@@ -371,48 +383,54 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
             clientSocket.receive(receivePacket);
             listDataReceives =(HashMap)deserialize(receivePacket.getData());
             // getInfoCityFulls  = (ArrayList)deserialize(receivePacket.getData());
+             List<String > listCity = new ArrayList<>();
             if( listDataReceives.containsKey("sendMessage") && listDataReceives.size()> 0){
                 for( byte[] message: listDataReceives.get("sendMessage")){
                     System.out.println("message : "+ message);
                     System.out.println("secretKey : "+String.valueOf(secretKey));
                     byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
                     System.out.println("decrypt message: "+ new String(decryptMessage));
-                    String timeZone = new String(decryptMessage);
-                    
+                    listCity.add(new String(decryptMessage));
+ 
                 }
+                
         }
-             DefaultTableModel model = (DefaultTableModel) tbCity.getModel();
-//               for( City city : getInfoCityFulls){
-//                  System.out.println("name: "+ city.getName());
-//                  System.out.println("id"+ city.getIdCountry());
-//                  model.addRow(new Object[]{ city.getName(), city.getCountry(), city.getIdCountry(),
-//                      city.getPopulation(), city.getLongitude(), city.getLatitude(), city.getNameProvince(), city.getTimezoneId()
-//                  });
-//              }
-//            System.out.println("Nhập vào nội dung: ");
-//            String tmpMessage = stdIn.nextLine();
-//            byte[]tm= tmpMessage.getBytes();
-//             byte[] encryptedMesage = encrypt1.AESUtils.encrypt(secretKey, tm);
-//            sendData = serialize(encryptedMesage);
-//           
-//            sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-//            System.out.println("Client sent " + sendData + " to " + address.getHostAddress()
-//                    + " from port " + clientSocket.getLocalPort());
-//            clientSocket.send(sendPacket);
-//            
-//            // receive message from server
-//            receivePacket = new DatagramPacket(receiveData, receiveData.length);
-//            clientSocket.receive(receivePacket);
-//            List<byte[]> messagesEncrypt =(ArrayList)deserialize(receivePacket.getData());
-//            for( byte[] message: messagesEncrypt){
-//                byte[] decryptMessage = AESUtils.decrypt(secretKey, message);
-//                System.out.println("decrypt message: "+ new String(decryptMessage));
-//            }
-//        } catch (IOException ex) {
-//            Logger.getLogger(Encrypt.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-            
-            
+            if( listCity.size()> 0){
+            SERVER.Model.City city = new SERVER.Model.City();
+            city.setName(listCity.get(0));
+            city.setClouds(Float.parseFloat(listCity.get(1)));
+            city.setCountry(listCity.get(2));
+            city.setDescriptionWeather(listCity.get(3));
+            city.setIdCountry(listCity.get(4));
+            city.setIdProvince(listCity.get(5));
+            city.setLatitude(Float.parseFloat(listCity.get(6)));
+            city.setLongitude(Float.parseFloat(listCity.get(7)));
+            city.setMax_Temperature(Float.parseFloat(listCity.get(8)));
+            city.setMin_Temperature(Float.parseFloat(listCity.get(9)));
+             city.setTemperature(Float.parseFloat(listCity.get(10)));
+             city.setNameProvince(listCity.get(11));
+             city.setPopulation(Integer.parseInt(listCity.get(12)));
+             city.setSpeedWind(Float.parseFloat(listCity.get(13)));
+              city.setTimezoneId(listCity.get(14));
+
+            getInfoCityFulls = new ArrayList<>();
+            getInfoCityFulls.add(new City(city.getName(), city.getLatitude(), city.getLongitude(), 
+            city.getIdCountry(), city.getCountry(), city.getPopulation(),
+            city.getTimezoneId(), city.getIdProvince(), city.getNameProvince(),
+            city.getDescriptionWeather(), city.getTemperature(),
+            city.getMin_Temperature(), city.getMax_Temperature(), city.getSpeedWind(), city.getClouds()));
+            DefaultTableModel model = (DefaultTableModel) tbCity.getModel();
+               for( City cit : getInfoCityFulls ){
+                  System.out.println("name: "+ cit.getName());
+                  System.out.println("id"+ cit.getIdCountry());
+                       model.addRow(new Object[]{ city.getName(), city.getCountry(), city.getIdCountry(),
+                      city.getPopulation(), city.getLongitude(), city.getLatitude(), city.getNameProvince(),
+                      city.getTimezoneId()
+                  });
+              }
+            }else{
+                lbNotification1.setText("Không có thông tin thành phố tìm kiếm");
+            }
 	} catch (SocketException ex) {
             Logger.getLogger(CLIENT.CityGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnknownHostException ex) {
@@ -434,7 +452,12 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
         String name = tbCity.getValueAt(row, 0).toString();
         for( City city: getInfoCityFulls){
             if( city.getName().equalsIgnoreCase(name)){
-                if( city.getClouds()== -6){
+               if( city.getClouds()== -6 && city.getTemperature()== -6 && city.getMax_Temperature() == -6 && 
+                      city.getMin_Temperature() == -6 && city.getSpeedWind() == -6 &&
+                    city.getDescriptionWeather().equals("")    ){
+                   lbNotification2.setText("Không có thông tin thời tiết");
+               }else{
+                    if( city.getClouds()== -6){
                      lbClouds.setText("");
                 }else if( city.getTemperature()== -6){
                      lbTemp.setText("");
@@ -444,8 +467,8 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
                     lbMinTemp.setText("");
                 }else  if( city.getSpeedWind() == -6){
                     lbWind.setText("");
-                }else if( city.getClouds() == -6){
-                    lbClouds.setText("");
+                }else if( city.getDescriptionWeather().equals("")){
+                    lbDescription.setText("");
                 }else{
                 lbDescription.setText(city.getDescriptionWeather());
                 lbTemp.setText(String.valueOf(city.getTemperature()+ " °C"));
@@ -455,52 +478,20 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
                 lbClouds.setText(String.valueOf(city.getClouds()+ " %"));
                 }
                 break;
+               }
             }
         }
     }//GEN-LAST:event_tbCityMouseClicked
-// public void startRunning()
-//    {
-//        try
-//        {
-//            server=new ServerSocket(port, totalClients);
-//              
-//                try
-//                {
-//                    status.setText(" Waiting for Someone to Connect...");
-//                    connection=server.accept();
-//                    status.setText(" Now Connected to "+connection.getInetAddress().getHostName());
-//
-//
-//                    output = new ObjectOutputStream(connection.getOutputStream());
-//                    output.flush();
-//                    input = new ObjectInputStream(connection.getInputStream());
-//                    System.out.println("Trong lôp");
-//                    whileChatting();
-//                }catch(EOFException eofException)
-//                {
-//                }
-//        }
-//        catch(IOException ioException)
-//        {
-//                ioException.printStackTrace();
-//        }
-//    }
-//    
-//   private void whileChatting() throws IOException
-//   {
-//        String message="";    
-//        jTextField1.setEditable(true);
-//        do{
-//                try
-//                {
-//                        message = (String) input.readObject();
-//                        chatArea.append("\n"+message);
-//                }catch(ClassNotFoundException classNotFoundException)
-//                {
-//                        
-//                }
-//        }while(!message.equals("Client - END"));
-//   }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+      // ẩn cái form hiện tại 
+        this.setVisible(false);
+        // mở form mới
+         MainGUI main;
+         main = new MainGUI();
+         main.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -582,6 +573,7 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
 }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
@@ -595,6 +587,8 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
     private javax.swing.JLabel lbDescription;
     private javax.swing.JLabel lbMaxTemp;
     private javax.swing.JLabel lbMinTemp;
+    private javax.swing.JLabel lbNotification1;
+    private javax.swing.JLabel lbNotification2;
     private javax.swing.JLabel lbTemp;
     private javax.swing.JLabel lbWind;
     private javax.swing.JTable tbCity;
