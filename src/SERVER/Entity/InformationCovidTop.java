@@ -137,6 +137,7 @@ public class InformationCovidTop {
 		String url = "https://corona.lmao.ninja/v2/countries?yesterday&sort";
 		URL obj;
 		Country info = null;
+		ArrayList<CovidTopModel> dataCovid = new ArrayList<CovidTopModel>();
 		try {
 
 			obj = new URL(url);
@@ -157,7 +158,7 @@ public class InformationCovidTop {
 			// parse json
 			JSONArray arr = new JSONArray(response.toString());
 		        CovidTopModel data;
-		ArrayList<CovidTopModel> dataCovid = new ArrayList<CovidTopModel>();
+		
 		JSONArray arr1 = new JSONArray(response.toString());
 		CovidTopModel data1;
 		for (int i =0; i<arr1.length()-1;i++) {

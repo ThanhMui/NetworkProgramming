@@ -13,7 +13,6 @@ import SERVER.DAO.CityInfomation;
 import SERVER.DAO.CountryInfomation;
 import SERVER.Model.City;
 import SERVER.Model.CountryAll;
-import com.sun.org.apache.xml.internal.security.encryption.EncryptedData;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -62,6 +61,8 @@ public class Main {
         SecretKey secretKey = null;
         String citySearch = "";
        String countrySearch = "";
+       String covidSearch = "";
+       String topCovidSearch = "";
         try {
              
             byte[] decrypted = null ;
@@ -127,44 +128,17 @@ public class Main {
                 byte[] tmpDecrypt = Encrypt.AESUtils.decrypt(secretKey, tmpEncrypt);
                 System.out.println("Server received message from client: " + new String(tmpDecrypt));
                 String result = new String(tmpDecrypt);
+                
                 if( result.contains("$city")){
                      citySearch = getNameCitys(result).get(0);
                       List<City> getInfoCityFulls = CityInfomation.getInfoCityFull(citySearch);
                        List<byte[]> listEncrypt = new ArrayList<>();
-                       for (City city : getInfoCityFulls) {
-                    byte[] strEncryptName = Encrypt.AESUtils.encrypt(secretKey, city.getName().getBytes());
-                    byte[] strEncryptClouds = Encrypt.AESUtils.encrypt(secretKey,String.valueOf(city.getClouds()) .getBytes());
-                    byte[] strEncryptCountry = Encrypt.AESUtils.encrypt(secretKey, city.getCountry().getBytes());
-                    byte[] strEncryptWeather = Encrypt.AESUtils.encrypt(secretKey, city.getDescriptionWeather().getBytes());
-                    byte[] strEncryptIdCountry = Encrypt.AESUtils.encrypt(secretKey, city.getIdCountry().getBytes());
-                    byte[] strEncryptIdProvince = Encrypt.AESUtils.encrypt(secretKey, city.getIdProvince().getBytes());
-                    byte[] strEncryptLatitude = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(city.getLatitude()).getBytes());
-                    byte[] strEncryptLong = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(city.getLongitude()).getBytes());
-                    byte[] strEncryptMax = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(city.getMax_Temperature()).getBytes());
-                     byte[] strEncryptMin = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(city.getMin_Temperature()).getBytes());
-                      byte[] strEncryptTemp = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(city.getTemperature()).getBytes());
-                    byte[] strEncryptProvince = Encrypt.AESUtils.encrypt(secretKey, city.getNameProvince().getBytes());
-                      byte[] strEncryptPopu = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(city.getPopulation()).getBytes());
-                        byte[] strEncryptSpeed = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(city.getSpeedWind()).getBytes());
-                          byte[] strEncryptTimeZ = Encrypt.AESUtils.encrypt(secretKey, city.getTimezoneId().getBytes());
-                    
-                    
-                    listEncrypt.add(strEncryptName);
-                    listEncrypt.add(strEncryptClouds);
-                    listEncrypt.add(strEncryptCountry);
-                    listEncrypt.add(strEncryptWeather);
-                     listEncrypt.add(strEncryptIdCountry);
-                    listEncrypt.add(strEncryptIdProvince);
-                    listEncrypt.add(strEncryptLatitude);
-                    listEncrypt.add(strEncryptLong);
-                     listEncrypt.add(strEncryptMax);
-                    listEncrypt.add(strEncryptMin);
-                    listEncrypt.add(strEncryptTemp);
-                    listEncrypt.add(strEncryptProvince);
-                     listEncrypt.add(strEncryptPopu);
-                    listEncrypt.add(strEncryptSpeed);
-                    listEncrypt.add(strEncryptTimeZ);
-                    
+                       //Chuyển list city thành mảng byte
+                       byte[] encryptList = serialize(getInfoCityFulls);
+                       //Mã hóa list city đã được đưa về byte
+                       byte[] listCityEncrypt = Encrypt.AESUtils.encrypt(secretKey, encryptList);
+                       listEncrypt.add(listCityEncrypt);
+
                     listMesagesSend.put("sendMessage", listEncrypt);
 //                sendData = serialize("test");
                 sendData = serialize(listMesagesSend);
@@ -174,46 +148,15 @@ public class Main {
                 datagramSocket.send(sendPacket);
                 }
                       
-                }else if(result.contains("$country")){
+                else if(result.contains("$country")){
                      countrySearch = getNameCountrys(result).get(0);
                       List<CountryAll> getInfoCountryFulls = CountryInfomation.getInfoCountryFull(countrySearch);
-                       List<byte[]> listEncrypt = new ArrayList<>();
-                       
-                     for (CountryAll country : getInfoCountryFulls) {
-                     byte[] strEncryptTimeZ = Encrypt.AESUtils.encrypt(secretKey, country.getAlpha2Code().getBytes());
-                       byte[] strEncryptCap = Encrypt.AESUtils.encrypt(secretKey, country.getCapital().getBytes());
-                         byte[] strEncryptClo = Encrypt.AESUtils.encrypt(secretKey, country.getClouds().getBytes());
-                           byte[] strEncryptCodeCoun = Encrypt.AESUtils.encrypt(secretKey, country.getCountryCode().getBytes());
-                             byte[] strEncryptCurre = Encrypt.AESUtils.encrypt(secretKey, country.getCurrencies().getBytes());
-                    byte[] strEncryptDate = Encrypt.AESUtils.encrypt(secretKey, country.getDatetime().getBytes());
-                      byte[] strEncryptFlag = Encrypt.AESUtils.encrypt(secretKey, country.getFlag().getBytes());
-                      byte[] strEncryptGeo = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(country.getGeonameId()).getBytes());
-                        byte[] strEncryptHum = Encrypt.AESUtils.encrypt(secretKey,String.valueOf( country.getHumidity()).getBytes());
-                          byte[] strEncryptLanguge = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(country.getLanguages()).getBytes());
-                            byte[] strEncryptLat = Encrypt.AESUtils.encrypt(secretKey,String.valueOf(country.getLatitude()) .getBytes());
-                              byte[] strEncryptLong = Encrypt.AESUtils.encrypt(secretKey,String.valueOf(country.getLongtitude()) .getBytes());
-                          byte[] strEncryptName = Encrypt.AESUtils.encrypt(secretKey,String.valueOf(country.getName()) .getBytes());
-                          byte[] strEncryptNeigh = Encrypt.AESUtils.encrypt(secretKey,String.valueOf(country.getNeighbours()).getBytes());
-                          byte[] strEncryptPopu = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(country.getPopulation()).getBytes());
-                          byte[] strEncryptTemp= Encrypt.AESUtils.encrypt(secretKey,String.valueOf(country.getTemperature() ).getBytes());
-                                         
-                    listEncrypt.add(strEncryptTimeZ);
-                     listEncrypt.add(strEncryptCap);
-                      listEncrypt.add(strEncryptClo);
-                       listEncrypt.add(strEncryptCodeCoun);
-                        listEncrypt.add(strEncryptCurre);
-                         listEncrypt.add(strEncryptDate);
-                     listEncrypt.add(strEncryptFlag);
-                      listEncrypt.add(strEncryptGeo);
-                       listEncrypt.add(strEncryptHum);
-                        listEncrypt.add(strEncryptLat);
-                         listEncrypt.add(strEncryptLong);
-                     listEncrypt.add(strEncryptName);
-                      listEncrypt.add(strEncryptNeigh);
-                       listEncrypt.add(strEncryptPopu);
-                        listEncrypt.add(strEncryptTemp);
-                    
-                }
+                      List<byte[]> listEncrypt = new ArrayList<>();
+                      byte[] encryptList = serialize(getInfoCountryFulls);
+                      //Mã hóa list country đã được đưa về byte
+                      byte[] listCityEncrypt = Encrypt.AESUtils.encrypt(secretKey, encryptList);
+                      listEncrypt.add(listCityEncrypt);
+                     
                 listMesagesSend.put("sendMessage", listEncrypt);
 //                sendData = serialize("test");
                 sendData = serialize(listMesagesSend);
@@ -222,8 +165,52 @@ public class Main {
                 sendPacket = new DatagramPacket(sendData, sendData.length,add, port);
                 datagramSocket.send(sendPacket);
                 }
+                
+                else if(result.contains("$covid")){
+                	
+                	System.out.println(result);
+					covidSearch = getNameCitys(result).get(0);
+					System.out.println(covidSearch);
+					String[] str = covidSearch.split(",");
+					String country = str[0];
+					String dateStart = str[1];
+					String dateEnd = str[2];
+                    covidSearch = getNameCountrys(result).get(0);
+                     List<CovidInfoModel> getInfoCovidFulls = InfomationCovid.getDataCovid(country, dateStart, dateEnd);
+                     List<byte[]> listEncrypt = new ArrayList<>();
+                     byte[] encryptList = serialize(getInfoCovidFulls);
+                     //Mã hóa list country đã được đưa về byte
+                     byte[] listCovidEncrypt = Encrypt.AESUtils.encrypt(secretKey, encryptList);
+                     listEncrypt.add(listCovidEncrypt);
+                    
+               listMesagesSend.put("sendMessage", listEncrypt);
+//               sendData = serialize("test");
+               sendData = serialize(listMesagesSend);
+               InetAddress add = receivePacket.getAddress();
+               int port = receivePacket.getPort();
+               sendPacket = new DatagramPacket(sendData, sendData.length,add, port);
+               datagramSocket.send(sendPacket);
+               }
 
-            }
+	            else if(result.contains("$topcovid")){
+	            	
+	            	ArrayList<CovidTopModel> dataCovid = new ArrayList<CovidTopModel>();
+					dataCovid = InformationCovidTop.getData2();
+	                  List<byte[]> listEncrypt = new ArrayList<>();
+	                     byte[] encryptList = serialize(dataCovid);
+	                     //Mã hóa list country đã được đưa về byte
+	                     byte[] listCovidEncrypt = Encrypt.AESUtils.encrypt(secretKey, encryptList);
+	                     listEncrypt.add(listCovidEncrypt);
+	                
+			           listMesagesSend.put("sendMessage", listEncrypt);
+			//           sendData = serialize("test");
+			           sendData = serialize(listMesagesSend);
+			           InetAddress add = receivePacket.getAddress();
+			           int port = receivePacket.getPort();
+			           sendPacket = new DatagramPacket(sendData, sendData.length,add, port);
+			           datagramSocket.send(sendPacket);
+			           }
+		            }
                
                 /* Handle Data From Client */
                 

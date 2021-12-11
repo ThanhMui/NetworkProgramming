@@ -383,46 +383,27 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
             clientSocket.receive(receivePacket);
             listDataReceives =(HashMap)deserialize(receivePacket.getData());
             // getInfoCityFulls  = (ArrayList)deserialize(receivePacket.getData());
-             List<String > listCity = new ArrayList<>();
+             List<City> listnewcity = null;
             if( listDataReceives.containsKey("sendMessage") && listDataReceives.size()> 0){
+            	
                 for( byte[] message: listDataReceives.get("sendMessage")){
                     System.out.println("message : "+ message);
                     System.out.println("secretKey : "+String.valueOf(secretKey));
                     byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
-                    System.out.println("decrypt message: "+ new String(decryptMessage));
-                    listCity.add(new String(decryptMessage));
- 
+                    System.out.println("decrypt message: " + new String(decryptMessage));
+                    listnewcity = (List<City>) deserialize(decryptMessage);
+                    
                 }
-                
-        }
-            if( listCity.size()> 0){
-            SERVER.Model.City city = new SERVER.Model.City();
-            city.setName(listCity.get(0));
-            city.setClouds(Float.parseFloat(listCity.get(1)));
-            city.setCountry(listCity.get(2));
-            city.setDescriptionWeather(listCity.get(3));
-            city.setIdCountry(listCity.get(4));
-            city.setIdProvince(listCity.get(5));
-            city.setLatitude(Float.parseFloat(listCity.get(6)));
-            city.setLongitude(Float.parseFloat(listCity.get(7)));
-            city.setMax_Temperature(Float.parseFloat(listCity.get(8)));
-            city.setMin_Temperature(Float.parseFloat(listCity.get(9)));
-             city.setTemperature(Float.parseFloat(listCity.get(10)));
-             city.setNameProvince(listCity.get(11));
-             city.setPopulation(Integer.parseInt(listCity.get(12)));
-             city.setSpeedWind(Float.parseFloat(listCity.get(13)));
-              city.setTimezoneId(listCity.get(14));
+            }
+            if( listnewcity.size()> 0){
+//            
 
-            getInfoCityFulls = new ArrayList<>();
-            getInfoCityFulls.add(new City(city.getName(), city.getLatitude(), city.getLongitude(), 
-            city.getIdCountry(), city.getCountry(), city.getPopulation(),
-            city.getTimezoneId(), city.getIdProvince(), city.getNameProvince(),
-            city.getDescriptionWeather(), city.getTemperature(),
-            city.getMin_Temperature(), city.getMax_Temperature(), city.getSpeedWind(), city.getClouds()));
+            getInfoCityFulls = listnewcity;
+//            
             DefaultTableModel model = (DefaultTableModel) tbCity.getModel();
-               for( City cit : getInfoCityFulls ){
-                  System.out.println("name: "+ cit.getName());
-                  System.out.println("id"+ cit.getIdCountry());
+               for( City city : getInfoCityFulls ){
+                  System.out.println("name: "+ city.getName());
+                  System.out.println("id"+ city.getIdCountry());
                        model.addRow(new Object[]{ city.getName(), city.getCountry(), city.getIdCountry(),
                       city.getPopulation(), city.getLongitude(), city.getLatitude(), city.getNameProvince(),
                       city.getTimezoneId()

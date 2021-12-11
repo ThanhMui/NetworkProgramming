@@ -21,6 +21,9 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.data.xml.PieDatasetHandler;
 
+import Encrypt.AESUtils;
+
+import javax.crypto.SecretKey;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,7 +37,12 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -61,7 +69,7 @@ public class CovidTopGUI extends JFrame {
 	DatagramPacket sendPacket;
 	static DatagramPacket receivePacket;
 	static byte[] receiveData;
-	static ArrayList<CovidTopModel> dataCovid;
+	static ArrayList<CovidTopModel> dataCovid = null;
 	static int choose = 0;
 	private JTextField txtSearch;
 
@@ -262,24 +270,98 @@ public class CovidTopGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				sendData = new byte[65536];
 				receiveData = new byte[65536];
-				String tmp = "$topcovid";
-
+				DatagramPacket receivePacket;
+	            InetAddress address;
+	            DatagramPacket sendPacket;
+				
+				String sendTmp = "hello";
+				SecretKey secretKey = null;
 				try {
 					clientSocket = new DatagramSocket();
-					if (tmp.equalsIgnoreCase("bye")) {
-						clientSocket.close();
-						System.exit(0);
-					}
+					address = InetAddress.getByName("localhost");
+					Map<String, List<byte[]>> listDataSends = new HashMap<>();
+		             Map<String, List<byte[]>> listDataReceives = new HashMap<>();
+		             Map<String, PublicKey> listPublicKeys = new HashMap<>();
+		             Map<String,List<byte[]>> listSecretKeys = new HashMap<>();
 
-					sendData = serialize(tmp.toString());
-					InetAddress address = InetAddress.getByName("localhost");
-					DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-					clientSocket.send(sendPacket);
+		             List<byte[]> listTmps = new ArrayList<>();
+		             listTmps.add(sendTmp.getBytes());
+		             
+		           //Gửi dữ liệu cho server thông báo truy cập vào lần đầu tiên gửi kèm chuỗi send1
+		 			listDataSends.put("send1", listTmps);
+		 			sendData = serialize(listDataSends);
+		 			sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+//		             System.out.println("Client sent " + sendTmp + " to " + address.getHostAddress()
+//		                     + " from port " + clientSocket.getLocalPort());
+		 			clientSocket.send(sendPacket);
 
-					receivePacket = new DatagramPacket(receiveData, receiveData.length);
-					clientSocket.receive(receivePacket);
-					dataCovid = (ArrayList) deserialize(receivePacket.getData());
-					if (dataCovid.size() <= 0) {
+		 			//Nhận public key từ server
+		 			receivePacket = new DatagramPacket(receiveData, receiveData.length);
+		 			clientSocket.receive(receivePacket);
+		 			
+		 			listPublicKeys = (HashMap) deserialize(receivePacket.getData());
+
+		 			//Sinh ra secretKey để gửi lại cho server
+		 			if (listPublicKeys.containsKey("publicKey") && listPublicKeys.size() == 1) {
+		 				secretKey = Encrypt.AESUtils.generateKey();
+		 				PublicKey publicKey = listPublicKeys.get("publicKey");
+//		             System.out.println("serec key: " + encrypt.Encrypt.convertSecretKeyToString(secretKey));
+		 				String encodedKey = Encrypt.Convert.convertSecretKeyToString(secretKey);
+		 				System.out.println("public key: " + listPublicKeys.get("publicKey"));
+//		                             System.out.println("string: "+ encodedKey);
+//		                            System.out.println("secret key: "+ secretKey.getFormat());
+		 				
+		 				// emã hóa sercetkey dùng public key vừa nhận dược từ server
+		 				byte[] encrypted = Encrypt.RSAUtils.encrypt(publicKey, encodedKey.getBytes());
+		 				List<byte[]> listEncrypt = new ArrayList<>();
+		 				listEncrypt.add(encrypted);
+		 				//Khi nào client đã nhận được listSecretKey thì thêm vào map listSecretKeys 
+		 				listSecretKeys.put("secretKey", listEncrypt);
+		 				//Gửi sercretkey cho server.
+		 				sendData = serialize(listSecretKeys);
+		 				sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+//		             System.out.println("Client sent " + listSecretKeys.get("secretKey") + " to " + address.getHostAddress()
+//		                     + " from port " + clientSocket.getLocalPort());
+		 				clientSocket.send(sendPacket);
+		 			}
+		 			// System.out.println("public key: "+ listPublicKeys.get(""));
+		 			
+		 			// tạo private key aes
+		 			// bắt đầu gửi tin nhán đến client sau khi cả 2 bên đẫ nhận được serect key
+		 			// send message to server
+		 			String tmp = "$topcovid";
+	                byte[]tm= tmp.getBytes();
+	                 byte[] encryptedMesage = Encrypt.AESUtils.encrypt(secretKey, tm);
+	                 List<byte[]> listMessEnc =new ArrayList<>();
+	                 listMessEnc.add(encryptedMesage);
+	                 listDataSends.put("encMessage", listMessEnc);
+	                sendData = serialize(listDataSends);
+	                 
+	                sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+	                clientSocket.send(sendPacket);
+
+//		                 System.out.println("Client sent " + sendData + " to " + address.getHostAddress()
+//		                         + " from port " + clientSocket.getLocalPort());
+		 				
+		 				// receive message from server
+		 				receivePacket = new DatagramPacket(receiveData, receiveData.length);
+		 				clientSocket.receive(receivePacket);
+		 				listDataReceives = (HashMap) deserialize(receivePacket.getData());
+						List<CovidTopModel> listNewCovidTop = null;
+						if (listDataReceives.containsKey("sendMessage") && listDataReceives.size() > 0) {
+							for (byte[] message : listDataReceives.get("sendMessage")) {
+								//In ra kiểm tra
+								System.err.println("message : " + message);
+								System.err.println("secretKey : " + String.valueOf(secretKey));
+								//giải mã message
+								byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
+								System.out.println("decrypt message: " + new String(decryptMessage));
+								listNewCovidTop = (List<CovidTopModel>) deserialize(decryptMessage);
+							}
+						}
+					System.out.println(listNewCovidTop.isEmpty());
+					dataCovid = (ArrayList<CovidTopModel>) listNewCovidTop;
+					if (dataCovid.isEmpty()) {
 						JFrame frame = new JFrame();
 
 						JOptionPane.showMessageDialog(frame, "Load dữ liệu thất bại", "Thông báo",
@@ -290,9 +372,13 @@ public class CovidTopGUI extends JFrame {
 						JOptionPane.showMessageDialog(frame, "Load dữ liệu thành công", "Thông báo",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
+		 			
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (NoSuchAlgorithmException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

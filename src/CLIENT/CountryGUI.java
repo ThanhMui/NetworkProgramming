@@ -7,6 +7,8 @@ package CLIENT;
 
 import SERVER.Model.City;
 import SERVER.Model.CountryAll;
+import SERVER.Model.CovidInfoModel;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -27,11 +29,17 @@ import java.net.SocketException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.crypto.SecretKey;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -46,11 +54,11 @@ import javax.swing.table.DefaultTableModel;
 public class CountryGUI extends javax.swing.JFrame {
     static DatagramSocket clientSocket ;
     static Scanner sc ;
-     byte[] sendData ;
+     static byte[] sendData ;
   InetAddress address;
    DatagramPacket sendPacket ;
     DatagramPacket receivePacket;
-    byte[] receiveData;
+    static byte[] receiveData;
    public static  List<City> getInfoCityFulls = null;
    public static  List<CountryAll> getInfoCountryFulls = null;
   
@@ -287,49 +295,41 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
          tbCountry.setModel(new DefaultTableModel(null, new String[]{"Country name","ID country","Population", "Longitude", 
              "Latitude",  "Currencies", "Capital", "Languages", "Neighbours"
          }) );
-//        sendData = new byte[65536];
-//        receiveData = new byte[65536];
-//       
-//        String tmp = txtCityName.getText().trim()+ "$country";
-//        
-//    try {
-//        clientSocket = new DatagramSocket();
-//        if( tmp.equalsIgnoreCase("bye")){
-//            clientSocket.close();
-//            System.exit(0);
-//            return ;
-//        }
-//        sendData = serialize(tmp.toString());
-//        InetAddress address = InetAddress.getByName("localhost");
-//        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-//        clientSocket.send(sendPacket);
-//        // DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-//               
-//                receivePacket = new DatagramPacket(receiveData, receiveData.length);
-//                 clientSocket.receive(receivePacket);
-//                 getInfoCountryFulls  = (ArrayList)deserialize(receivePacket.getData());
-//              for( CountryAll country : getInfoCountryFulls){
-//                  System.out.println("name: "+ country.getName());
-//                  System.out.println("id: "+ country.getAlpha2Code());
-//                  System.out.println("flag: " +country.getFlag());
-//              }
-//              DefaultTableModel model = (DefaultTableModel) tbCountry.getModel();
-//              for( CountryAll country : getInfoCountryFulls){
-//                 System.out.println("name: "+ country.getName());
-//                  System.out.println("id: "+ country.getAlpha2Code());
-//                  System.out.println("flag: "+ country.getFlag());
-//                  model.addRow(new Object[]{ country.getName(), country.getAlpha2Code(),
-//                      country.getPopulation(),
-//                      country.getLongtitude(),country.getLatitude(), country.getCurrencies(),
-//                      country.getCapital(), country.getLanguages(), country.getNeighbours()
-//                  });
-//              }
-//              
-//    } catch (IOException ex) {
-//        Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
-//    }   catch (ClassNotFoundException ex) {
-//            Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        sendData = new byte[65536];
+        receiveData = new byte[65536];
+       
+        String tmp = txtCityName.getText().trim()+ "$country";
+        
+    try {
+    	///////////////////////////////////////
+    	/////////////////////////////////////////
+    			getInfoCountryFulls = (List<CountryAll>) maHoa(tmp);
+                 
+              for( CountryAll country : getInfoCountryFulls){
+                  System.out.println("name: "+ country.getName());
+                  System.out.println("id: "+ country.getAlpha2Code());
+                  System.out.println("flag: " +country.getFlag());
+              }
+              DefaultTableModel model = (DefaultTableModel) tbCountry.getModel();
+              for( CountryAll country : getInfoCountryFulls){
+                 System.out.println("name: "+ country.getName());
+                  System.out.println("id: "+ country.getAlpha2Code());
+                  System.out.println("flag: "+ country.getFlag());
+                  model.addRow(new Object[]{ country.getName(), country.getAlpha2Code(),
+                      country.getPopulation(),
+                      country.getLongtitude(),country.getLatitude(), country.getCurrencies(),
+                      country.getCapital(), country.getLanguages(), country.getNeighbours()
+                  });
+              }
+              
+    } catch (IOException ex) {
+        Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
+    }   catch (ClassNotFoundException ex) {
+            Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
          
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -541,4 +541,85 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
     private javax.swing.JTable tbCountry;
     private javax.swing.JTextField txtCityName;
     // End of variables declaration//GEN-END:variables
+    
+    public static List<CountryAll> maHoa(String tmp) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
+		DatagramPacket receivePacket;
+        InetAddress address;
+        DatagramPacket sendPacket;
+        String sendTmp = "hello";
+        sendData = new byte[6553];
+        receiveData = new byte[6553];
+        SecretKey secretKey = null;
+        clientSocket = new DatagramSocket();
+        address = InetAddress.getByName("localhost");
+         Map<String, List<byte[]>> listDataSends = new HashMap<>();
+         Map<String, List<byte[]>> listDataReceives = new HashMap<>();
+         Map<String, PublicKey> listPublicKeys = new HashMap<>();
+         Map<String,List<byte[]>> listSecretKeys = new HashMap<>();
+        
+        List<byte[]> listTmps = new ArrayList<>();
+        listTmps.add(sendTmp.getBytes());
+        listDataSends.put("send1",listTmps);
+        sendData = serialize(listDataSends);
+        sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+//        System.out.println("Client sent " + sendTmp + " to " + address.getHostAddress()
+//                + " from port " + clientSocket.getLocalPort());
+        clientSocket.send(sendPacket);
+        // DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        clientSocket.receive(receivePacket);
+        listPublicKeys =(HashMap) deserialize(receivePacket.getData());
+        
+        if( listPublicKeys.containsKey("publicKey") && listPublicKeys.size()== 1){
+             secretKey = Encrypt.AESUtils.generateKey();
+             PublicKey publicKey = listPublicKeys.get("publicKey");
+//        System.out.println("serec key: " + encrypt.Encrypt.convertSecretKeyToString(secretKey));
+        String encodedKey = Encrypt.Convert.convertSecretKeyToString(secretKey);
+        System.out.println("public key: "+ listPublicKeys.get("publicKey"));
+//                        System.out.println("string: "+ encodedKey);
+//                       System.out.println("secret key: "+ secretKey.getFormat());
+        // emã hóa private key dùng public key vừa nhận dược từ server
+        
+        byte[] encrypted = Encrypt.RSAUtils.encrypt(publicKey, encodedKey.getBytes());
+        List<byte[]> listEncrypt = new ArrayList<>();
+        listEncrypt.add(encrypted);
+        listSecretKeys.put("secretKey",listEncrypt );
+        sendData = serialize(listSecretKeys);
+        sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+//        System.out.println("Client sent " + listSecretKeys.get("secretKey") + " to " + address.getHostAddress()
+//                + " from port " + clientSocket.getLocalPort());
+        clientSocket.send(sendPacket);
+        }
+     
+            //////////String tmp hereeeee////////////
+            byte[]tm= tmp.getBytes();
+             byte[] encryptedMesage = Encrypt.AESUtils.encrypt(secretKey, tm);
+             List<byte[]> listMessEnc =new ArrayList<>();
+             listMessEnc.add(encryptedMesage);
+             listDataSends.put("encMessage", listMessEnc);
+            sendData = serialize(listDataSends);
+             
+            sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+            
+//            System.out.println("Client sent " + sendData + " to " + address.getHostAddress()
+//                    + " from port " + clientSocket.getLocalPort());
+            clientSocket.send(sendPacket);
+        // receive message from server
+        receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        clientSocket.receive(receivePacket);
+        listDataReceives =(HashMap)deserialize(receivePacket.getData());
+        // getInfoCityFulls  = (ArrayList)deserialize(receivePacket.getData());
+         List<CountryAll> listnew = null;
+        if( listDataReceives.containsKey("sendMessage") && listDataReceives.size()> 0){
+        	
+            for( byte[] message: listDataReceives.get("sendMessage")){
+                System.out.println("message : "+ message);
+                System.out.println("secretKey : "+String.valueOf(secretKey));
+                byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
+                System.out.println("decrypt message: " + new String(decryptMessage));
+                listnew = (List<CountryAll>) deserialize(decryptMessage);
+            }
+        }
+        return listnew;
+	}
 }
