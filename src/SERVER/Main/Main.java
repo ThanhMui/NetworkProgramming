@@ -13,7 +13,7 @@ import SERVER.DAO.CityInfomation;
 import SERVER.DAO.CountryInfomation;
 import SERVER.Model.City;
 import SERVER.Model.CountryAll;
-import com.sun.org.apache.xml.internal.security.encryption.EncryptedData;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -63,7 +63,6 @@ public class Main {
         String citySearch = "";
        String countrySearch = "";
         try {
-             
             byte[] decrypted = null ;
              Map<String, PublicKey> listPublicKeys = new HashMap<>();
              DatagramSocket datagramSocket = new DatagramSocket(3333);
@@ -87,7 +86,6 @@ public class Main {
 //               listMesagesReceives = (HashMap) deserialize(receivePacket.getData());
 //               listSecretKeys  = (HashMap) deserialize(receivePacket.getData());
                 /* Receive Data From Client */
-                
                 /* Handle Data From Client */
                 //receivePacket.getData() -> String : hello
                 //receivePacket.getData() -> Object : publickey (Object)
@@ -131,6 +129,8 @@ public class Main {
                      citySearch = getNameCitys(result).get(0);
                       List<City> getInfoCityFulls = CityInfomation.getInfoCityFull(citySearch);
                        List<byte[]> listEncrypt = new ArrayList<>();
+                    if( getInfoCityFulls.size()>0){
+                       
                        for (City city : getInfoCityFulls) {
                     byte[] strEncryptName = Encrypt.AESUtils.encrypt(secretKey, city.getName().getBytes());
                     byte[] strEncryptClouds = Encrypt.AESUtils.encrypt(secretKey,String.valueOf(city.getClouds()) .getBytes());
@@ -153,7 +153,7 @@ public class Main {
                     listEncrypt.add(strEncryptClouds);
                     listEncrypt.add(strEncryptCountry);
                     listEncrypt.add(strEncryptWeather);
-                     listEncrypt.add(strEncryptIdCountry);
+                    listEncrypt.add(strEncryptIdCountry);
                     listEncrypt.add(strEncryptIdProvince);
                     listEncrypt.add(strEncryptLatitude);
                     listEncrypt.add(strEncryptLong);
@@ -173,6 +173,15 @@ public class Main {
                 sendPacket = new DatagramPacket(sendData, sendData.length,add, port);
                 datagramSocket.send(sendPacket);
                 }
+                }else{
+                         listMesagesSend.put("sendMessage", listEncrypt);
+//                sendData = serialize("test");
+                sendData = serialize(listMesagesSend);
+                InetAddress add = receivePacket.getAddress();
+                int port = receivePacket.getPort();
+                sendPacket = new DatagramPacket(sendData, sendData.length,add, port);
+                datagramSocket.send(sendPacket);
+                    }
                       
                 }else if(result.contains("$country")){
                      countrySearch = getNameCountrys(result).get(0);

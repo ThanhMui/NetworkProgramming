@@ -5,9 +5,14 @@
         <group>
             <file>file:/E:/NetworkProgramming/NetworkProgramming/src/SERVER/Entity/InfomationCovid.java</file>
             <file>file:/E:/NetworkProgramming/NetworkProgramming/src/CLIENT/MainGUI.java</file>
+            <file>file:/E:/NetworkProgramming/NetworkProgramming/src/CLIENT/CountryGUI.java</file>
             <file>file:/E:/NetworkProgramming/NetworkProgramming/src/SERVER/Entity/InformationCovidTop.java</file>
+            <file>file:/E:/NetworkProgramming/NetworkProgramming/src/SERVER/DAO/CityInfomation.java</file>
             <file>file:/E:/NetworkProgramming/NetworkProgramming/src/SERVER/Main/Main.java</file>
             <file>file:/E:/NetworkProgramming/NetworkProgramming/src/CLIENT/CityGUI.java</file>
+            <file>file:/E:/NetworkProgramming/NetworkProgramming/src/SERVER/DAO/DBContext.java</file>
+            <file>file:/E:/NetworkProgramming/NetworkProgramming/src/SERVER/Model/City.java</file>
+            <file>file:/E:/NetworkProgramming/NetworkProgramming/src/CLIENT/CovidTopGUI.java</file>
         </group>
     </open-files>
 </project-private>
