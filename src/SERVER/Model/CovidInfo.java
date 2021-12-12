@@ -1,6 +1,8 @@
 package SERVER.Model;
 
-public class CovidInfo {
+import java.io.Serializable;
+
+public class CovidInfo implements Serializable{
 	private int confirmed;
 	private int deaths;
 	private int recovered;
