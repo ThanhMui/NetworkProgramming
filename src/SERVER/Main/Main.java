@@ -147,8 +147,7 @@ public class Main {
                       byte[] strEncryptPopu = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(city.getPopulation()).getBytes());
                         byte[] strEncryptSpeed = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(city.getSpeedWind()).getBytes());
                           byte[] strEncryptTimeZ = Encrypt.AESUtils.encrypt(secretKey, city.getTimezoneId().getBytes());
-                    
-                    
+                          
                     listEncrypt.add(strEncryptName);
                     listEncrypt.add(strEncryptClouds);
                     listEncrypt.add(strEncryptCountry);
@@ -165,7 +164,7 @@ public class Main {
                     listEncrypt.add(strEncryptSpeed);
                     listEncrypt.add(strEncryptTimeZ);
                     
-                    listMesagesSend.put("sendMessage", listEncrypt);
+                listMesagesSend.put("sendMessage", listEncrypt);
 //                sendData = serialize("test");
                 sendData = serialize(listMesagesSend);
                 InetAddress add = receivePacket.getAddress();
@@ -174,7 +173,7 @@ public class Main {
                 datagramSocket.send(sendPacket);
                 }
                 }else{
-                         listMesagesSend.put("sendMessage", listEncrypt);
+                  listMesagesSend.put("sendMessage", listEncrypt);
 //                sendData = serialize("test");
                 sendData = serialize(listMesagesSend);
                 InetAddress add = receivePacket.getAddress();
@@ -187,8 +186,8 @@ public class Main {
                      countrySearch = getNameCountrys(result).get(0);
                       List<CountryAll> getInfoCountryFulls = CountryInfomation.getInfoCountryFull(countrySearch);
                        List<byte[]> listEncrypt = new ArrayList<>();
-                       
-                     for (CountryAll country : getInfoCountryFulls) {
+                       if( getInfoCountryFulls.size() > 0){
+                            for (CountryAll country : getInfoCountryFulls) {
                      byte[] strEncryptTimeZ = Encrypt.AESUtils.encrypt(secretKey, country.getAlpha2Code().getBytes());
                        byte[] strEncryptCap = Encrypt.AESUtils.encrypt(secretKey, country.getCapital().getBytes());
                          byte[] strEncryptClo = Encrypt.AESUtils.encrypt(secretKey, country.getClouds().getBytes());
@@ -205,6 +204,8 @@ public class Main {
                           byte[] strEncryptNeigh = Encrypt.AESUtils.encrypt(secretKey,String.valueOf(country.getNeighbours()).getBytes());
                           byte[] strEncryptPopu = Encrypt.AESUtils.encrypt(secretKey, String.valueOf(country.getPopulation()).getBytes());
                           byte[] strEncryptTemp= Encrypt.AESUtils.encrypt(secretKey,String.valueOf(country.getTemperature() ).getBytes());
+                           byte[] strEncryptSpeed= Encrypt.AESUtils.encrypt(secretKey,String.valueOf(country.getWindSpeed() ).getBytes());
+                            byte[] strEncryptDesc= Encrypt.AESUtils.encrypt(secretKey,country.getWeatherCondition().getBytes());
                                          
                     listEncrypt.add(strEncryptTimeZ);
                      listEncrypt.add(strEncryptCap);
@@ -221,7 +222,8 @@ public class Main {
                       listEncrypt.add(strEncryptNeigh);
                        listEncrypt.add(strEncryptPopu);
                         listEncrypt.add(strEncryptTemp);
-                    
+                        listEncrypt.add(strEncryptSpeed);
+                        listEncrypt.add(strEncryptDesc);
                 }
                 listMesagesSend.put("sendMessage", listEncrypt);
 //                sendData = serialize("test");
@@ -230,8 +232,16 @@ public class Main {
                 int port = receivePacket.getPort();
                 sendPacket = new DatagramPacket(sendData, sendData.length,add, port);
                 datagramSocket.send(sendPacket);
+                }else{
+                  listMesagesSend.put("sendMessage", listEncrypt);
+//                sendData = serialize("test");
+                sendData = serialize(listMesagesSend);
+                InetAddress add = receivePacket.getAddress();
+                int port = receivePacket.getPort();
+                sendPacket = new DatagramPacket(sendData, sendData.length,add, port);
+                datagramSocket.send(sendPacket);
+                    }
                 }
-
             }
                
                 /* Handle Data From Client */

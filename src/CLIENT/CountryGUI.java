@@ -9,6 +9,7 @@ import SERVER.Model.City;
 import SERVER.Model.CountryAll;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -27,11 +28,17 @@ import java.net.SocketException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.SecretKey;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -44,22 +51,24 @@ import javax.swing.table.DefaultTableModel;
  * @author ASUS
  */
 public class CountryGUI extends javax.swing.JFrame {
-    static DatagramSocket clientSocket ;
-    static Scanner sc ;
-     byte[] sendData ;
-  InetAddress address;
-   DatagramPacket sendPacket ;
-    DatagramPacket receivePacket;
-    byte[] receiveData;
-   public static  List<City> getInfoCityFulls = null;
-   public static  List<CountryAll> getInfoCountryFulls = null;
+   static DatagramSocket clientSocket;
+	static Scanner sc;
+	byte[] sendData;
+	InetAddress address;
+	DatagramPacket sendPacket;
+	DatagramPacket receivePacket;
+	byte[] receiveData;
+	public static List<City> getInfoCityFulls = null;
+	public static List<CountryAll> getInfoCountryFulls = null;
   
     /**
      * Creates new form CityGUI
      */
     public CountryGUI() throws SocketException {
         initComponents();
-       
+        tbCountry.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 18));
+        tbCountry.isEditing();
+        tbCountry.setDefaultEditor(Object.class, null);
         
     }
 public static byte[] serialize(Object obj) throws IOException {
@@ -103,9 +112,15 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
         lbIDCountry = new javax.swing.JLabel();
         lbFlag = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        lbNotification1 = new javax.swing.JLabel();
+        lbNotification2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
+        btnSearch.setBackground(new java.awt.Color(0, 102, 204));
+        btnSearch.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,8 +128,10 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
             }
         });
 
+        txtCityName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txtCityName.setForeground(new java.awt.Color(153, 153, 153));
 
+        tbCountry.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tbCountry.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -145,100 +162,134 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
         });
         jScrollPane1.setViewportView(tbCountry);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Weather Information");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setText("Information Country");
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("ID Country");
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Weather Condition");
 
-        lbWeatherCondition.setText("jLabel3");
+        lbWeatherCondition.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lbHumidity.setText("jLabel3");
+        lbHumidity.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Humidity");
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setText("Clouds");
 
-        lbWindSpeed.setText("jLabel3");
+        lbWindSpeed.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setText("Temperature");
 
-        lbTemp.setText("jLabel3");
+        lbTemp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lbDatetime.setText("jLabel3");
+        lbDatetime.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel13.setText("Wind Speed");
 
-        lbClouds.setText("jLabel3");
+        lbClouds.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        lbIDCountry.setText("Datetime");
+        lbIDCountry.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("Datetime");
+
+        lbNotification1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbNotification1.setForeground(new java.awt.Color(204, 0, 51));
+
+        lbNotification2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbNotification2.setForeground(new java.awt.Color(204, 0, 51));
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(204, 0, 0));
+        jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
-                .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
-                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(272, 272, 272)
+                        .addComponent(lbNotification1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(354, 354, 354)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(17, 17, 17))
+                                .addGap(32, 32, 32)
+                                .addComponent(lbIDCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(78, 78, 78)
-                                .addComponent(lbClouds, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(86, 86, 86)
+                                .addComponent(lbNotification2, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(66, 66, 66)
+                                        .addComponent(lbDatetime, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(52, 52, 52)
+                                        .addComponent(lbClouds, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(55, 55, 55)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lbWeatherCondition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lbTemp, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
+                                .addGap(47, 47, 47)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbDatetime, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbIDCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbWeatherCondition, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(lbTemp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbHumidity, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(lbWindSpeed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(24, 24, 24))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(156, 156, 156)
-                        .addComponent(lbFlag, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(49, 49, 49))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbHumidity, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbWindSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(53, 53, 53)
+                        .addComponent(lbFlag, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,46 +298,60 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addComponent(lbNotification1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(96, 96, 96)
+                        .addComponent(lbFlag, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lbIDCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lbFlag, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbHumidity, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbWeatherCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbDatetime, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(40, 40, 40)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbClouds, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbWindSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(lbDatetime, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbWeatherCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbHumidity, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbIDCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addComponent(lbNotification2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lbTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbWindSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(4, 4, 4))
+                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbClouds, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(152, 152, 152))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
          // clear form
-         tbCountry.setModel(new DefaultTableModel(null, new String[]{"Country name","ID country","Population", "Longitude", 
-             "Latitude",  "Currencies", "Capital", "Languages", "Neighbours"
-         }) );
+       tbCountry.setModel(new DefaultTableModel(null, new String[] { "Country name", "ID country", "Population",
+				"Longitude", "Latitude", "Currencies", "Capital", "Languages", "Neighbours" }));
 //        sendData = new byte[65536];
 //        receiveData = new byte[65536];
 //       
@@ -330,36 +395,205 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
 //    }   catch (ClassNotFoundException ex) {
 //            Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+
+		Scanner stdIn = new Scanner(System.in);
+		DatagramPacket receivePacket;
+		InetAddress address;
+		DatagramPacket sendPacket;
+		String sendTmp = "hello";
+		sendData = new byte[6553];
+		receiveData = new byte[6553];
+		SecretKey secretKey = null;
+		try {
+			clientSocket = new DatagramSocket();
+			address = InetAddress.getByName("localhost");
+			Map<String, List<byte[]>> listDataSends = new HashMap<>();
+			Map<String, List<byte[]>> listDataReceives = new HashMap<>();
+			Map<String, PublicKey> listPublicKeys = new HashMap<>();
+			Map<String, List<byte[]>> listSecretKeys = new HashMap<>();
+
+			List<byte[]> listTmps = new ArrayList<>();
+			listTmps.add(sendTmp.getBytes());
+			listDataSends.put("send1", listTmps);
+			sendData = serialize(listDataSends);
+			sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+//            System.out.println("Client sent " + sendTmp + " to " + address.getHostAddress()
+//                    + " from port " + clientSocket.getLocalPort());
+			clientSocket.send(sendPacket);
+			// DatagramPacket receivePacket = new DatagramPacket(receiveData,
+			// receiveData.length);
+			receivePacket = new DatagramPacket(receiveData, receiveData.length);
+			clientSocket.receive(receivePacket);
+			listPublicKeys = (HashMap) deserialize(receivePacket.getData());
+
+			if (listPublicKeys.containsKey("publicKey") && listPublicKeys.size() == 1) {
+				secretKey = Encrypt.AESUtils.generateKey();
+				PublicKey publicKey = listPublicKeys.get("publicKey");
+//			            System.out.println("serec key: " + encrypt.Encrypt.convertSecretKeyToString(secretKey));
+				String encodedKey = Encrypt.Convert.convertSecretKeyToString(secretKey);
+				System.out.println("public key: " + listPublicKeys.get("publicKey"));
+//			                            System.out.println("string: "+ encodedKey);
+//			                           System.out.println("secret key: "+ secretKey.getFormat());
+				// emã hóa private key dùng public key vừa nhận dược từ server
+
+				byte[] encrypted = Encrypt.RSAUtils.encrypt(publicKey, encodedKey.getBytes());
+				List<byte[]> listEncrypt = new ArrayList<>();
+				listEncrypt.add(encrypted);
+				listSecretKeys.put("secretKey", listEncrypt);
+				sendData = serialize(listSecretKeys);
+				sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+//			            System.out.println("Client sent " + listSecretKeys.get("secretKey") + " to " + address.getHostAddress()
+//			                    + " from port " + clientSocket.getLocalPort());
+				clientSocket.send(sendPacket);
+			}
+
+			String tmpMessage = txtCityName.getText().trim() + "$country";
+			byte[] tm = tmpMessage.getBytes();
+			byte[] encryptedMesage = Encrypt.AESUtils.encrypt(secretKey, tm);
+			List<byte[]> listMessEnc = new ArrayList<>();
+			listMessEnc.add(encryptedMesage);
+			listDataSends.put("encMessage", listMessEnc);
+			sendData = serialize(listDataSends);
+
+			sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+
+//                System.out.println("Client sent " + sendData + " to " + address.getHostAddress()
+//                        + " from port " + clientSocket.getLocalPort());
+			clientSocket.send(sendPacket);
+			// receive message from server
+			receivePacket = new DatagramPacket(receiveData, receiveData.length);
+			clientSocket.receive(receivePacket);
+			listDataReceives = (HashMap) deserialize(receivePacket.getData());
+			// getInfoCityFulls = (ArrayList)deserialize(receivePacket.getData());
+			List<String> listCountry = new ArrayList<>();
+                        // phải có thì mới giải mã
+			if (listDataReceives.containsKey("sendMessage") && listDataReceives.size() > 0) {
+				for (byte[] message : listDataReceives.get("sendMessage")) {
+					System.out.println("message : " + message);
+					System.out.println("secretKey : " + String.valueOf(secretKey));
+					byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
+					System.out.println("decrypt message: " + new String(decryptMessage));
+					listCountry.add(new String(decryptMessage));
+				}
+			}
+			if (listCountry.size() > 0) {
+                           lbNotification1.setText("");
+                           lbNotification2.setText("");
+				SERVER.Model.CountryAll country = new SERVER.Model.CountryAll();
+				country.setAlpha2Code(listCountry.get(0));
+				country.setCapital(listCountry.get(1));
+				country.setClouds(listCountry.get(2));
+				country.setCountryCode(listCountry.get(3));
+				country.setCurrencies(listCountry.get(4));
+				country.setDatetime(listCountry.get(5));
+				country.setFlag(listCountry.get(6));
+				country.setGeonameId(Integer.parseInt(listCountry.get(7)));
+				country.setHumidity(Integer.parseInt(listCountry.get(8)));
+				country.setLatitude(Double.parseDouble(listCountry.get(9)));
+				country.setLongtitude(Double.parseDouble(listCountry.get(10)));
+				country.setName(listCountry.get(11));
+				country.setNeighbours(listCountry.get(12));
+				country.setPopulation(Integer.parseInt(listCountry.get(13)));
+				country.setTemperature(Float.parseFloat(listCountry.get(14)));
+                                country.setWindSpeed(Float.parseFloat(listCountry.get(15)));
+                                country.setWeatherCondition(listCountry.get(16));
+
+				getInfoCountryFulls = new ArrayList<>();
+				getInfoCountryFulls.add(new CountryAll(country.getName(), country.getPopulation(),
+						country.getLongtitude(), country.getLatitude(), country.getCurrencies(),
+						country.getAlpha2Code(), country.getGeonameId(), country.getFlag(), country.getCapital(),
+						country.getLanguages(), country.getNeighbours(), country.getCountryCode(),
+						country.getTemperature(), country.getWeatherCondition(), country.getHumidity(),
+						country.getClouds(), country.getDatetime(), country.getWindSpeed()));
+				DefaultTableModel model = (DefaultTableModel) tbCountry.getModel();
+				for (CountryAll c : getInfoCountryFulls) {
+					// In ra att nao ?
+					System.out.println("population: " + c.getPopulation());
+					System.out.println("continent name" + c.getName());
+					/*
+					 * Table
+					 * { "Country name", "ID country", "Population", "Longitude", "Latitude",
+					 * "Currencies", "Capital", "Languages", "Neighbours" }
+					 */
+					model.addRow(new Object[] { country.getName(), country.getAlpha2Code(), country.getPopulation(),
+							country.getLongtitude(), country.getLatitude(), country.getCurrencies(),
+							country.getCapital(), country.getLanguages(), country.getNeighbours() });
+				}
+			} else {
+//				lbNotification1.setText("Không có thông tin thành phố tìm kiếm");
+                    lbNotification1.setText("No search country information available"+ getNameCountrys(tmpMessage).get(0));
+                    lbNotification2.setText("No weather information of country "+ getNameCountrys(tmpMessage).get(0));
+                    lbIDCountry.setText("");
+                    lbFlag.setText("");
+                      lbDatetime.setText("");
+                    lbIDCountry.setText("");
+                    lbWeatherCondition.setText("");
+                     lbHumidity.setText("");
+                      lbClouds.setText("");
+                      lbTemp.setText("");
+                     lbWindSpeed.setText("");
+			}
+		}catch (IOException e) {
+
+		}
+       // TODO Auto-generated catch block
+        catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException ex) {
+           Logger.getLogger(CountryGUI.class.getName()).log(Level.SEVERE, null, ex);
+       }
+                 clientSocket.close();
          
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void tbCountryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCountryMouseClicked
         // TODO add your handling code here:
+       
         int row = tbCountry.getSelectedRow();
         String id = tbCountry.getValueAt(row, 1).toString();
         for( CountryAll country: getInfoCountryFulls){
+            
             if( country.getAlpha2Code().equalsIgnoreCase(id)){
-                if( country.getHumidity()== -6){
+                lbIDCountry.setText(String.valueOf(country.getAlpha2Code()));
+                 loadImage(country.getFlag(), lbFlag);
+                 if(country.getHumidity()== -6 &&  country.getTemperature()== -6 && country.getWindSpeed() == -6 && country.getWeatherCondition().equals("rong")
+                    && country.getCountryCode().equals("rong") && country.getClouds().equals("rong") && country.getDatetime().equals("rong")    )
+                 {
+                     lbNotification2.setText("No weather information of country "+ country.getName() );
+                 }
+                 else{
+                     if( country.getHumidity()== -6){
                      lbHumidity.setText("");
-                }else if( country.getTemperature()== -6){
+                }else if( country.getTemperature()== -6.0){
                      lbTemp.setText("");
-                }else if(country.getWindSpeed() == -6){
+                }else if(country.getWindSpeed() == -6.0){
                     lbWindSpeed.setText("");
                 }                
                 else{
                 lbIDCountry.setText(String.valueOf(country.getAlpha2Code()));
                 lbDatetime.setText(String.valueOf(country.getDatetime()));
                 lbWeatherCondition.setText(country.getWeatherCondition());
-                 lbHumidity.setText(String.valueOf(country.getHumidity()+ " %"));
-                 lbClouds.setText(String.valueOf(country.getClouds()));
+                lbHumidity.setText(String.valueOf(country.getHumidity()+ " %"));
+                lbClouds.setText(String.valueOf(country.getClouds()));
                 lbTemp.setText(String.valueOf(country.getTemperature()+ " °C"));
                 lbWindSpeed.setText(String.valueOf(country.getWindSpeed()+ "m/s"));
-                loadImage(country.getFlag(), lbFlag);
                 }
                 break;
+                 }
+                
             }
         }
     }//GEN-LAST:event_tbCountryMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+         this.setVisible(false);
+        // mở form mới
+         MainGUI main;
+         main = new MainGUI();
+         main.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
    // load flag lên label 
     public static void loadImage(String urlImage, JLabel lblimage){
      Image image = null;
@@ -370,13 +604,13 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
             conn.connect();
             InputStream urlStream = conn.getInputStream();
             image = ImageIO.read(urlStream);
-            image = getScaledImage(image, 70, 50);
+            image = getScaledImage(image, 120, 100);
           
             ImageIcon icon = new ImageIcon(image); 
            
             lblimage.setIcon(icon);
           
-            lblimage.setSize(50, 50);
+            lblimage.setSize(150, 150);
            
         } catch (IOException e) {
             System.out.println("Something went wrong, sorry:" + e.toString());
@@ -395,6 +629,15 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
 
       return resizedImg;
   }
+      private static List<String> getNameCountrys(String url){
+        StringTokenizer st = new StringTokenizer(url, "$");   
+        List<String> arr = new ArrayList<>();
+         while (st.hasMoreTokens()) {
+           //  System.out.println(""+ st.nextToken());
+             arr.add(st.nextToken());
+         }
+       return arr;
+    }
 // public void startRunning()
 //    {
 //        try
@@ -520,6 +763,7 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
 }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -535,6 +779,8 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
     private javax.swing.JLabel lbFlag;
     private javax.swing.JLabel lbHumidity;
     private javax.swing.JLabel lbIDCountry;
+    private javax.swing.JLabel lbNotification1;
+    private javax.swing.JLabel lbNotification2;
     private javax.swing.JLabel lbTemp;
     private javax.swing.JLabel lbWeatherCondition;
     private javax.swing.JLabel lbWindSpeed;

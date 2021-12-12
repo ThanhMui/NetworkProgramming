@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.SecretKey;
@@ -178,8 +179,10 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
         lbMaxTemp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         lbNotification1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbNotification1.setForeground(new java.awt.Color(204, 0, 51));
 
         lbNotification2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbNotification2.setForeground(new java.awt.Color(204, 0, 51));
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(204, 0, 0));
@@ -394,6 +397,8 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
                 }
                 }
             if( listCity.size()> 0){
+                 lbNotification1.setText("");
+                  lbNotification2.setText("");
             SERVER.Model.City city = new SERVER.Model.City();
             city.setName(listCity.get(0));
             city.setClouds(Float.parseFloat(listCity.get(1)));
@@ -427,15 +432,14 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
                   });
               }
             }else{
-                lbNotification1.setText("Không có thông tin thành phố tìm kiếm");
-                lbNotification2.setText("Không có thông tin thời tiết");
+                lbNotification1.setText("No search city information available "+ getNameCitys(tmpMessage).get(0));
+                lbNotification2.setText("No weather information of city "+ getNameCitys(tmpMessage).get(0));
                   lbDescription.setText("");
                   lbMaxTemp.setText("");
                     lbMinTemp.setText("");
                      lbTemp.setText("");
                       lbWind.setText("");
                        lbClouds.setText("");
-                
             }
 	} catch (SocketException ex) {
             Logger.getLogger(CLIENT.CityGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -461,7 +465,7 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
                if( city.getClouds()== -6 && city.getTemperature()== -6 && city.getMax_Temperature() == -6 && 
                       city.getMin_Temperature() == -6 && city.getSpeedWind() == -6 &&
                     city.getDescriptionWeather().equals("")    ){
-                   lbNotification2.setText("Không có thông tin thời tiết");
+                  lbNotification2.setText("No search city information available "+ city.getName());
                }else{
                     if( city.getClouds()== -6){
                      lbClouds.setText("");
@@ -488,7 +492,15 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
             }
         }
     }//GEN-LAST:event_tbCityMouseClicked
-
+ private static List<String> getNameCitys(String url){
+        StringTokenizer st = new StringTokenizer(url, "$");   
+        List<String> arr = new ArrayList<>();
+         while (st.hasMoreTokens()) {
+           //  System.out.println(""+ st.nextToken());
+             arr.add(st.nextToken());
+         }
+       return arr;
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
       // ẩn cái form hiện tại 
