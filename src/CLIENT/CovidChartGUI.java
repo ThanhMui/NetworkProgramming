@@ -70,6 +70,7 @@ public class CovidChartGUI extends JFrame {
 	DatagramPacket sendPacket;
 	DatagramPacket receivePacket;
 	static byte[] receiveData;
+	static CovidChartGUI frame;
 
 	// hàm chuyển object sang byte
 	public static byte[] serialize(Object obj) throws IOException {
@@ -90,7 +91,7 @@ public class CovidChartGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CovidChartGUI frame = new CovidChartGUI();
+					frame = new CovidChartGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -206,10 +207,42 @@ public class CovidChartGUI extends JFrame {
 						listCovid = (ArrayList<CovidInfoModel>) maHoa(tmp);
 						
 						if (listCovid.size() <= 0) {
-							JFrame frame = new JFrame();
+							
+							Panel_Cases.removeAll();
+							Panel_Deaths.removeAll();
+							Panel_Recoverd.removeAll();
+							Panel_Cases.updateUI();
+							Panel_Deaths.updateUI();
+							Panel_Recoverd.updateUI();
+							
+							
+							tb_Cases.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
 
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							
+							tb_Deaths.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca tử vong" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							
+							tb_Recoverd.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca hồi phục" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							JFrame frame = new JFrame();
 							JOptionPane.showMessageDialog(frame, "Không có dữ liệu", "Thông báo",
 									JOptionPane.INFORMATION_MESSAGE);
+								
 						} else {
 							ChartPanel chart = LineChartCases("Số ca", listCovid);
 							chart.setBounds(0, 0, 480, 230);
@@ -305,6 +338,37 @@ public class CovidChartGUI extends JFrame {
 
 						// Gửi dữ liệu
 						if (listCovid.size() <= 0) {
+							Panel_Cases.removeAll();
+							Panel_Deaths.removeAll();
+							Panel_Recoverd.removeAll();
+							Panel_Cases.updateUI();
+							Panel_Deaths.updateUI();
+							Panel_Recoverd.updateUI();
+							
+							
+							tb_Cases.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							
+							tb_Deaths.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca tử vong" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							
+							tb_Recoverd.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca hồi phục" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
 							JFrame frame = new JFrame();
 
 							JOptionPane.showMessageDialog(frame, "Không có dữ liệu", "Thông báo",
@@ -382,10 +446,17 @@ public class CovidChartGUI extends JFrame {
 		btnBarChart.setBounds(1114, 43, 116, 29);
 		contentPane.add(btnBarChart);
 
-		JButton btnChiTiet = new JButton("Chi tiết");
-		btnChiTiet.setFont(new Font("Arial", Font.BOLD, 14));
-		btnChiTiet.setBounds(975, 98, 116, 32);
-		contentPane.add(btnChiTiet);
+		JButton btnBack = new JButton("BACK");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				frame.setVisible(false);
+//				MainGUI m = new MainGUI();
+//				m.setVisible(true);
+			}
+		});
+		btnBack.setFont(new Font("Arial", Font.BOLD, 16));
+		btnBack.setBounds(10, 1, 116, 32);
+		contentPane.add(btnBack);
 
 	}
 
@@ -465,7 +536,7 @@ public class CovidChartGUI extends JFrame {
 				"Ngày", // X-Axis Label
 				"Người", // Y-Axis Label
 				dataset);
-		chart.getPlot().setBackgroundPaint(Color.YELLOW);
+//		chart.getPlot().setBackgroundPaint(Color.YELLOW);
 		ChartPanel chartPanel = new ChartPanel(chart);
 		return chartPanel;
 	}
@@ -482,7 +553,7 @@ public class CovidChartGUI extends JFrame {
 				"Ngày", // X-Axis Label
 				"Người", // Y-Axis Label
 				dataset);
-		chart.getPlot().setBackgroundPaint(Color.BLUE);
+//		chart.getPlot().setBackgroundPaint(Color.BLUE);
 
 		ChartPanel chartPanel = new ChartPanel(chart);
 		return chartPanel;

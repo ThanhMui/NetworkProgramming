@@ -61,6 +61,8 @@ public class MainGUI extends javax.swing.JFrame {
         JButton btnCovidChart = new JButton("CovidChart");
         btnCovidChart.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		MainGUI m = new  MainGUI();
+        		m.setVisible(false);
         		CovidChartGUI covid;
                 covid = new CovidChartGUI();
 				covid.setVisible(true);
@@ -70,6 +72,9 @@ public class MainGUI extends javax.swing.JFrame {
         JButton btnCovidTop = new JButton("Covid Top");
         btnCovidTop.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		MainGUI m = new  MainGUI();
+        		m.setVisible(false);
+        		
         		CovidTopGUI c;
         		c = new CovidTopGUI();
         		c.setVisible(true);
