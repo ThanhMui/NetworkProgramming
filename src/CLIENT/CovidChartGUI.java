@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
+
+import javax.crypto.SecretKey;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -18,7 +20,12 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 
@@ -58,11 +65,11 @@ public class CovidChartGUI extends JFrame {
 
 	static DatagramSocket clientSocket;
 	static Scanner sc;
-	byte[] sendData;
+	static byte[] sendData;
 	InetAddress address;
 	DatagramPacket sendPacket;
 	DatagramPacket receivePacket;
-	byte[] receiveData;
+	static byte[] receiveData;
 
 	// hàm chuyển object sang byte
 	public static byte[] serialize(Object obj) throws IOException {
@@ -195,20 +202,9 @@ public class CovidChartGUI extends JFrame {
 							+ textDateEnd.getText().trim() + "$covid";
 
 					try {
-						clientSocket = new DatagramSocket();
-
-						// Gửi dữ liệu đến server
-						sendData = serialize(tmp.toString());
-						InetAddress address = InetAddress.getByName("localhost");
-						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-						clientSocket.send(sendPacket);
-
-						// Nhận dữ liệu từ server
-						receivePacket = new DatagramPacket(receiveData, receiveData.length);
-						clientSocket.receive(receivePacket);
-						listCovid = (ArrayList) deserialize(receivePacket.getData());
-						// số ca
-
+						// mã hóa 
+						listCovid = (ArrayList<CovidInfoModel>) maHoa(tmp);
+						
 						if (listCovid.size() <= 0) {
 							JFrame frame = new JFrame();
 
@@ -274,6 +270,9 @@ public class CovidChartGUI extends JFrame {
 					} catch (ClassNotFoundException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+					} catch (NoSuchAlgorithmException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 				}
 			}
@@ -300,22 +299,11 @@ public class CovidChartGUI extends JFrame {
 							+ textDateEnd.getText().trim() + "$covid";
 
 					try {
-						clientSocket = new DatagramSocket();
-						if (tmp.equalsIgnoreCase("bye")) {
-							clientSocket.close();
-							System.exit(0);
-						}
+						// xử lý mã hóa 
+						listCovid = (ArrayList<CovidInfoModel>) maHoa(tmp);
+						System.out.println(listCovid.toString());
 
 						// Gửi dữ liệu
-						sendData = serialize(tmp.toString());
-						InetAddress address = InetAddress.getByName("localhost");
-						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-						clientSocket.send(sendPacket);
-
-						// Nhận dữ liệu từ server
-						receivePacket = new DatagramPacket(receiveData, receiveData.length);
-						clientSocket.receive(receivePacket);
-						listCovid = (ArrayList) deserialize(receivePacket.getData());
 						if (listCovid.size() <= 0) {
 							JFrame frame = new JFrame();
 
@@ -381,6 +369,9 @@ public class CovidChartGUI extends JFrame {
 					} catch (IOException | InterruptedException e1) {
 						e1.printStackTrace();
 					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (NoSuchAlgorithmException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
@@ -495,6 +486,91 @@ public class CovidChartGUI extends JFrame {
 
 		ChartPanel chartPanel = new ChartPanel(chart);
 		return chartPanel;
+	}
+
+	public static List<CovidInfoModel> maHoa(String tmp)
+			throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
+		DatagramPacket receivePacket;
+		InetAddress address;
+		DatagramPacket sendPacket;
+		String sendTmp = "hello";
+		sendData = new byte[6553];
+		receiveData = new byte[6553];
+		SecretKey secretKey = null;
+		clientSocket = new DatagramSocket();
+		address = InetAddress.getByName("localhost");
+		Map<String, List<byte[]>> listDataSends = new HashMap<>();
+		Map<String, List<byte[]>> listDataReceives = new HashMap<>();
+		Map<String, PublicKey> listPublicKeys = new HashMap<>();
+		Map<String, List<byte[]>> listSecretKeys = new HashMap<>();
+
+		List<byte[]> listTmps = new ArrayList<>();
+		listTmps.add(sendTmp.getBytes());
+		listDataSends.put("send1", listTmps);
+		sendData = serialize(listDataSends);
+		sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+//        System.out.println("Client sent " + sendTmp + " to " + address.getHostAddress()
+//                + " from port " + clientSocket.getLocalPort());
+		clientSocket.send(sendPacket);
+		// DatagramPacket receivePacket = new DatagramPacket(receiveData,
+		// receiveData.length);
+		receivePacket = new DatagramPacket(receiveData, receiveData.length);
+		clientSocket.receive(receivePacket);
+		listPublicKeys = (HashMap) deserialize(receivePacket.getData());
+
+		if (listPublicKeys.containsKey("publicKey") && listPublicKeys.size() == 1) {
+			secretKey = Encrypt.AESUtils.generateKey();
+			PublicKey publicKey = listPublicKeys.get("publicKey");
+//        System.out.println("serec key: " + encrypt.Encrypt.convertSecretKeyToString(secretKey));
+			String encodedKey = Encrypt.Convert.convertSecretKeyToString(secretKey);
+			System.out.println("public key: " + listPublicKeys.get("publicKey"));
+//                        System.out.println("string: "+ encodedKey);
+//                       System.out.println("secret key: "+ secretKey.getFormat());
+			// emã hóa private key dùng public key vừa nhận dược từ server
+
+			byte[] encrypted = Encrypt.RSAUtils.encrypt(publicKey, encodedKey.getBytes());
+			List<byte[]> listEncrypt = new ArrayList<>();
+			listEncrypt.add(encrypted);
+			listSecretKeys.put("secretKey", listEncrypt);
+			sendData = serialize(listSecretKeys);
+			sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+//        System.out.println("Client sent " + listSecretKeys.get("secretKey") + " to " + address.getHostAddress()
+//                + " from port " + clientSocket.getLocalPort());
+			clientSocket.send(sendPacket);
+		}
+
+		////////// String tmp hereeeee////////////
+		byte[] tm = tmp.getBytes();
+		byte[] encryptedMesage = Encrypt.AESUtils.encrypt(secretKey, tm);
+		List<byte[]> listMessEnc = new ArrayList<>();
+		listMessEnc.add(encryptedMesage);
+		listDataSends.put("encMessage", listMessEnc);
+		sendData = serialize(listDataSends);
+
+		sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+
+//            System.out.println("Client sent " + sendData + " to " + address.getHostAddress()
+//                    + " from port " + clientSocket.getLocalPort());
+		clientSocket.send(sendPacket);
+		// receive message from server
+		receivePacket = new DatagramPacket(receiveData, receiveData.length);
+		clientSocket.receive(receivePacket);
+		listDataReceives = (HashMap) deserialize(receivePacket.getData());
+		List<CovidInfoModel> listnew = null;
+//		if (listDataReceives.containsKey("sendMessage") && listDataReceives.size() > 0) {
+//
+//			for (byte[] message : listDataReceives.get("sendMessage")) {
+//				System.out.println("message : " + message);
+//				System.out.println("secretKey : " + String.valueOf(secretKey));
+//				byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
+//				System.out.println("decrypt message: " + new String(decryptMessage));
+//				listnew = (List<CovidInfoModel>) deserialize(decryptMessage);
+//			}
+//		}
+		byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, listDataReceives.get("sendMessage").get(0));
+		System.out.println("In cái decrypt message: " + new String(decryptMessage));
+		listnew = (List<CovidInfoModel>) deserialize(decryptMessage);
+		return listnew;
 	}
 
 }
