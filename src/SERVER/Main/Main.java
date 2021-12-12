@@ -38,6 +38,7 @@ import javax.crypto.SecretKey;
  */
 public class Main {
 
+
 	public static byte[] serialize(Object obj) throws IOException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		ObjectOutputStream os = new ObjectOutputStream(out);
@@ -242,6 +243,7 @@ public class Main {
 
 						}
 						listMesagesSend.put("sendMessage", listEncrypt);
+
 //                sendData = serialize("test");
 						sendData = serialize(listMesagesSend);
 						InetAddress add = receivePacket.getAddress();

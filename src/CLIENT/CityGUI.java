@@ -391,10 +391,8 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
                     byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
                     System.out.println("decrypt message: "+ new String(decryptMessage));
                     listCity.add(new String(decryptMessage));
- 
                 }
-                
-        }
+                }
             if( listCity.size()> 0){
             SERVER.Model.City city = new SERVER.Model.City();
             city.setName(listCity.get(0));
@@ -430,6 +428,14 @@ public static Object deserialize(byte[] data) throws IOException, ClassNotFoundE
               }
             }else{
                 lbNotification1.setText("Không có thông tin thành phố tìm kiếm");
+                lbNotification2.setText("Không có thông tin thời tiết");
+                  lbDescription.setText("");
+                  lbMaxTemp.setText("");
+                    lbMinTemp.setText("");
+                     lbTemp.setText("");
+                      lbWind.setText("");
+                       lbClouds.setText("");
+                
             }
 	} catch (SocketException ex) {
             Logger.getLogger(CLIENT.CityGUI.class.getName()).log(Level.SEVERE, null, ex);

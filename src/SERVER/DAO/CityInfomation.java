@@ -59,6 +59,7 @@ public class CityInfomation {
    
    // tim list tp theo ten gan dung
    public static List<City> searchByNames(String txtSearch) {
+      
         List<City> list = new ArrayList<>();
         String query = "select * from City\n"
                 + "where name = ?";
@@ -164,15 +165,17 @@ public class CityInfomation {
 //       // }
 //        }
 //        System.out.println("i: "+ i);
-        try {
-           
-             List<City> searchByNames = searchByNames("Jalalabad");
-             for( City city : searchByNames){
-                 System.out.println("thành phố là : " + city.toString()); 
-             }
-        } catch (Exception e) {
-            System.out.println("Không có thành phố nào");
-        }
+//        try {
+//           
+//             List<City> searchByNames = searchByNames("Afghanistan");
+//             for( City city : searchByNames){
+//                 System.out.println("thành phố là : " + city.toString()); 
+//             }
+//        } catch (Exception e) {
+//            System.out.println("Không có thành phố nào");
+//        }
+            City searchCityByName =searchCityByName ("Kabul");
+            System.out.println("result: "+ searchCityByName.toString());
 //
 //            List<City> citysFull =  getInfoCityFull("Jalalabad");
 //            for( City city: citysFull){
