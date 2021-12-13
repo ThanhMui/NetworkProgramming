@@ -100,7 +100,7 @@ public class InfomationCovid {
 		CovidInfoModel data;
 		
 		JSONArray ar = new JSONArray(response.toString());
-		for(int i = 0; i< ar.length()-1; i++) {
+		for(int i = 0; i< ar.length(); i++) {
 			JSONObject oneDayData = ar.getJSONObject(i);
 			
 			int confirmed = oneDayData.getInt("confirmed");
