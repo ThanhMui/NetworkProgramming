@@ -22,6 +22,7 @@ public class MainGUI extends javax.swing.JFrame {
      * Creates new form MainGUI
      */
     public MainGUI() {
+        setResizable(false);
         initComponents();
     }
 
@@ -60,6 +61,8 @@ public class MainGUI extends javax.swing.JFrame {
         JButton btnCovidChart = new JButton("CovidChart");
         btnCovidChart.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		MainGUI m = new  MainGUI();
+        		m.setVisible(false);
         		CovidChartGUI covid;
                 covid = new CovidChartGUI();
 				covid.setVisible(true);
@@ -69,6 +72,9 @@ public class MainGUI extends javax.swing.JFrame {
         JButton btnCovidTop = new JButton("Covid Top");
         btnCovidTop.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		MainGUI m = new  MainGUI();
+        		m.setVisible(false);
+        		
         		CovidTopGUI c;
         		c = new CovidTopGUI();
         		c.setVisible(true);
@@ -120,6 +126,7 @@ public class MainGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         CountryGUI country;
         try {
+             this.setVisible(false);
             country = new CountryGUI();
               country.setVisible(true);
         } catch (SocketException ex) {
@@ -134,6 +141,7 @@ public class MainGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         CityGUI city;
         try {
+             this.setVisible(false);
             city = new CityGUI();
              city.setVisible(true);
         } catch (SocketException ex) {
@@ -167,7 +175,6 @@ public class MainGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -176,7 +183,7 @@ public class MainGUI extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

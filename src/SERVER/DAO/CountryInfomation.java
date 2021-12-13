@@ -177,8 +177,8 @@ public class CountryInfomation {
                         country.getLatitude(), country.getCurrencies(), country.getAlpha2Code(), country.getGeonameId(),
                         country.getFlag(), country.getCapital(),
                         country.getLanguages(), country.getNeighbours(),
-                        "",-6, "",
-                        -6, "", "", -6));
+                        "rong",-6, "rong",
+                        -6, "rong", "rong", -6));
             }
         }
         return listInfoCountryFulls;
