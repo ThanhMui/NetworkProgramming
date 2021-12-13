@@ -12,9 +12,12 @@ import org.json.JSONObject;
 import SERVER.Model.CovidInfoModel;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 //import java.net.http.HttpClient;
 //import java.net.http.HttpRequest;
 //import java.net.http.HttpResponse;
@@ -47,8 +50,18 @@ public class InfomationCovid {
 
 	}
 
+		public static String encodeURL(String value) {
+			try {
+				return URLEncoder.encode(value, StandardCharsets.UTF_8.toString()).replace("+", "%20");
+			} catch (UnsupportedEncodingException e) {
+				System.out.println("Loi encode url");
+				e.printStackTrace();
+			}
+			return value;
+		}
 // lấy dữ liệu từ api theo quốc gia, ngày, và trả về ds Covid
 //	public static ArrayList<CovidInfoModel> getDataCovid(String country, String minDate, String maxDate) throws IOException, InterruptedException {
+//		country = encodeURL(country);
 //		HttpRequest request = HttpRequest.newBuilder()
 //				.uri(URI.create("https://webhooks.mongodb-stitch.com/api/client/v2.0/app/covid-19-qppza/service/REST-API/incoming_webhook/countries_summary?country=" + country +"&min_date=" + minDate + "T00:00:00.000Z&max_date="+ maxDate +"T00:00:00.000Z&hide_fields=_id,%20uids,%20country_iso2s,%20states,%20combined_names,%20country_codes,%20country_iso3s"))
 //				.method("GET", HttpRequest.BodyPublishers.noBody())
@@ -77,6 +90,7 @@ public class InfomationCovid {
 //		return dataCovid;
 //	}
         public static ArrayList<CovidInfoModel> getDataCovid2(String country, String minDate, String maxDate) throws IOException, InterruptedException {
+        	country = encodeURL(country);
 		String url = "https://webhooks.mongodb-stitch.com/api/client/v2.0/app/covid-19-qppza/service/REST-API/incoming_webhook/countries_summary?country=" + country +"&min_date=" + minDate + "T00:00:00.000Z&max_date="+ maxDate +"T00:00:00.000Z&hide_fields=_id,%20uids,%20country_iso2s,%20states,%20combined_names,%20country_codes,%20country_iso3s";
 		URL obj;
 //		Country info = null;
