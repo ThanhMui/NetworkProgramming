@@ -14,6 +14,7 @@ import javax.swing.GroupLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 
 public class MainGUI extends javax.swing.JFrame {
@@ -37,7 +38,9 @@ public class MainGUI extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton1.setFont(new Font("Tahoma", Font.PLAIN, 18));
         jButton2 = new javax.swing.JButton();
+        jButton2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,18 +50,40 @@ public class MainGUI extends javax.swing.JFrame {
         jButton1.setText("Information City");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+            	MainGUI m = new  MainGUI();
+        		m.setVisible(false);
+        		
+        		try {
+        			CityGUI city;
+					city = new CityGUI();
+					city.setVisible(true);
+				} catch (SocketException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Lỗi chạy client");
+				}
             }
         });
 
         jButton2.setText("Information Country");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+            	MainGUI m = new  MainGUI();
+        		m.setVisible(false);
+        		
+        		try {
+        			CountryGUI country;
+					country = new CountryGUI();
+					country.setVisible(true);
+				} catch (SocketException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Lỗi chạy client");
+				}
+        		
             }
         });
         
         JButton btnCovidChart = new JButton("CovidChart");
+        btnCovidChart.setFont(new Font("Tahoma", Font.PLAIN, 18));
         btnCovidChart.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		MainGUI m = new  MainGUI();
@@ -81,74 +106,72 @@ public class MainGUI extends javax.swing.JFrame {
      
         	}
         });
-        btnCovidTop.setFont(new Font("Arial", Font.BOLD, 14));
+        btnCovidTop.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addContainerGap(240, Short.MAX_VALUE)
+        		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        			.addContainerGap(50, Short.MAX_VALUE)
+        			.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 460, GroupLayout.PREFERRED_SIZE)
+        			.addGap(50))
+        		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        			.addGap(68)
         			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 759, GroupLayout.PREFERRED_SIZE)
-        					.addGap(197))
-        				.addGroup(layout.createSequentialGroup()
-        					.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
-        						.addComponent(btnCovidChart, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        						.addComponent(jButton2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        					.addGap(79)
-        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(btnCovidTop, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE))
-        					.addGap(206))))
+        				.addComponent(btnCovidChart, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        				.addComponent(btnCovidTop, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        				.addComponent(jButton1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        				.addComponent(jButton2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
+        			.addGap(92))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-        			.addGap(18)
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(btnCovidChart)
-        				.addComponent(btnCovidTop))
-        			.addGap(85)
+        			.addGap(20)
         			.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(274, Short.MAX_VALUE))
+        			.addGap(18)
+        			.addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+        			.addGap(29)
+        			.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+        			.addGap(37)
+        			.addComponent(btnCovidTop, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+        			.addGap(31)
+        			.addComponent(btnCovidChart, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(56, Short.MAX_VALUE))
         );
         getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //button xem country
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        CountryGUI country;
-        try {
-             this.setVisible(false);
-            country = new CountryGUI();
-              country.setVisible(true);
-        } catch (SocketException ex) {
-            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      
-    }//GEN-LAST:event_jButton2ActionPerformed
+//    //button xem country
+//    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+//        // TODO add your handling code here:
+//        CountryGUI country;
+//        try {
+//             this.setVisible(false);
+//            country = new CountryGUI();
+//              country.setVisible(true);
+//        } catch (SocketException ex) {
+//            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//      
+//    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     //button xem city
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        CityGUI city;
-        try {
-             this.setVisible(false);
-            city = new CityGUI();
-             city.setVisible(true);
-        } catch (SocketException ex) {
-            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-    }//GEN-LAST:event_jButton1ActionPerformed
+//    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+//        // TODO add your handling code here:
+//        CityGUI city;
+//        try {
+//             this.setVisible(false);
+//            city = new CityGUI();
+//             city.setVisible(true);
+//        } catch (SocketException ex) {
+//            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//       
+//    }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * @param args the command line arguments
      */

@@ -10,6 +10,8 @@ import java.awt.Color;
 
 import javax.crypto.SecretKey;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
@@ -22,7 +24,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,13 +44,14 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import SERVER.Model.CovidInfoModel;
-import SERVER.Entity.InfomationCovid;
 
 //import CovidChartDemo.InfomationCovid;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -93,6 +99,7 @@ public class CovidChartGUI extends JFrame {
 				try {
 					frame = new CovidChartGUI();
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -104,7 +111,7 @@ public class CovidChartGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public CovidChartGUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(0, 0, 1280, 880);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -116,11 +123,11 @@ public class CovidChartGUI extends JFrame {
 		contentPane.add(Panel_Cases);
 
 		JScrollPane Panel_Deaths = new JScrollPane();
-		Panel_Deaths.setBounds(10, 313, 488, 230);
+		Panel_Deaths.setBounds(10, 294, 488, 230);
 		contentPane.add(Panel_Deaths);
 
 		JScrollPane Panel_Recoverd = new JScrollPane();
-		Panel_Recoverd.setBounds(10, 581, 488, 230);
+		Panel_Recoverd.setBounds(10, 549, 488, 230);
 		contentPane.add(Panel_Recoverd);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -137,13 +144,20 @@ public class CovidChartGUI extends JFrame {
 		lblCountry.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblCountry.setBounds(975, 140, 96, 31);
 		contentPane.add(lblCountry);
+		
+		DateFormat displayFormat = new SimpleDateFormat("dd-MM-yyyy");
+	    DateFormatter displayFormatter = new DateFormatter(displayFormat);
+	    DateFormat editFormat = new SimpleDateFormat("dd-MM-yyyy");
+	    DateFormatter editFormatter = new DateFormatter(editFormat);
+	    DefaultFormatterFactory factory = new DefaultFormatterFactory(displayFormatter,
+	        displayFormatter, editFormatter);
 
 		JLabel lblDateStart = new JLabel("Ngày bắt đầu");
 		lblDateStart.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblDateStart.setBounds(975, 234, 96, 31);
 		contentPane.add(lblDateStart);
 
-		txtDateStart = new JTextField();
+		txtDateStart = new JFormattedTextField(factory, new Date());
 		txtDateStart.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtDateStart.setColumns(10);
 		txtDateStart.setBounds(975, 275, 116, 27);
@@ -154,11 +168,12 @@ public class CovidChartGUI extends JFrame {
 		lblNgyKtThc.setBounds(975, 327, 96, 31);
 		contentPane.add(lblNgyKtThc);
 
-		textDateEnd = new JTextField();
+		textDateEnd = new JFormattedTextField(factory, new Date());
 		textDateEnd.setFont(new Font("Arial", Font.PLAIN, 14));
 		textDateEnd.setColumns(10);
 		textDateEnd.setBounds(975, 368, 116, 27);
 		contentPane.add(textDateEnd);
+		
 		tb_Cases = new JTable();
 		tb_Cases.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca" }) {
 			Class[] columnTypes = new Class[] { String.class, String.class };
@@ -170,7 +185,7 @@ public class CovidChartGUI extends JFrame {
 		scrollPane.setViewportView(tb_Cases);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(574, 313, 367, 230);
+		scrollPane_1.setBounds(574, 294, 367, 230);
 		contentPane.add(scrollPane_1);
 
 		tb_Deaths = new JTable();
@@ -178,7 +193,7 @@ public class CovidChartGUI extends JFrame {
 		scrollPane_1.setViewportView(tb_Deaths);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(574, 581, 367, 230);
+		scrollPane_2.setBounds(574, 549, 367, 230);
 		contentPane.add(scrollPane_2);
 
 		tb_Recoverd = new JTable();
@@ -197,10 +212,16 @@ public class CovidChartGUI extends JFrame {
 
 					JOptionPane.showMessageDialog(frame, "Thiếu dữ liệu nhập vào", "Thông báo",
 							JOptionPane.INFORMATION_MESSAGE);
+				} else if(!(CheckValidate.checkValiDate(textDateEnd.getText().trim()) || CheckValidate.checkValiDate(txtDateStart.getText().trim()) || CheckValidate.checkValiText(txtCountry.getText().trim()))){
+					JFrame frame = new JFrame();
+
+					JOptionPane.showMessageDialog(frame, "Sai dữ liệu nhập vào", "Thông báo",
+							JOptionPane.INFORMATION_MESSAGE);
 				} else {
+					
 					// tạo chuỗi để gửi sang server
-					String tmp = txtCountry.getText().trim() + "," + txtDateStart.getText().trim() + ","
-							+ textDateEnd.getText().trim() + "$covid";
+					String tmp = txtCountry.getText().trim() + "," + CheckValidate.dateFormat(txtDateStart.getText().trim()) + ","
+							+ CheckValidate.dateFormat(textDateEnd.getText().trim()) + "$covid";
 
 					try {
 						// mã hóa 
@@ -327,9 +348,14 @@ public class CovidChartGUI extends JFrame {
 
 					JOptionPane.showMessageDialog(frame, "Thiếu dữ liệu nhập vào", "Thông báo",
 							JOptionPane.INFORMATION_MESSAGE);
+				} else if(!(CheckValidate.checkValiDate(textDateEnd.getText().trim()) || CheckValidate.checkValiDate(txtDateStart.getText().trim()) || CheckValidate.checkValiText(txtCountry.getText().trim()))){
+					JFrame frame = new JFrame();
+
+					JOptionPane.showMessageDialog(frame, "Sai dữ liệu nhập vào", "Thông báo",
+							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					String tmp = txtCountry.getText().trim() + "," + txtDateStart.getText().trim() + ","
-							+ textDateEnd.getText().trim() + "$covid";
+					String tmp = txtCountry.getText().trim() + "," + CheckValidate.dateFormat(txtDateStart.getText().trim()) + ","
+							+ CheckValidate.dateFormat(textDateEnd.getText().trim()) + "$covid";
 
 					try {
 						// xử lý mã hóa 
@@ -565,8 +591,8 @@ public class CovidChartGUI extends JFrame {
 		InetAddress address;
 		DatagramPacket sendPacket;
 		String sendTmp = "hello";
-		sendData = new byte[6553];
-		receiveData = new byte[6553];
+		sendData = new byte[65536];
+		receiveData = new byte[65536];
 		SecretKey secretKey = null;
 		clientSocket = new DatagramSocket();
 		address = InetAddress.getByName("localhost");
@@ -643,5 +669,7 @@ public class CovidChartGUI extends JFrame {
 		listnew = (List<CovidInfoModel>) deserialize(decryptMessage);
 		return listnew;
 	}
+	
+	
 
 }
