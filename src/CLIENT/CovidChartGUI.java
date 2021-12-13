@@ -10,6 +10,8 @@ import java.awt.Color;
 
 import javax.crypto.SecretKey;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
@@ -20,11 +22,12 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,15 +43,15 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import SERVER.Model.City;
 import SERVER.Model.CovidInfoModel;
-import SERVER.Entity.InfomationCovid;
 
 //import CovidChartDemo.InfomationCovid;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -73,6 +76,7 @@ public class CovidChartGUI extends JFrame {
 	DatagramPacket sendPacket;
 	DatagramPacket receivePacket;
 	static byte[] receiveData;
+	static CovidChartGUI frame;
 
 	// hàm chuyển object sang byte
 	public static byte[] serialize(Object obj) throws IOException {
@@ -93,8 +97,9 @@ public class CovidChartGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CovidChartGUI frame = new CovidChartGUI();
+					frame = new CovidChartGUI();
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -106,7 +111,7 @@ public class CovidChartGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public CovidChartGUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(0, 0, 1280, 880);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -118,11 +123,11 @@ public class CovidChartGUI extends JFrame {
 		contentPane.add(Panel_Cases);
 
 		JScrollPane Panel_Deaths = new JScrollPane();
-		Panel_Deaths.setBounds(10, 313, 488, 230);
+		Panel_Deaths.setBounds(10, 294, 488, 230);
 		contentPane.add(Panel_Deaths);
 
 		JScrollPane Panel_Recoverd = new JScrollPane();
-		Panel_Recoverd.setBounds(10, 581, 488, 230);
+		Panel_Recoverd.setBounds(10, 549, 488, 230);
 		contentPane.add(Panel_Recoverd);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -139,13 +144,20 @@ public class CovidChartGUI extends JFrame {
 		lblCountry.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblCountry.setBounds(975, 140, 96, 31);
 		contentPane.add(lblCountry);
+		
+		DateFormat displayFormat = new SimpleDateFormat("dd-MM-yyyy");
+	    DateFormatter displayFormatter = new DateFormatter(displayFormat);
+	    DateFormat editFormat = new SimpleDateFormat("dd-MM-yyyy");
+	    DateFormatter editFormatter = new DateFormatter(editFormat);
+	    DefaultFormatterFactory factory = new DefaultFormatterFactory(displayFormatter,
+	        displayFormatter, editFormatter);
 
 		JLabel lblDateStart = new JLabel("Ngày bắt đầu");
 		lblDateStart.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblDateStart.setBounds(975, 234, 96, 31);
 		contentPane.add(lblDateStart);
 
-		txtDateStart = new JTextField();
+		txtDateStart = new JFormattedTextField(factory, new Date());
 		txtDateStart.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtDateStart.setColumns(10);
 		txtDateStart.setBounds(975, 275, 116, 27);
@@ -156,11 +168,12 @@ public class CovidChartGUI extends JFrame {
 		lblNgyKtThc.setBounds(975, 327, 96, 31);
 		contentPane.add(lblNgyKtThc);
 
-		textDateEnd = new JTextField();
+		textDateEnd = new JFormattedTextField(factory, new Date());
 		textDateEnd.setFont(new Font("Arial", Font.PLAIN, 14));
 		textDateEnd.setColumns(10);
 		textDateEnd.setBounds(975, 368, 116, 27);
 		contentPane.add(textDateEnd);
+		
 		tb_Cases = new JTable();
 		tb_Cases.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca" }) {
 			Class[] columnTypes = new Class[] { String.class, String.class };
@@ -172,7 +185,7 @@ public class CovidChartGUI extends JFrame {
 		scrollPane.setViewportView(tb_Cases);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(574, 313, 367, 230);
+		scrollPane_1.setBounds(574, 294, 367, 230);
 		contentPane.add(scrollPane_1);
 
 		tb_Deaths = new JTable();
@@ -180,7 +193,7 @@ public class CovidChartGUI extends JFrame {
 		scrollPane_1.setViewportView(tb_Deaths);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(574, 581, 367, 230);
+		scrollPane_2.setBounds(574, 549, 367, 230);
 		contentPane.add(scrollPane_2);
 
 		tb_Recoverd = new JTable();
@@ -199,22 +212,58 @@ public class CovidChartGUI extends JFrame {
 
 					JOptionPane.showMessageDialog(frame, "Thiếu dữ liệu nhập vào", "Thông báo",
 							JOptionPane.INFORMATION_MESSAGE);
+				} else if(!(CheckValidate.checkValiDate(textDateEnd.getText().trim()) || CheckValidate.checkValiDate(txtDateStart.getText().trim()) || CheckValidate.checkValiText(txtCountry.getText().trim()))){
+					JFrame frame = new JFrame();
+
+					JOptionPane.showMessageDialog(frame, "Sai dữ liệu nhập vào", "Thông báo",
+							JOptionPane.INFORMATION_MESSAGE);
 				} else {
+					
 					// tạo chuỗi để gửi sang server
-					String tmp = txtCountry.getText().trim() + "," + txtDateStart.getText().trim() + ","
-							+ textDateEnd.getText().trim() + "$covid";
+					String tmp = txtCountry.getText().trim() + "," + CheckValidate.dateFormat(txtDateStart.getText().trim()) + ","
+							+ CheckValidate.dateFormat(textDateEnd.getText().trim()) + "$covid";
 
 					try {
-					//////////////////////////////////////////////////
-					//////////////////////////////////////////////////
+						// mã hóa 
 						listCovid = (ArrayList<CovidInfoModel>) maHoa(tmp);
-						// số ca
-
+						
 						if (listCovid.size() <= 0) {
-							JFrame frame = new JFrame();
+							
+							Panel_Cases.removeAll();
+							Panel_Deaths.removeAll();
+							Panel_Recoverd.removeAll();
+							Panel_Cases.updateUI();
+							Panel_Deaths.updateUI();
+							Panel_Recoverd.updateUI();
+							
+							
+							tb_Cases.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
 
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							
+							tb_Deaths.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca tử vong" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							
+							tb_Recoverd.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca hồi phục" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							JFrame frame = new JFrame();
 							JOptionPane.showMessageDialog(frame, "Không có dữ liệu", "Thông báo",
 									JOptionPane.INFORMATION_MESSAGE);
+								
 						} else {
 							ChartPanel chart = LineChartCases("Số ca", listCovid);
 							chart.setBounds(0, 0, 480, 230);
@@ -299,15 +348,53 @@ public class CovidChartGUI extends JFrame {
 
 					JOptionPane.showMessageDialog(frame, "Thiếu dữ liệu nhập vào", "Thông báo",
 							JOptionPane.INFORMATION_MESSAGE);
+				} else if(!(CheckValidate.checkValiDate(textDateEnd.getText().trim()) || CheckValidate.checkValiDate(txtDateStart.getText().trim()) || CheckValidate.checkValiText(txtCountry.getText().trim()))){
+					JFrame frame = new JFrame();
+
+					JOptionPane.showMessageDialog(frame, "Sai dữ liệu nhập vào", "Thông báo",
+							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					String tmp = txtCountry.getText().trim() + "," + txtDateStart.getText().trim() + ","
-							+ textDateEnd.getText().trim() + "$covid";
+					String tmp = txtCountry.getText().trim() + "," + CheckValidate.dateFormat(txtDateStart.getText().trim()) + ","
+							+ CheckValidate.dateFormat(textDateEnd.getText().trim()) + "$covid";
 
 					try {
-						//////////////////////////////////////////////////
-						//////////////////////////////////////////////////
+						// xử lý mã hóa 
 						listCovid = (ArrayList<CovidInfoModel>) maHoa(tmp);
+						System.out.println(listCovid.toString());
+
+						// Gửi dữ liệu
 						if (listCovid.size() <= 0) {
+							Panel_Cases.removeAll();
+							Panel_Deaths.removeAll();
+							Panel_Recoverd.removeAll();
+							Panel_Cases.updateUI();
+							Panel_Deaths.updateUI();
+							Panel_Recoverd.updateUI();
+							
+							
+							tb_Cases.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							
+							tb_Deaths.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca tử vong" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
+							
+							tb_Recoverd.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca hồi phục" }) {
+								Class[] columnTypes = new Class[] { String.class, String.class };
+
+								public Class getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
 							JFrame frame = new JFrame();
 
 							JOptionPane.showMessageDialog(frame, "Không có dữ liệu", "Thông báo",
@@ -385,10 +472,17 @@ public class CovidChartGUI extends JFrame {
 		btnBarChart.setBounds(1114, 43, 116, 29);
 		contentPane.add(btnBarChart);
 
-		JButton btnChiTiet = new JButton("Chi tiết");
-		btnChiTiet.setFont(new Font("Arial", Font.BOLD, 14));
-		btnChiTiet.setBounds(975, 98, 116, 32);
-		contentPane.add(btnChiTiet);
+		JButton btnBack = new JButton("BACK");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				frame.setVisible(false);
+//				MainGUI m = new MainGUI();
+//				m.setVisible(true);
+			}
+		});
+		btnBack.setFont(new Font("Arial", Font.BOLD, 16));
+		btnBack.setBounds(10, 1, 116, 32);
+		contentPane.add(btnBack);
 
 	}
 
@@ -468,7 +562,7 @@ public class CovidChartGUI extends JFrame {
 				"Ngày", // X-Axis Label
 				"Người", // Y-Axis Label
 				dataset);
-		chart.getPlot().setBackgroundPaint(Color.YELLOW);
+//		chart.getPlot().setBackgroundPaint(Color.YELLOW);
 		ChartPanel chartPanel = new ChartPanel(chart);
 		return chartPanel;
 	}
@@ -485,90 +579,97 @@ public class CovidChartGUI extends JFrame {
 				"Ngày", // X-Axis Label
 				"Người", // Y-Axis Label
 				dataset);
-		chart.getPlot().setBackgroundPaint(Color.BLUE);
+//		chart.getPlot().setBackgroundPaint(Color.BLUE);
 
 		ChartPanel chartPanel = new ChartPanel(chart);
 		return chartPanel;
 	}
 
-	public static List<CovidInfoModel> maHoa(String tmp) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
+	public static List<CovidInfoModel> maHoa(String tmp)
+			throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
 		DatagramPacket receivePacket;
-        InetAddress address;
-        DatagramPacket sendPacket;
-        String sendTmp = "hello";
-        sendData = new byte[6553];
-        receiveData = new byte[6553];
-        SecretKey secretKey = null;
-        clientSocket = new DatagramSocket();
-        address = InetAddress.getByName("localhost");
-         Map<String, List<byte[]>> listDataSends = new HashMap<>();
-         Map<String, List<byte[]>> listDataReceives = new HashMap<>();
-         Map<String, PublicKey> listPublicKeys = new HashMap<>();
-         Map<String,List<byte[]>> listSecretKeys = new HashMap<>();
-        
-        List<byte[]> listTmps = new ArrayList<>();
-        listTmps.add(sendTmp.getBytes());
-        listDataSends.put("send1",listTmps);
-        sendData = serialize(listDataSends);
-        sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+		InetAddress address;
+		DatagramPacket sendPacket;
+		String sendTmp = "hello";
+		sendData = new byte[65536];
+		receiveData = new byte[65536];
+		SecretKey secretKey = null;
+		clientSocket = new DatagramSocket();
+		address = InetAddress.getByName("localhost");
+		Map<String, List<byte[]>> listDataSends = new HashMap<>();
+		Map<String, List<byte[]>> listDataReceives = new HashMap<>();
+		Map<String, PublicKey> listPublicKeys = new HashMap<>();
+		Map<String, List<byte[]>> listSecretKeys = new HashMap<>();
+
+		List<byte[]> listTmps = new ArrayList<>();
+		listTmps.add(sendTmp.getBytes());
+		listDataSends.put("send1", listTmps);
+		sendData = serialize(listDataSends);
+		sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
 //        System.out.println("Client sent " + sendTmp + " to " + address.getHostAddress()
 //                + " from port " + clientSocket.getLocalPort());
-        clientSocket.send(sendPacket);
-        // DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        clientSocket.receive(receivePacket);
-        listPublicKeys =(HashMap) deserialize(receivePacket.getData());
-        
-        if( listPublicKeys.containsKey("publicKey") && listPublicKeys.size()== 1){
-             secretKey = Encrypt.AESUtils.generateKey();
-             PublicKey publicKey = listPublicKeys.get("publicKey");
+		clientSocket.send(sendPacket);
+		// DatagramPacket receivePacket = new DatagramPacket(receiveData,
+		// receiveData.length);
+		receivePacket = new DatagramPacket(receiveData, receiveData.length);
+		clientSocket.receive(receivePacket);
+		listPublicKeys = (HashMap) deserialize(receivePacket.getData());
+
+		if (listPublicKeys.containsKey("publicKey") && listPublicKeys.size() == 1) {
+			secretKey = Encrypt.AESUtils.generateKey();
+			PublicKey publicKey = listPublicKeys.get("publicKey");
 //        System.out.println("serec key: " + encrypt.Encrypt.convertSecretKeyToString(secretKey));
-        String encodedKey = Encrypt.Convert.convertSecretKeyToString(secretKey);
-        System.out.println("public key: "+ listPublicKeys.get("publicKey"));
+			String encodedKey = Encrypt.Convert.convertSecretKeyToString(secretKey);
+			System.out.println("public key: " + listPublicKeys.get("publicKey"));
 //                        System.out.println("string: "+ encodedKey);
 //                       System.out.println("secret key: "+ secretKey.getFormat());
-        // emã hóa private key dùng public key vừa nhận dược từ server
-        
-        byte[] encrypted = Encrypt.RSAUtils.encrypt(publicKey, encodedKey.getBytes());
-        List<byte[]> listEncrypt = new ArrayList<>();
-        listEncrypt.add(encrypted);
-        listSecretKeys.put("secretKey",listEncrypt );
-        sendData = serialize(listSecretKeys);
-        sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+			// emã hóa private key dùng public key vừa nhận dược từ server
+
+			byte[] encrypted = Encrypt.RSAUtils.encrypt(publicKey, encodedKey.getBytes());
+			List<byte[]> listEncrypt = new ArrayList<>();
+			listEncrypt.add(encrypted);
+			listSecretKeys.put("secretKey", listEncrypt);
+			sendData = serialize(listSecretKeys);
+			sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
 //        System.out.println("Client sent " + listSecretKeys.get("secretKey") + " to " + address.getHostAddress()
 //                + " from port " + clientSocket.getLocalPort());
-        clientSocket.send(sendPacket);
-        }
-     
-            //////////String tmp hereeeee////////////
-            byte[]tm= tmp.getBytes();
-             byte[] encryptedMesage = Encrypt.AESUtils.encrypt(secretKey, tm);
-             List<byte[]> listMessEnc =new ArrayList<>();
-             listMessEnc.add(encryptedMesage);
-             listDataSends.put("encMessage", listMessEnc);
-            sendData = serialize(listDataSends);
-             
-            sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
-            
+			clientSocket.send(sendPacket);
+		}
+
+		////////// String tmp hereeeee////////////
+		byte[] tm = tmp.getBytes();
+		byte[] encryptedMesage = Encrypt.AESUtils.encrypt(secretKey, tm);
+		List<byte[]> listMessEnc = new ArrayList<>();
+		listMessEnc.add(encryptedMesage);
+		listDataSends.put("encMessage", listMessEnc);
+		sendData = serialize(listDataSends);
+
+		sendPacket = new DatagramPacket(sendData, sendData.length, address, 3333);
+
 //            System.out.println("Client sent " + sendData + " to " + address.getHostAddress()
 //                    + " from port " + clientSocket.getLocalPort());
-            clientSocket.send(sendPacket);
-        // receive message from server
-        receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        clientSocket.receive(receivePacket);
-        listDataReceives =(HashMap)deserialize(receivePacket.getData());
-        // getInfoCityFulls  = (ArrayList)deserialize(receivePacket.getData());
-         List<CovidInfoModel> listnew = null;
-        if( listDataReceives.containsKey("sendMessage") && listDataReceives.size()> 0){
-        	
-            for( byte[] message: listDataReceives.get("sendMessage")){
-                System.out.println("message : "+ message);
-                System.out.println("secretKey : "+String.valueOf(secretKey));
-                byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
-                System.out.println("decrypt message: " + new String(decryptMessage));
-                listnew = (List<CovidInfoModel>) deserialize(decryptMessage);
-            }
-        }
-        return listnew;
+		clientSocket.send(sendPacket);
+		// receive message from server
+		receivePacket = new DatagramPacket(receiveData, receiveData.length);
+		clientSocket.receive(receivePacket);
+		listDataReceives = (HashMap) deserialize(receivePacket.getData());
+		List<CovidInfoModel> listnew = null;
+//		if (listDataReceives.containsKey("sendMessage") && listDataReceives.size() > 0) {
+//
+//			for (byte[] message : listDataReceives.get("sendMessage")) {
+//				System.out.println("message : " + message);
+//				System.out.println("secretKey : " + String.valueOf(secretKey));
+//				byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, message);
+//				System.out.println("decrypt message: " + new String(decryptMessage));
+//				listnew = (List<CovidInfoModel>) deserialize(decryptMessage);
+//			}
+//		}
+		byte[] decryptMessage = Encrypt.AESUtils.decrypt(secretKey, listDataReceives.get("sendMessage").get(0));
+		System.out.println("In cái decrypt message: " + new String(decryptMessage));
+		listnew = (List<CovidInfoModel>) deserialize(decryptMessage);
+		return listnew;
 	}
+	
+	
+
 }

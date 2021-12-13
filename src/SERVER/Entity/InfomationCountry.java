@@ -150,8 +150,12 @@ public class InfomationCountry {
 
 			obj = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                        connection.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			connection.connect();
 			int responseCode = connection.getResponseCode();
-			System.out.println("response= " + responseCode);
+                        if( responseCode == 200){
+                            System.out.println("response= " + responseCode);
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
@@ -177,6 +181,8 @@ public class InfomationCountry {
 				System.out.println("ìno" + info.getContinentName() + "ds: " + info.getPopulation());
 			}
 			in.close();
+                        }
+			
 		} catch (MalformedURLException ex) {
 			Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -196,8 +202,13 @@ public class InfomationCountry {
 		try {
 			obj = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                         connection.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			connection.connect();
+                        
 			int responseCode = connection.getResponseCode();
-			System.out.println("response= " + responseCode);
+                        if( responseCode == 200){
+                            System.out.println("response= " + responseCode);
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
@@ -215,7 +226,6 @@ public class InfomationCountry {
 				// String capital = obCountrys.getString("capital");
 				int population = obCountrys.getInt("population");
 				String currencies = null;
-				
 				try {
 					JSONArray json = obCountrys.getJSONArray("currencies");
 					for (int k = 0; k < json.length(); k++) {
@@ -252,6 +262,8 @@ public class InfomationCountry {
 				l++;
 			}
 			in.close();
+                        }
+			
 		} catch (MalformedURLException ex) {
 			Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -268,8 +280,13 @@ public class InfomationCountry {
 		try {
 			obj = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                        connection.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			connection.connect();
+                        
 			int responseCode = connection.getResponseCode();
-			System.out.println("response= " + responseCode);
+                         System.out.println("response= " + responseCode);
+                        if( responseCode == 200){
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
@@ -298,6 +315,8 @@ public class InfomationCountry {
 			} catch (Exception e) {
 			}
 			in.close();
+                        }
+			
 		} catch (MalformedURLException ex) {
 			Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -319,9 +338,13 @@ public class InfomationCountry {
 		try {
 			obj = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                        connection.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			connection.connect();
 			int responseCode = connection.getResponseCode();
-			System.out.println("response= " + responseCode);
-			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        System.out.println("response= " + responseCode);
+                        if( responseCode == 200){
+                            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
 			while ((inputLine = in.readLine()) != null) {
@@ -346,6 +369,9 @@ public class InfomationCountry {
 				listInfos.add(info);
 			}
 			in.close();
+                        }
+			
+			
 		} catch (MalformedURLException ex) {
 			Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -360,9 +386,13 @@ public class InfomationCountry {
 		try {
 			obj = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                         connection.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			connection.connect();
 			int responseCode = connection.getResponseCode();
-			System.out.println("response= " + responseCode);
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        System.out.println("response= " + responseCode);
+                        if( responseCode == 200){
+                            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
 			while ((inputLine = in.readLine()) != null) {
@@ -386,6 +416,9 @@ public class InfomationCountry {
 				}
 			}
 			in.close();
+                        }
+			
+			
 		} catch (MalformedURLException ex) {
 			Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -418,9 +451,13 @@ public class InfomationCountry {
 		try {
 			obj = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+                         connection.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			connection.connect();
 			int responseCode = connection.getResponseCode();
 			System.out.println("response= " + responseCode);
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        if( responseCode == 200){
+                            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
 			while ((inputLine = in.readLine()) != null) {
@@ -443,6 +480,8 @@ public class InfomationCountry {
 				listGeonameId.add(new GeoName(geonameId, flag, capital, language));
 			}
 			in.close();
+                        }
+			
 		} catch (MalformedURLException ex) {
 			Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
 		}
