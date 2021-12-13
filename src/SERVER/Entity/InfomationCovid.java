@@ -125,7 +125,7 @@ public class InfomationCovid {
 			int population = oneDayData.getInt("population");
 			int confirmed_daily = oneDayData.getInt("confirmed_daily");
 			int deaths_daily = oneDayData.getInt("deaths_daily");
-			int recovered_daily = oneDayData.getInt("population");
+			int recovered_daily = oneDayData.getInt("recovered_daily");
 			data = new CovidInfoModel(confirmed, deaths, recovered, active, date, population, confirmed_daily, deaths_daily, recovered_daily);
 			dataCovid.add(data);
 		}	
