@@ -41,31 +41,6 @@ public class InformationCovidTop {
 
 	}
 
-//	public static void getData () throws IOException, InterruptedException{
-//		HttpRequest request = HttpRequest.newBuilder()
-//				.uri(URI.create("https://corona.lmao.ninja/v2/countries?yesterday&sort"))
-//				.method("GET", HttpRequest.BodyPublishers.noBody())
-//				.build();
-//		HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());	
-//		dataCovid = new ArrayList<CovidTopModel>();
-//		JSONArray arr = new JSONArray(response.body());
-//		CovidTopModel data;
-//		for (int i =0; i<arr.length()-1;i++) {
-//			JSONObject ob = arr.getJSONObject(i);
-//			String country = ob.getString("country");
-//			int cases = ob.getInt("cases");
-//			int deaths = ob.getInt("deaths");
-//			int recovered = ob.getInt("recovered");
-//			int active = ob.getInt("active");
-//			int population = ob.getInt("population");
-//			
-//			JSONObject jsonCountry = ob.getJSONObject("countryInfo");			
-//			String flag = jsonCountry.getString("flag");
-//			data = new CovidTopModel(country, cases, deaths, recovered, active,population, flag);
-//			dataCovid.add(data);
-//			
-//		}
-//	}
 
 	public static void getData() throws IOException, InterruptedException {
 		String url = "https://corona.lmao.ninja/v2/countries?yesterday&sort";
@@ -95,7 +70,7 @@ public class InformationCovidTop {
 			JSONArray arr = new JSONArray(response.toString());
 			CovidTopModel data;
 		    ArrayList<CovidTopModel> dataCovid = new ArrayList<CovidTopModel>();
-			for (int i = 0; i < arr.length() - 1; i++) {
+			for (int i = 0; i < arr.length(); i++) {
 				JSONObject ob = arr.getJSONObject(i);
 				String country = ob.getString("country");
 				int cases = ob.getInt("cases");
@@ -119,32 +94,6 @@ public class InformationCovidTop {
 		}
 	}
 
-//	public static ArrayList<CovidTopModel> getData2 () throws IOException, InterruptedException{
-//		HttpRequest request = HttpRequest.newBuilder()
-//				.uri(URI.create("https://corona.lmao.ninja/v2/countries?yesterday&sort"))
-//				.method("GET", HttpRequest.BodyPublishers.noBody())
-//				.build();
-//		HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());	
-//		ArrayList<CovidTopModel> dataCovid = new ArrayList<CovidTopModel>();
-//		JSONArray arr = new JSONArray(response.body());
-//		CovidTopModel data;
-//		for (int i =0; i<arr.length()-1;i++) {
-//			JSONObject ob = arr.getJSONObject(i);
-//			String country = ob.getString("country");
-//			int cases = ob.getInt("cases");
-//			int deaths = ob.getInt("deaths");
-//			int recovered = ob.getInt("recovered");
-//			int active = ob.getInt("active");
-//			int population = ob.getInt("population");
-//			
-//			JSONObject jsonCountry = ob.getJSONObject("countryInfo");			
-//			String flag = jsonCountry.getString("flag");
-//			data = new CovidTopModel(country, cases, deaths, recovered, active, population,flag);
-//			dataCovid.add(data);			
-//		}
-////		System.out.println(dataCovid.toString());
-//		return dataCovid;
-//	}
 	public static ArrayList<CovidTopModel> getData22() throws IOException, InterruptedException {
 		String url = "https://corona.lmao.ninja/v2/countries?yesterday&sort";
 		URL obj;
@@ -174,7 +123,7 @@ public class InformationCovidTop {
 			CovidTopModel data;
 			JSONArray arr1 = new JSONArray(response.toString());
 			CovidTopModel data1;
-			for (int i = 0; i < arr1.length() - 1; i++) {
+			for (int i = 0; i < arr1.length(); i++) {
 				JSONObject ob = arr1.getJSONObject(i);
 				String country = ob.getString("country");
 				int cases = ob.getInt("cases");
@@ -245,6 +194,7 @@ public class InformationCovidTop {
 	}
 
 }
-
+// nếu lmao.nịna lỗi thì dùng api dòng đầu tiên
+//https://disease.sh/v3/covid-19/countries?yesterday=yesterday&sort=sort
 //https://covidtrackerapi.bsg.ox.ac.uk/api/v2/stringency/date-range/2021-11-01/2021-11-30
 //https://corona.lmao.ninja/v2/countries?yesterday&sort

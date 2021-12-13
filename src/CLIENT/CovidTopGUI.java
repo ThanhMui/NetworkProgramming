@@ -38,6 +38,8 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +54,7 @@ import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import SERVER.Entity.InformationCovidTop;
+//import SERVER.Entity.InformationCovidTop;
 import SERVER.Model.CovidTopModel;
 
 public class CovidTopGUI extends JFrame {
@@ -219,7 +221,7 @@ public class CovidTopGUI extends JFrame {
 		btnCases.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				choose = 0;
-				InformationCovidTop.sortListByCases(dataCovid);
+				sortListByCases(dataCovid);
 				String col[] = { "Số thứ tự", "Quốc gia", "Số ca", };
 				Object[] row = new Object[3];
 				DefaultTableModel model = new DefaultTableModel();
@@ -241,7 +243,7 @@ public class CovidTopGUI extends JFrame {
 		btnDeaths.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				choose = 1;
-				InformationCovidTop.sortListbyDeaths(dataCovid);
+				sortListbyDeaths(dataCovid);
 				String col[] = { "Số thứ tự", "Quốc gia", "Số ca tử vong" };
 				Object[] row = new Object[3];
 				DefaultTableModel model = new DefaultTableModel();
@@ -539,5 +541,24 @@ public class CovidTopGUI extends JFrame {
 		lblDeaths.setText(String.valueOf(dea));
 		lblRecover.setText(String.valueOf(rec));
 		lblflag.setIcon(showFlag(flag));
+	}
+	public static void sortListByCases(ArrayList<CovidTopModel> list) {
+		Collections.sort(list, new Comparator<CovidTopModel>() {
+			public int compare(CovidTopModel c1, CovidTopModel c2) {
+				Integer case1 = c1.getCases();
+				Integer case2 = c2.getCases();
+				return case2.compareTo(case1);
+			}
+		});
+	}
+
+	public static void sortListbyDeaths(ArrayList<CovidTopModel> list) {
+		Collections.sort(list, new Comparator<CovidTopModel>() {
+			public int compare(CovidTopModel c1, CovidTopModel c2) {
+				Integer case1 = c1.getDeaths();
+				Integer case2 = c2.getDeaths();
+				return case2.compareTo(case1);
+			}
+		});
 	}
 }

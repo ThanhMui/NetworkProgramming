@@ -120,7 +120,7 @@ public class CountryGUI extends javax.swing.JFrame {
         lbNotification2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         btnSearch.setBackground(new java.awt.Color(0, 102, 204));
