@@ -103,7 +103,7 @@ public class CovidTopGUI extends JFrame {
 	}
 
 	public CovidTopGUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1041, 730);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -215,6 +215,7 @@ public class CovidTopGUI extends JFrame {
 		scrollPane.setViewportView(table);
 
 		JButton btnCases = new JButton("Cases");
+		btnCases.setVisible(false);
 		btnCases.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				choose = 0;
@@ -236,6 +237,7 @@ public class CovidTopGUI extends JFrame {
 		});
 
 		JButton btnDeaths = new JButton("Deaths");
+		btnDeaths.setVisible(false);
 		btnDeaths.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				choose = 1;
@@ -263,6 +265,98 @@ public class CovidTopGUI extends JFrame {
 		btnDeaths.setBounds(650, 654, 85, 30);
 		contentPane.add(btnDeaths);
 
+
+		JButton btnSearch = new JButton("Search");
+		btnSearch.setVisible(false);
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// table đang hiển thị ca tử vong
+				if (txtSearch.equals("")) {
+					JFrame frame = new JFrame();
+
+					JOptionPane.showMessageDialog(frame, "Ô tìm kiếm rỗng", "Thông báo",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					if (choose == 1) {
+						String col[] = { "Số thứ tự", "Quốc gia", "Số ca tử vong" };
+						Object[] row = new Object[3];
+						DefaultTableModel model = new DefaultTableModel();
+						model.setColumnIdentifiers(col);
+						table.setModel(model);
+						for (int i = 0; i < dataCovid.size(); i++) {
+							if (dataCovid.get(i).getCountry().contains(txtSearch.getText())) {
+								String country = dataCovid.get(i).getCountry();
+								int deaths = dataCovid.get(i).getDeaths();
+								row[0] = i + 1;
+								row[1] = country;
+								row[2] = deaths;
+								model.addRow(row);
+							}
+						}
+						if(model.getRowCount() <= 0 ) {
+							lblName.setText("");
+							lblCases.setText(String.valueOf(""));
+							lblActive.setText(String.valueOf(""));
+							lblDeaths.setText(String.valueOf(""));
+							lblRecover.setText(String.valueOf(""));
+							lblflag.setIcon(null);
+							
+							pn_piechart.removeAll();
+							pn_piechart.updateUI();
+							JFrame frame = new JFrame();
+
+							JOptionPane.showMessageDialog(frame, "Không tìm thấy dữ liệu", "Thông báo",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+					// table đang hiển thị ca nhiễm
+					if (choose == 0) {
+						String col[] = { "Số thứ tự", "Quốc gia", "Số ca" };
+						Object[] row = new Object[3];
+						DefaultTableModel model = new DefaultTableModel();
+						model.setColumnIdentifiers(col);
+						table.setModel(model);
+						for (int i = 0; i < dataCovid.size(); i++) {
+							if (dataCovid.get(i).getCountry().contains(txtSearch.getText())) {
+								String country = dataCovid.get(i).getCountry();
+								int deaths = dataCovid.get(i).getCases();
+								row[0] = i + 1;
+								row[1] = country;
+								row[2] = deaths;
+								model.addRow(row);
+							}
+						}
+						
+						if(model.getRowCount() <= 0 ) {
+							lblName.setText("");
+							lblCases.setText(String.valueOf(""));
+							lblActive.setText(String.valueOf(""));
+							lblDeaths.setText(String.valueOf(""));
+							lblRecover.setText(String.valueOf(""));
+							lblflag.setIcon(null);
+							
+							pn_piechart.removeAll();
+							pn_piechart.updateUI();
+							JFrame frame = new JFrame();
+							
+							JOptionPane.showMessageDialog(frame, "Không tìm thấy dữ liệu", "Thông báo",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+				}
+			}
+		});
+		btnSearch.setFont(new Font("Arial", Font.BOLD, 14));
+		btnSearch.setBounds(840, 654, 85, 30);
+		contentPane.add(btnSearch);
+
+		txtSearch = new JTextField();
+		txtSearch.setVisible(false);
+		txtSearch.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtSearch.setBounds(840, 625, 187, 25);
+		contentPane.add(txtSearch);
+		txtSearch.setColumns(10);
+		
 		JButton btnLoad = new JButton("Load");
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -363,7 +457,10 @@ public class CovidTopGUI extends JFrame {
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
 						JFrame frame = new JFrame();
-
+						btnCases.setVisible(true);
+						btnDeaths.setVisible(true);
+						btnSearch.setVisible(true);
+						txtSearch.setVisible(true);
 						JOptionPane.showMessageDialog(frame, "Load dữ liệu thành công", "Thông báo",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -381,64 +478,6 @@ public class CovidTopGUI extends JFrame {
 		btnLoad.setFont(new Font("Arial", Font.BOLD, 14));
 		btnLoad.setBounds(745, 654, 85, 30);
 		contentPane.add(btnLoad);
-
-		JButton btnSearch = new JButton("Search");
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// table đang hiển thị ca tử vong
-				if (txtSearch.equals("")) {
-					JFrame frame = new JFrame();
-
-					JOptionPane.showMessageDialog(frame, "Ô tìm kiếm rỗng", "Thông báo",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					if (choose == 1) {
-						String col[] = { "Số thứ tự", "Quốc gia", "Số ca tử vong" };
-						Object[] row = new Object[3];
-						DefaultTableModel model = new DefaultTableModel();
-						model.setColumnIdentifiers(col);
-						table.setModel(model);
-						for (int i = 0; i < dataCovid.size(); i++) {
-							if (dataCovid.get(i).getCountry().contains(txtSearch.getText())) {
-								String country = dataCovid.get(i).getCountry();
-								int deaths = dataCovid.get(i).getDeaths();
-								row[0] = i + 1;
-								row[1] = country;
-								row[2] = deaths;
-								model.addRow(row);
-							}
-						}
-					}
-					// table đang hiển thị ca nhiễm
-					if (choose == 0) {
-						String col[] = { "Số thứ tự", "Quốc gia", "Số ca" };
-						Object[] row = new Object[3];
-						DefaultTableModel model = new DefaultTableModel();
-						model.setColumnIdentifiers(col);
-						table.setModel(model);
-						for (int i = 0; i < dataCovid.size(); i++) {
-							if (dataCovid.get(i).getCountry().contains(txtSearch.getText())) {
-								String country = dataCovid.get(i).getCountry();
-								int deaths = dataCovid.get(i).getCases();
-								row[0] = i + 1;
-								row[1] = country;
-								row[2] = deaths;
-								model.addRow(row);
-							}
-						}
-					}
-				}
-			}
-		});
-		btnSearch.setFont(new Font("Arial", Font.BOLD, 14));
-		btnSearch.setBounds(840, 654, 85, 30);
-		contentPane.add(btnSearch);
-
-		txtSearch = new JTextField();
-		txtSearch.setFont(new Font("Arial", Font.PLAIN, 12));
-		txtSearch.setBounds(840, 625, 187, 25);
-		contentPane.add(txtSearch);
-		txtSearch.setColumns(10);
 	}
 
 	static public ChartPanel PieChart() {
