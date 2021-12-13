@@ -92,309 +92,264 @@ public class CountryGUI extends javax.swing.JFrame {
 	 */
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated
-	// Code">//GEN-BEGIN:initComponents
-	private void initComponents() {
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-		btnSearch = new javax.swing.JButton();
-		txtCityName = new javax.swing.JTextField();
-		jScrollPane1 = new javax.swing.JScrollPane();
-		tbCountry = new javax.swing.JTable();
-		jLabel1 = new javax.swing.JLabel();
-		jLabel2 = new javax.swing.JLabel();
-		jLabel3 = new javax.swing.JLabel();
-		jLabel4 = new javax.swing.JLabel();
-		lbWeatherCondition = new javax.swing.JLabel();
-		lbHumidity = new javax.swing.JLabel();
-		jLabel7 = new javax.swing.JLabel();
-		jLabel8 = new javax.swing.JLabel();
-		lbWindSpeed = new javax.swing.JLabel();
-		jLabel10 = new javax.swing.JLabel();
-		lbTemp = new javax.swing.JLabel();
-		lbDatetime = new javax.swing.JLabel();
-		jLabel13 = new javax.swing.JLabel();
-		lbClouds = new javax.swing.JLabel();
-		lbIDCountry = new javax.swing.JLabel();
-		lbFlag = new javax.swing.JLabel();
-		jLabel11 = new javax.swing.JLabel();
-		lbNotification1 = new javax.swing.JLabel();
-		lbNotification2 = new javax.swing.JLabel();
-		jButton1 = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
+        txtCityName = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbCountry = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lbWeatherCondition = new javax.swing.JLabel();
+        lbHumidity = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        lbWindSpeed = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        lbTemp = new javax.swing.JLabel();
+        lbDatetime = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        lbClouds = new javax.swing.JLabel();
+        lbIDCountry = new javax.swing.JLabel();
+        lbFlag = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        lbNotification1 = new javax.swing.JLabel();
+        lbNotification2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setResizable(false);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-		btnSearch.setBackground(new java.awt.Color(0, 102, 204));
-		btnSearch.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		btnSearch.setText("Search");
-		btnSearch.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnSearchActionPerformed(evt);
-			}
-		});
+        btnSearch.setBackground(new java.awt.Color(0, 102, 204));
+        btnSearch.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
-		txtCityName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		txtCityName.setForeground(new java.awt.Color(153, 153, 153));
+        txtCityName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-		tbCountry.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		tbCountry.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
+        tbCountry.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tbCountry.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-		}, new String[] { "Country name", "ID country", "Population", "Longitude", "Latitude", "Currencies", "Capital",
-				"Languages", "Neighbours" }) {
-			Class[] types = new Class[] { java.lang.String.class, java.lang.String.class, java.lang.Integer.class,
-					java.lang.Float.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class,
-					java.lang.String.class, java.lang.String.class };
-			boolean[] canEdit = new boolean[] { false, false, false, false, false, false, false, false, false };
+            },
+            new String [] {
+                "Country name", "ID country", "Population", "Longitude", "Latitude", "Currencies", "Capital", "Languages", "Neighbours"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
 
-			public Class getColumnClass(int columnIndex) {
-				return types[columnIndex];
-			}
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
-			public boolean isCellEditable(int rowIndex, int columnIndex) {
-				return canEdit[columnIndex];
-			}
-		});
-		tbCountry.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				tbCountryMouseClicked(evt);
-			}
-		});
-		jScrollPane1.setViewportView(tbCountry);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbCountry.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbCountryMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbCountry);
 
-		jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-		jLabel1.setText("Weather Information");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setText("Weather Information");
 
-		jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-		jLabel2.setText("Information Country");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel2.setText("Information Country");
 
-		jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		jLabel3.setText("ID Country");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("ID Country");
 
-		jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		jLabel4.setText("Weather Condition");
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setText("Weather Condition");
 
-		lbWeatherCondition.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbWeatherCondition.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-		lbHumidity.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbHumidity.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-		jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		jLabel7.setText("Humidity");
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel7.setText("Humidity");
 
-		jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		jLabel8.setText("Clouds");
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel8.setText("Clouds");
 
-		lbWindSpeed.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbWindSpeed.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-		jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		jLabel10.setText("Temperature");
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setText("Temperature");
 
-		lbTemp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbTemp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-		lbDatetime.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbDatetime.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-		jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		jLabel13.setText("Wind Speed");
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel13.setText("Wind Speed");
 
-		lbClouds.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbClouds.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-		lbIDCountry.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbIDCountry.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-		jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		jLabel11.setText("Datetime");
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel11.setText("Datetime");
 
-		lbNotification1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		lbNotification1.setForeground(new java.awt.Color(204, 0, 51));
+        lbNotification1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbNotification1.setForeground(new java.awt.Color(204, 0, 51));
 
-		lbNotification2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-		lbNotification2.setForeground(new java.awt.Color(204, 0, 51));
+        lbNotification2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbNotification2.setForeground(new java.awt.Color(204, 0, 51));
 
-		jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-		jButton1.setForeground(new java.awt.Color(204, 0, 0));
-		jButton1.setText("BACK");
-		jButton1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton1ActionPerformed(evt);
-			}
-		});
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(204, 0, 0));
+        jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup().addContainerGap()
-						.addGroup(layout
-								.createParallelGroup(
-										javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 114,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(35, 35, 35)
-										.addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 306,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 508,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(49, 49, 49)
-										.addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 93,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(44, 44, 44))
-								.addGroup(layout.createSequentialGroup().addComponent(jScrollPane1).addContainerGap())))
-				.addGroup(layout.createSequentialGroup().addGroup(layout
-						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1,
-								javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGroup(layout.createSequentialGroup().addGap(272, 272, 272).addComponent(lbNotification1,
-								javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addGroup(layout.createSequentialGroup().addGap(354, 354, 354)
-												.addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addGap(32, 32, 32).addComponent(lbIDCountry,
-														javax.swing.GroupLayout.PREFERRED_SIZE, 251,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addGroup(layout.createSequentialGroup().addGap(86, 86, 86).addComponent(
-												lbNotification2, javax.swing.GroupLayout.PREFERRED_SIZE, 820,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addGroup(layout.createSequentialGroup().addGap(26, 26, 26)
-												.addGroup(layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-														.addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE,
-																119, javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE,
-																119, javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addGroup(layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(layout.createSequentialGroup().addGap(66, 66, 66)
-																.addComponent(lbDatetime,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 240,
-																		javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addGroup(layout.createSequentialGroup().addGap(52, 52, 52)
-																.addComponent(lbClouds,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 265,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)))
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38,
-														Short.MAX_VALUE)
-												.addGroup(layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jLabel10,
-																javax.swing.GroupLayout.Alignment.TRAILING,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 148,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(jLabel4,
-																javax.swing.GroupLayout.Alignment.TRAILING,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 169,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addGap(55, 55, 55)
-												.addGroup(layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING,
-																false)
-														.addComponent(lbWeatherCondition,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(lbTemp, javax.swing.GroupLayout.DEFAULT_SIZE, 146,
-																Short.MAX_VALUE))
-												.addGap(47, 47, 47)))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addGroup(layout.createSequentialGroup()
-												.addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 96,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addGap(49, 49, 49))
-										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-												layout.createSequentialGroup()
-														.addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE,
-																106, javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addGap(37, 37, 37)))
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(lbHumidity, javax.swing.GroupLayout.PREFERRED_SIZE, 102,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(lbWindSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 102,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGap(53, 53, 53).addComponent(lbFlag, javax.swing.GroupLayout.PREFERRED_SIZE, 345,
-										javax.swing.GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup().addContainerGap()
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(18, 18, 18)
-						.addComponent(lbNotification1, javax.swing.GroupLayout.PREFERRED_SIZE, 42,
-								javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addGap(18, 18, 18)
-						.addComponent(
-								jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146,
-								javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup().addGap(96, 96, 96).addComponent(
-										lbFlag, javax.swing.GroupLayout.PREFERRED_SIZE, 155,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGroup(layout.createSequentialGroup().addGap(18, 18, 18).addGroup(layout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(lbDatetime, javax.swing.GroupLayout.PREFERRED_SIZE, 61,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 61,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(lbWeatherCondition,
-														javax.swing.GroupLayout.PREFERRED_SIZE, 56,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 56,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(
-														lbHumidity, javax.swing.GroupLayout.PREFERRED_SIZE, 56,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout
-												.createSequentialGroup()
-												.addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addGap(12, 12, 12)
-												.addGroup(layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-														.addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE,
-																46, javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(lbIDCountry,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 46,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addGap(30, 30, 30)
-												.addComponent(lbNotification2, javax.swing.GroupLayout.PREFERRED_SIZE,
-														41, javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addGap(28, 28, 28)
-												.addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 56,
-														javax.swing.GroupLayout.PREFERRED_SIZE)))))
-						.addGap(21, 21, 21)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
-								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-										.addGap(0, 0, Short.MAX_VALUE)
-										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(lbTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 58,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 58,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(lbWindSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 58,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addGap(4, 4, 4))
-								.addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
-								.addComponent(lbClouds, javax.swing.GroupLayout.Alignment.TRAILING,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE))
-								.addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 62,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(152, 152, 152)));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(272, 272, 272)
+                        .addComponent(lbNotification1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(354, 354, 354)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(32, 32, 32)
+                                .addComponent(lbIDCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(86, 86, 86)
+                                .addComponent(lbNotification2, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(66, 66, 66)
+                                        .addComponent(lbDatetime, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(52, 52, 52)
+                                        .addComponent(lbClouds, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(55, 55, 55)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lbWeatherCondition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lbTemp, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
+                                .addGap(47, 47, 47)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(49, 49, 49))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbHumidity, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbWindSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(53, 53, 53)
+                        .addComponent(lbFlag, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtCityName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(lbNotification1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(96, 96, 96)
+                        .addComponent(lbFlag, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lbDatetime, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbWeatherCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbHumidity, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbIDCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addComponent(lbNotification2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lbTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbWindSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(4, 4, 4))
+                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbClouds, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(152, 152, 152))
+        );
 
-		pack();
-		setLocationRelativeTo(null);
-	}// </editor-fold>//GEN-END:initComponents
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
 
 	private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSearchActionPerformed
 		// TODO add your handling code here:
@@ -826,30 +781,30 @@ public class CountryGUI extends javax.swing.JFrame {
 
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JButton btnSearch;
-	private javax.swing.JButton jButton1;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JLabel jLabel10;
-	private javax.swing.JLabel jLabel11;
-	private javax.swing.JLabel jLabel13;
-	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel3;
-	private javax.swing.JLabel jLabel4;
-	private javax.swing.JLabel jLabel7;
-	private javax.swing.JLabel jLabel8;
-	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JLabel lbClouds;
-	private javax.swing.JLabel lbDatetime;
-	private javax.swing.JLabel lbFlag;
-	private javax.swing.JLabel lbHumidity;
-	private javax.swing.JLabel lbIDCountry;
-	private javax.swing.JLabel lbNotification1;
-	private javax.swing.JLabel lbNotification2;
-	private javax.swing.JLabel lbTemp;
-	private javax.swing.JLabel lbWeatherCondition;
-	private javax.swing.JLabel lbWindSpeed;
-	private javax.swing.JTable tbCountry;
-	private javax.swing.JTextField txtCityName;
-	// End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbClouds;
+    private javax.swing.JLabel lbDatetime;
+    private javax.swing.JLabel lbFlag;
+    private javax.swing.JLabel lbHumidity;
+    private javax.swing.JLabel lbIDCountry;
+    private javax.swing.JLabel lbNotification1;
+    private javax.swing.JLabel lbNotification2;
+    private javax.swing.JLabel lbTemp;
+    private javax.swing.JLabel lbWeatherCondition;
+    private javax.swing.JLabel lbWindSpeed;
+    private javax.swing.JTable tbCountry;
+    private javax.swing.JTextField txtCityName;
+    // End of variables declaration//GEN-END:variables
 }
