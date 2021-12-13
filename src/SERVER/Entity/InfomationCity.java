@@ -92,6 +92,9 @@ public class InfomationCity {
 		URL obj = new URL(url);
 		City city = new City();
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                con.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+		con.connect();
 		// optional default is GET
 		con.setRequestMethod("GET");
 		// add request header
@@ -100,17 +103,18 @@ public class InfomationCity {
 
 		// Kiểm tra trạng thái
 		int responseCode = con.getResponseCode();
+                
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
-
-		// duyệt response
+                    if( responseCode == 200){
+                       // duyệt response
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
 		}
-		in.close();
+		
 
 		// print in String
 		System.out.println(response.toString());
@@ -165,6 +169,9 @@ public class InfomationCity {
 				System.out.println(e);
 			}
 		}
+                in.close(); 
+                    }
+		
 		return listInfoCitys;
 	}
 

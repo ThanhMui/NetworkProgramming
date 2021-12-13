@@ -16,9 +16,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+//import java.net.http.HttpClient;
+//import java.net.http.HttpRequest;
+//import java.net.http.HttpResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,8 +29,8 @@ public class InformationCovidTop {
 //		getData2();
 //		sortListbyDeaths(dataCovid);
 //		getValue("Vietnam");
-		dataCovid = getData2();
-//		System.out.println(dataCovid);
+		dataCovid = getData22();
+		System.out.println(dataCovid.toString());
 //		for (CovidTopInfor covidTopInfor: dataCovid) {
 //			System.out.println(covidTopInfor.country+": "+covidTopInfor.flag);
 //		}
@@ -80,9 +80,10 @@ public class InformationCovidTop {
 			connection.connect();
 
 			int responseCode = connection.getResponseCode();
-			System.out.println("response= " + responseCode);
-
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        if( responseCode == 200){
+                            System.out.println("response= " + responseCode);
+                            if( responseCode == 200){
+                                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
 			while ((inputLine = in.readLine()) != null) {
@@ -109,37 +110,41 @@ public class InformationCovidTop {
 				dataCovid.add(data);
 			}
 			in.close();
+                            }
+                        }
+			
+			
 		} catch (MalformedURLException ex) {
 			Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
-	public static ArrayList<CovidTopModel> getData2 () throws IOException, InterruptedException{
-		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("https://corona.lmao.ninja/v2/countries?yesterday&sort"))
-				.method("GET", HttpRequest.BodyPublishers.noBody())
-				.build();
-		HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());	
-		ArrayList<CovidTopModel> dataCovid = new ArrayList<CovidTopModel>();
-		JSONArray arr = new JSONArray(response.body());
-		CovidTopModel data;
-		for (int i =0; i<arr.length()-1;i++) {
-			JSONObject ob = arr.getJSONObject(i);
-			String country = ob.getString("country");
-			int cases = ob.getInt("cases");
-			int deaths = ob.getInt("deaths");
-			int recovered = ob.getInt("recovered");
-			int active = ob.getInt("active");
-			int population = ob.getInt("population");
-			
-			JSONObject jsonCountry = ob.getJSONObject("countryInfo");			
-			String flag = jsonCountry.getString("flag");
-			data = new CovidTopModel(country, cases, deaths, recovered, active, population,flag);
-			dataCovid.add(data);			
-		}
-//		System.out.println(dataCovid.toString());
-		return dataCovid;
-	}
+//	public static ArrayList<CovidTopModel> getData2 () throws IOException, InterruptedException{
+//		HttpRequest request = HttpRequest.newBuilder()
+//				.uri(URI.create("https://corona.lmao.ninja/v2/countries?yesterday&sort"))
+//				.method("GET", HttpRequest.BodyPublishers.noBody())
+//				.build();
+//		HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());	
+//		ArrayList<CovidTopModel> dataCovid = new ArrayList<CovidTopModel>();
+//		JSONArray arr = new JSONArray(response.body());
+//		CovidTopModel data;
+//		for (int i =0; i<arr.length()-1;i++) {
+//			JSONObject ob = arr.getJSONObject(i);
+//			String country = ob.getString("country");
+//			int cases = ob.getInt("cases");
+//			int deaths = ob.getInt("deaths");
+//			int recovered = ob.getInt("recovered");
+//			int active = ob.getInt("active");
+//			int population = ob.getInt("population");
+//			
+//			JSONObject jsonCountry = ob.getJSONObject("countryInfo");			
+//			String flag = jsonCountry.getString("flag");
+//			data = new CovidTopModel(country, cases, deaths, recovered, active, population,flag);
+//			dataCovid.add(data);			
+//		}
+////		System.out.println(dataCovid.toString());
+//		return dataCovid;
+//	}
 	public static ArrayList<CovidTopModel> getData22() throws IOException, InterruptedException {
 		String url = "https://corona.lmao.ninja/v2/countries?yesterday&sort";
 		URL obj;
@@ -153,8 +158,9 @@ public class InformationCovidTop {
 					"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
 			connection.connect();
 			int responseCode = connection.getResponseCode();
-			System.out.println("response= " + responseCode);
-
+                           System.out.println("response= " + responseCode);
+                        if( responseCode == 200){
+                         
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
@@ -184,6 +190,8 @@ public class InformationCovidTop {
 			}
 
 			in.close();
+                        }
+			
 		} catch (MalformedURLException ex) {
 			Logger.getLogger(InfomationCountry.class.getName()).log(Level.SEVERE, null, ex);
 		}
