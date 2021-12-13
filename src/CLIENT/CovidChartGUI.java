@@ -13,7 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
 import java.awt.Font;
+import java.awt.Label;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,6 +28,7 @@ import java.net.InetAddress;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,8 +70,7 @@ public class CovidChartGUI extends JFrame {
 	private JTextField txtDateStart;
 	private JTextField textDateEnd;
 	private JOptionPane pane;
-
-	ArrayList<CovidInfoModel> listCovid = null;
+	static ArrayList<CovidInfoModel> listCovid = null;
 
 	static DatagramSocket clientSocket;
 	static Scanner sc;
@@ -119,15 +122,15 @@ public class CovidChartGUI extends JFrame {
 		contentPane.setLayout(null);
 
 		JScrollPane Panel_Cases = new JScrollPane();
-		Panel_Cases.setBounds(10, 43, 488, 230);
+		Panel_Cases.setBounds(34, 43, 488, 230);
 		contentPane.add(Panel_Cases);
 
 		JScrollPane Panel_Deaths = new JScrollPane();
-		Panel_Deaths.setBounds(10, 294, 488, 230);
+		Panel_Deaths.setBounds(34, 294, 488, 230);
 		contentPane.add(Panel_Deaths);
 
 		JScrollPane Panel_Recoverd = new JScrollPane();
-		Panel_Recoverd.setBounds(10, 549, 488, 230);
+		Panel_Recoverd.setBounds(34, 549, 488, 230);
 		contentPane.add(Panel_Recoverd);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -135,6 +138,7 @@ public class CovidChartGUI extends JFrame {
 		contentPane.add(scrollPane);
 
 		txtCountry = new JTextField();
+		txtCountry.setText("Vietnam");
 		txtCountry.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtCountry.setBounds(975, 181, 116, 27);
 		contentPane.add(txtCountry);
@@ -158,6 +162,7 @@ public class CovidChartGUI extends JFrame {
 		contentPane.add(lblDateStart);
 
 		txtDateStart = new JFormattedTextField(factory, new Date());
+		txtDateStart.setText("01-12-2021");
 		txtDateStart.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtDateStart.setColumns(10);
 		txtDateStart.setBounds(975, 275, 116, 27);
@@ -173,6 +178,61 @@ public class CovidChartGUI extends JFrame {
 		textDateEnd.setColumns(10);
 		textDateEnd.setBounds(975, 368, 116, 27);
 		contentPane.add(textDateEnd);
+		
+		JLabel lblThongke = new JLabel("Thống kê trong ngày");
+		lblThongke.setFont(new Font("Arial", Font.BOLD, 16));
+		lblThongke.setBounds(975, 435, 168, 41);
+		contentPane.add(lblThongke);
+		
+		JLabel lblSCaTrong = new JLabel("Số ca : ");
+		lblSCaTrong.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblSCaTrong.setBounds(975, 475, 128, 31);
+		contentPane.add(lblSCaTrong);
+		
+		JLabel lblSCaT = new JLabel("Số ca tử vong : ");
+		lblSCaT.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblSCaT.setBounds(975, 516, 128, 31);
+		contentPane.add(lblSCaT);
+		
+		JLabel lblSCaHi = new JLabel("Số ca hồi phục : ");
+		lblSCaHi.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblSCaHi.setBounds(975, 558, 128, 31);
+		contentPane.add(lblSCaHi);
+		
+		JLabel lblSCaTrong_1_1 = new JLabel("Tỉ lệ phần trăm dân số nhiễm covid : ");
+		lblSCaTrong_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblSCaTrong_1_1.setBounds(975, 612, 258, 31);
+		contentPane.add(lblSCaTrong_1_1);
+		
+		JLabel lblSCaTrong_1_1_1 = new JLabel("Tỉ lệ phần trăm dân số mất vì covid : ");
+		lblSCaTrong_1_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblSCaTrong_1_1_1.setBounds(975, 694, 267, 31);
+		contentPane.add(lblSCaTrong_1_1_1);
+		
+		JLabel lblSoCaTrongNgay = new JLabel("");
+		lblSoCaTrongNgay.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblSoCaTrongNgay.setBounds(1100, 475, 116, 31);
+		contentPane.add(lblSoCaTrongNgay);
+		
+		JLabel lblSoCaTuVongTrongNgay = new JLabel("");
+		lblSoCaTuVongTrongNgay.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblSoCaTuVongTrongNgay.setBounds(1100, 516, 116, 31);
+		contentPane.add(lblSoCaTuVongTrongNgay);
+		
+		JLabel lblSoCaHoiPhuc = new JLabel("");
+		lblSoCaHoiPhuc.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblSoCaHoiPhuc.setBounds(1100, 556, 116, 31);
+		contentPane.add(lblSoCaHoiPhuc);
+		
+		JLabel lblPhanTramCase = new JLabel("");
+		lblPhanTramCase.setFont(new Font("Arial", Font.PLAIN, 15));
+		lblPhanTramCase.setBounds(975, 653, 227, 31);
+		contentPane.add(lblPhanTramCase);
+		
+		JLabel lblPhanTramDead = new JLabel("");
+		lblPhanTramDead.setFont(new Font("Arial", Font.PLAIN, 15));
+		lblPhanTramDead.setBounds(975, 733, 227, 31);
+		contentPane.add(lblPhanTramDead);
 		
 		tb_Cases = new JTable();
 		tb_Cases.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca" }) {
@@ -200,6 +260,37 @@ public class CovidChartGUI extends JFrame {
 		tb_Recoverd.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Ngày", "Số ca hồi phục" }));
 		scrollPane_2.setViewportView(tb_Recoverd);
 
+		tb_Cases.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = tb_Cases.getSelectedRow();
+
+				hienThiThongKeTrongNgay(row, lblSoCaTrongNgay, lblSoCaTuVongTrongNgay, lblSoCaHoiPhuc, lblPhanTramCase, lblPhanTramDead);
+				
+			}
+		});
+		
+		tb_Deaths.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = tb_Deaths.getSelectedRow();
+
+				hienThiThongKeTrongNgay(row, lblSoCaTrongNgay, lblSoCaTuVongTrongNgay, lblSoCaHoiPhuc, lblPhanTramCase, lblPhanTramDead);
+				
+			}
+		});
+		
+		tb_Recoverd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = tb_Recoverd.getSelectedRow();
+
+				hienThiThongKeTrongNgay(row, lblSoCaTrongNgay, lblSoCaTuVongTrongNgay, lblSoCaHoiPhuc, lblPhanTramCase, lblPhanTramDead);
+				
+			}
+		});
+		
+		
 		// Hàm xử lý khi tìm theo biểu đồ đường
 		JButton btnLineChart = new JButton("LineChart");
 		btnLineChart.addActionListener(new ActionListener() {
@@ -483,6 +574,7 @@ public class CovidChartGUI extends JFrame {
 		btnBack.setFont(new Font("Arial", Font.BOLD, 16));
 		btnBack.setBounds(10, 1, 116, 32);
 		contentPane.add(btnBack);
+		
 
 	}
 
@@ -670,6 +762,21 @@ public class CovidChartGUI extends JFrame {
 		return listnew;
 	}
 	
-	
+	public static void hienThiThongKeTrongNgay(int row , JLabel lblSoCaTrongNgay, JLabel lblSoCaTuVongTrongNgay, JLabel lblSoCaHoiPhuc, JLabel lblPhanTramCase, JLabel lblPhanTramDead) {
+		lblSoCaTrongNgay.setText(String.valueOf(listCovid.get(row).getConfirmed_daily()));
+		lblSoCaTuVongTrongNgay.setText(String.valueOf(listCovid.get(row).getDeaths_daily()));
+		lblSoCaHoiPhuc.setText(String.valueOf(listCovid.get(row).getRecovered_daily()));
+		
+		int conf = listCovid.get(row).getConfirmed();
+		int dead = listCovid.get(row).getDeaths();
+		int population = listCovid.get(row).getPopulation();
+		double case_percent = (double) Math.round((((double) conf/ (double)population)*100) * 1000000) / (double)1000000;
+		
+		lblPhanTramCase.setText("Xấp xỉ " + String.valueOf(case_percent) + " % dân số");
+		
+		double dead_percent = (double) Math.round((((double) dead/ (double)population)*100) * 100000) / (double)100000;
+		
+		lblPhanTramDead.setText("Xấp xỉ " + String.valueOf(dead_percent) + " % dân số");
+	}
 
 }
